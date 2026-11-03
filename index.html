@@ -13,9 +13,9 @@
 <div class="note">Публичные материалы и авторская истина хранятся раздельно. Не помещай ответы и секреты в публичные поля.</div></aside>
 <main class="panel"><div id="content"></div><div id="status" class="status"></div></main></div></section></div>
 <script>
-const URL="https://wwmlwgqzzseqauozzolx.supabase.co";
+const SUPABASE_URL="https://wwmlwgqzzseqauozzolx.supabase.co";
 const KEY="sb_publishable_ENyYjXAzC4K-dG2r1Oemsw_9E-entJS";
-const sb=window.supabase?.createClient ? window.supabase.createClient(URL,KEY) : null;
+const sb=window.supabase?.createClient ? window.supabase.createClient(SUPABASE_URL,KEY) : null;
 window.handleLogin=async function(e){$("loginStatus").textContent="Проверяем доступ…";$("loginStatus").className="status";try{if(!sb)throw Error("Не загрузилась библиотека авторизации. Обнови страницу; если ошибка повторится, пришли скриншот.");const {error}=await sb.auth.signInWithPassword({email:$("email").value.trim(),password:$("password").value});if(error)throw error;await load()}catch(x){$("loginStatus").textContent=x.message||"Не удалось войти";$("loginStatus").className="status error"}};
 let dashboard={seasons:[],cases:[],role:null}, selectedVersion=null, selectedCase=null;
 const $=id=>document.getElementById(id);
@@ -24,7 +24,7 @@ window.addEventListener("unhandledrejection",e=>{const s=$("loginStatus");if(s&&
 const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const uuid=()=>crypto.randomUUID();
 function msg(text,kind=""){const e=$("status");e.textContent=text;e.className="status "+kind}
-async function edge(name,body={}){const {data:{session}}=await sb.auth.getSession();if(!session)throw Error("Сессия завершена. Войдите снова.");const r=await fetch(URL+"/functions/v1/"+name,{method:"POST",headers:{"Content-Type":"application/json","apikey":KEY,"Authorization":"Bearer "+session.access_token},body:JSON.stringify(body)});const j=await r.json();if(!r.ok)throw Error(j.error||"Ошибка запроса");return j}
+async function edge(name,body={}){const {data:{session}}=await sb.auth.getSession();if(!session)throw Error("Сессия завершена. Войдите снова.");const r=await fetch(SUPABASE_URL+"/functions/v1/"+name,{method:"POST",headers:{"Content-Type":"application/json","apikey":KEY,"Authorization":"Bearer "+session.access_token},body:JSON.stringify(body)});const j=await r.json();if(!r.ok)throw Error(j.error||"Ошибка запроса");return j}
 async function command(operation,args){return edge("author_command",{operation,args:{p_request_id:uuid(),...args}})}
 async function load(){dashboard=await edge("author_dashboard");$("role").textContent=dashboard.role==="owner"?"ВЛАДЕЛЕЦ":"РЕДАКТОР";$("welcome").textContent="Авторская мастерская";$("login").classList.add("hidden");$("app").classList.remove("hidden");render("overview")}
 function nav(page){document.querySelectorAll(".nav button[data-page]").forEach(b=>b.classList.toggle("active",b.dataset.page===page));render(page)}
