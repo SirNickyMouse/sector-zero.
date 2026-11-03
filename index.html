@@ -16,6 +16,7 @@
 const URL="https://wwmlwgqzzseqauozzolx.supabase.co";
 const KEY="sb_publishable_ENyYjXAzC4K-dG2r1Oemsw_9E-entJS";
 const sb=window.supabase?.createClient ? window.supabase.createClient(URL,KEY) : null;
+window.handleLogin=async function(e){$("loginStatus").textContent="Проверяем доступ…";$("loginStatus").className="status";try{if(!sb)throw Error("Не загрузилась библиотека авторизации. Обнови страницу; если ошибка повторится, пришли скриншот.");const {error}=await sb.auth.signInWithPassword({email:$("email").value.trim(),password:$("password").value});if(error)throw error;await load()}catch(x){$("loginStatus").textContent=x.message||"Не удалось войти";$("loginStatus").className="status error"}};
 let dashboard={seasons:[],cases:[],role:null}, selectedVersion=null, selectedCase=null;
 const $=id=>document.getElementById(id);
 window.addEventListener("error",e=>{const s=$("loginStatus");if(s&&!$("login").classList.contains("hidden")){s.textContent="Ошибка сценария авторизации: "+(e.message||"неизвестная ошибка");s.className="status error"}});
@@ -28,7 +29,7 @@ async function command(operation,args){return edge("author_command",{operation,a
 async function load(){dashboard=await edge("author_dashboard");$("role").textContent=dashboard.role==="owner"?"ВЛАДЕЛЕЦ":"РЕДАКТОР";$("welcome").textContent="Авторская мастерская";$("login").classList.add("hidden");$("app").classList.remove("hidden");render("overview")}
 function nav(page){document.querySelectorAll(".nav button[data-page]").forEach(b=>b.classList.toggle("active",b.dataset.page===page));render(page)}
 document.querySelectorAll(".nav button[data-page]").forEach(b=>b.addEventListener("click",()=>nav(b.dataset.page)));
-window.handleLogin=async function(e){$("loginStatus").textContent="Проверяем доступ…";$("loginStatus").className="status";try{if(!sb)throw Error("Не загрузилась библиотека авторизации. Обнови страницу; если ошибка повторится, пришли скриншот.");const {error}=await sb.auth.signInWithPassword({email:$("email").value.trim(),password:$("password").value});if(error)throw error;await load()}catch(x){$("loginStatus").textContent=x.message||"Не удалось войти";$("loginStatus").className="status error"}};
+
 $("logout").onclick=async()=>{await sb.auth.signOut();$("app").classList.add("hidden");$("login").classList.remove("hidden")};
 function caseOptions(){return dashboard.cases.map(c=>'<option value="'+esc(c.id)+'">'+esc(c.code+" — "+c.title)+'</option>').join("")}
 function seasonOptions(){return dashboard.seasons.map(s=>'<option value="'+esc(s.id)+'">'+esc(s.code+" — "+s.title)+'</option>').join("")}
