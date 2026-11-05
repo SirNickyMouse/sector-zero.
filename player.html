@@ -23,11 +23,11 @@
 </aside><main class="panel"><div id="pageContent"></div><div id="status" class="status"></div></main>
 </div></section></div>
 <script>
-const URL="https://wwmlwgqzzseqauozzolx.supabase.co";
+const SUPABASE_URL="https://wwmlwgqzzseqauozzolx.supabase.co";
 const KEY="sb_publishable_ENyYjXAzC4K-dG2r1Oemsw_9E-entJS";
 const $=id=>document.getElementById(id);
 if(!window.supabase?.createClient){const box=$("loginStatus");if(box){box.textContent="Модуль авторизации не загрузился. Проверь подключение к интернету и попробуй позже.";box.className="status error";}throw new Error("Supabase JS library failed to load");}
-const sb=window.supabase.createClient(URL,KEY);
+const sb=window.supabase.createClient(SUPABASE_URL,KEY);
 window.addEventListener("error",e=>{const box=$("loginStatus");if(box&&!box.textContent){box.textContent="Ошибка запуска страницы: "+(e.message||"неизвестная ошибка");box.className="status error";}});
 const uid=()=>crypto.randomUUID();
 const esc=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
@@ -35,7 +35,7 @@ let catalog=null,state=null,materialCatalog=[],investigationId=null,caseVersionI
 function status(t,k=""){ $("status").textContent=t||"";$("status").className="status "+k; }
 async function edge(name,body={}) {
  const {data:{session}}=await sb.auth.getSession();if(!session)throw Error("Сессия завершена. Войдите снова.");
- const r=await fetch(URL+"/functions/v1/"+name,{method:"POST",headers:{"Content-Type":"application/json","apikey":KEY,"Authorization":"Bearer "+session.access_token},body:JSON.stringify(body)});
+ const r=await fetch(SUPABASE_URL+"/functions/v1/"+name,{method:"POST",headers:{"Content-Type":"application/json","apikey":KEY,"Authorization":"Bearer "+session.access_token},body:JSON.stringify(body)});
  const j=await r.json();if(!r.ok||j.ok===false)throw Error(j.error?.message||j.error?.code||"Ошибка запроса");return j;
 }
 async function refreshCatalog(){
