@@ -12,7 +12,7 @@
 <body><div class="wrap">
 <header class="brand"><div class="mark">СН</div><div><div class="eyebrow">Архив расследований</div><h1>СЕКТОР НОЛЬ</h1><p>Ничего не принимай на веру. Сверяй факты.</p></div></header>
 <section id="login" class="panel login"><div class="eyebrow">Личный кабинет</div><h2>Вход в расследование</h2><p class="muted">Войди, чтобы начать дело или продолжить сохранённое расследование.</p>
-<form id="loginForm" onsubmit="return false;"><div class="field"><label>Электронная почта</label><input id="email" type="email" autocomplete="username" required></div><div class="field"><label>Пароль</label><input id="password" type="password" autocomplete="current-password" required></div><button class="primary" style="width:100%">Войти</button></form><div class="row" style="margin-top:12px"><button id="createAccount" type="button">Создать аккаунт</button></div><div id="loginStatus" class="status"></div></section>
+<div id="loginForm"><div class="field"><label>Электронная почта</label><input id="email" type="email" autocomplete="username" required></div><div class="field"><label>Пароль</label><input id="password" type="password" autocomplete="current-password" required></div><button id="loginButton" class="primary" type="button" style="width:100%">Войти</button></div><div class="row" style="margin-top:12px"><button id="createAccount" type="button">Создать аккаунт</button></div><div id="loginStatus" class="status"></div></section>
 <section id="app" class="hidden">
 <div class="top"><div><div class="eyebrow">Игровое дело</div><div id="caseName" class="muted">Выбери расследование</div></div><div class="row"><span id="userLabel" class="tag">Игрок</span><button id="logout">Выйти</button></div></div>
 <div id="catalog" class="panel"><h2>Доступные дела</h2><p class="muted">Загружаем опубликованные расследования…</p><div id="cases"></div><div id="catalogStatus" class="status"></div></div>
@@ -26,29 +26,9 @@
 const URL="https://wwmlwgqzzseqauozzolx.supabase.co";
 const KEY="sb_publishable_ENyYjXAzC4K-dG2r1Oemsw_9E-entJS";
 const $=id=>document.getElementById(id);
-if(!window.supabase?.createClient){const box=$("loginStatus");if(box){box.textContent="Не удалось загрузить модуль авторизации. Обнови страницу; если ошибка повторится, сообщи нам.";box.className="status error";}throw new Error("Supabase JS library failed to load");}
+if(!window.supabase?.createClient){const box=$("loginStatus");if(box){box.textContent="Модуль авторизации не загрузился. Проверь подключение к интернету и попробуй позже.";box.className="status error";}throw new Error("Supabase JS library failed to load");}
 const sb=window.supabase.createClient(URL,KEY);
 window.addEventListener("error",e=>{const box=$("loginStatus");if(box&&!box.textContent){box.textContent="Ошибка запуска страницы: "+(e.message||"неизвестная ошибка");box.className="status error";}});
-const authStatus=(message,kind="")=>{const box=$("loginStatus");box.textContent=message;box.className="status "+kind;};
-$("loginForm").addEventListener("submit",async e=>{
- e.preventDefault();
- const button=$("loginForm").querySelector('button[type="submit"]');
- const email=$("email").value.trim(),password=$("password").value;
- if(button)button.disabled=true;
- authStatus("Проверяем данные и выполняем вход…");
- try{const {error}=await sb.auth.signInWithPassword({email,password});if(error)throw error;authStatus("Вход выполнен. Загружаем кабинет…","ok");await boot();}
- catch(x){authStatus(x.message||"Не удалось войти.","error");}
- finally{if(button)button.disabled=false;}
-});
-$("createAccount").addEventListener("click",async()=>{
- const email=$("email").value.trim(),password=$("password").value,button=$("createAccount");
- if(!email||!password){authStatus("Сначала укажи почту и пароль.","error");return;}
- if(password.length<8){authStatus("Для нового аккаунта пароль должен содержать не менее 8 символов.","error");return;}
- button.disabled=true;authStatus("Создаём аккаунт…");
- try{const redirectTo=window.location.href.split(/[?#]/,1)[0];const {data,error}=await sb.auth.signUp({email,password,options:{emailRedirectTo:redirectTo}});if(error)throw error;if(data.session){authStatus("Аккаунт создан. Открываем кабинет…","ok");await boot();}else{authStatus("Запрос принят. Если адрес новый, проверь почту и подтверди его, затем войди.","ok");}}
- catch(x){authStatus(x.message||"Не удалось создать аккаунт.","error");}
- finally{button.disabled=false;}
-});
 const uid=()=>crypto.randomUUID();
 const esc=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 let catalog=null,state=null,materialCatalog=[],investigationId=null,caseVersionId=null,activePage="overview",reportId=null,reportAnswers={};
@@ -123,4 +103,33 @@ function render(page){
 async function boot(){const {data:{user}}=await sb.auth.getUser();if(!user)return;$("login").classList.add("hidden");$("app").classList.remove("hidden");$("userLabel").textContent=user.email||"Игрок";try{await refreshCatalog();}catch(e){$("catalogStatus").textContent=e.message;}}
 $("logout").onclick=async()=>{await sb.auth.signOut();location.reload();};
 sb.auth.getSession().then(({data})=>{if(data.session)boot().catch(e=>{$("catalogStatus").textContent=e.message;});});
+</script><script>
+(function(){
+ const statusBox=document.getElementById("loginStatus");
+ const show=(m,k)=>{if(statusBox){statusBox.textContent=m;statusBox.className="status "+(k||"");}};
+ try{
+  if(!window.supabase||typeof window.supabase.createClient!=="function") throw new Error("Не загрузилась библиотека авторизации. Возможно, сеть блокирует CDN.");
+  const client=window.supabase.createClient("https://wwmlwgqzzseqauozzolx.supabase.co","sb_publishable_ENyYjXAzC4K-dG2r1Oemsw_9E-entJS");
+  const email=()=>document.getElementById("email").value.trim();
+  const password=()=>document.getElementById("password").value;
+  const login=document.getElementById("loginButton");
+  const signup=document.getElementById("createAccount");
+  login.addEventListener("click",async()=>{
+   if(!email()||!password()){show("Введи электронную почту и пароль.","error");return;}
+   login.disabled=true;show("Выполняем вход…");
+   try{const {error}=await client.auth.signInWithPassword({email:email(),password:password()});if(error)throw error;show("Вход выполнен. Открываем кабинет…","ok");window.location.reload();}
+   catch(e){show(e.message||"Не удалось войти.","error");}
+   finally{login.disabled=false;}
+  });
+  signup.addEventListener("click",async()=>{
+   if(!email()||!password()){show("Сначала укажи почту и пароль.","error");return;}
+   if(password().length<8){show("Пароль должен содержать не менее 8 символов.","error");return;}
+   signup.disabled=true;show("Создаём аккаунт…");
+   try{const redirectTo=window.location.href.split(/[?#]/,1)[0];const {data,error}=await client.auth.signUp({email:email(),password:password(),options:{emailRedirectTo:redirectTo}});if(error)throw error;if(data.session){show("Аккаунт создан. Открываем кабинет…","ok");window.location.reload();}else{show("Запрос принят. Проверь почту и подтверди адрес, затем войди.","ok");}}
+   catch(e){show(e.message||"Не удалось создать аккаунт.","error");}
+   finally{signup.disabled=false;}
+  });
+  show("Авторизация подключена. Можно войти или создать аккаунт.","ok");
+ }catch(e){show(e.message||"Ошибка подключения авторизации.","error");}
+})();
 </script></body></html>
