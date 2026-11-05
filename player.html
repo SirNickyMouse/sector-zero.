@@ -25,9 +25,10 @@
 <script>
 const URL="https://wwmlwgqzzseqauozzolx.supabase.co";
 const KEY="sb_publishable_ENyYjXAzC4K-dG2r1Oemsw_9E-entJS";
-const sb=window.supabase.createClient(URL,KEY);
 const $=id=>document.getElementById(id);
-if(!window.supabase?.createClient){const box=$("loginStatus");if(box){box.textContent="Не удалось загрузить модуль авторизации. Проверь подключение и обнови страницу.";box.className="status error";}throw new Error("Supabase JS library failed to load");}
+if(!window.supabase?.createClient){const box=$("loginStatus");if(box){box.textContent="Не удалось загрузить модуль авторизации. Обнови страницу; если ошибка повторится, сообщи нам.";box.className="status error";}throw new Error("Supabase JS library failed to load");}
+const sb=window.supabase.createClient(URL,KEY);
+window.addEventListener("error",e=>{const box=$("loginStatus");if(box&&!box.textContent){box.textContent="Ошибка запуска страницы: "+(e.message||"неизвестная ошибка");box.className="status error";}});
 const uid=()=>crypto.randomUUID();
 const esc=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 let catalog=null,state=null,materialCatalog=[],investigationId=null,caseVersionId=null,activePage="overview",reportId=null,reportAnswers={};
