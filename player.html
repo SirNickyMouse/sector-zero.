@@ -59,7 +59,15 @@ async function openInvestigation(id,versionId){
 }
 async function loadState(){
  const r=await edge("get_investigation_state",{investigation_id:investigationId});state=r;
- const m=await edge("player_material_catalog",{investigation_id:investigationId});materialCatalog=m.materials||[];const ev=await edge("player_evidence_catalog",{investigation_id:investigationId});state.evidence=ev.evidence||[];
+ // Submitted investigations are read-only: retain the already loaded catalogs
+ // and do not call active-only material/evidence endpoints after submission.
+ if(r.investigation?.status==="active"){
+  const m=await edge("player_material_catalog",{investigation_id:investigationId});materialCatalog=m.materials||[];
+  const ev=await edge("player_evidence_catalog",{investigation_id:investigationId});state.evidence=ev.evidence||[];
+ }else{
+  materialCatalog=materialCatalog||[];
+  state.evidence=state.evidence||[];
+ }
  $("caseName").textContent=r.case.title+" · "+r.season.title;
  const reportRows=(r.final_reports||[]).slice().reverse();reportId=reportRows.find(x=>x.status==="draft")?.id||reportRows[0]?.id||uid();
  const existing=(r.final_reports||[]).find(x=>x.id===reportId);reportAnswers={};(existing?.answers||[]).forEach(a=>reportAnswers[a.question_code]=a.answer);
