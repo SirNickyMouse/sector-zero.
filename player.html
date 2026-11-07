@@ -15,7 +15,7 @@
 <div id="loginForm"><div class="field"><label>Электронная почта</label><input id="email" type="email" autocomplete="username" required></div><div class="field"><label>Пароль</label><input id="password" type="password" autocomplete="current-password" required></div><button id="loginButton" class="primary" type="button" style="width:100%">Войти</button></div><div class="row" style="margin-top:12px"><button id="createAccount" type="button">Создать аккаунт</button></div><div id="loginStatus" class="status"></div></section>
 <section id="app" class="hidden">
 <div class="top"><div><div class="eyebrow">Игровое дело</div><div id="caseName" class="muted">Выбери расследование</div></div><div class="row"><span id="userLabel" class="tag">Игрок</span><button id="logout">Выйти</button></div></div>
-<div id="catalog" class="panel"><h2>Доступные дела</h2><p class="muted">Загружаем опубликованные расследования…</p><div id="cases"></div><div id="catalogStatus" class="status"></div></div>
+<div id="catalog" class="panel"><h2>Доступные дела</h2><p id="catalogLoading" class="muted">Загружаем опубликованные расследования…</p><div id="cases"></div><div id="catalogStatus" class="status"></div></div>
 <div id="workspace" class="hidden layout" style="margin-top:16px">
 <aside class="panel nav">
 <button class="active" data-page="overview">Досье</button><button data-page="documents">Документы</button><button data-page="characters">Персонажи</button><button data-page="evidence">Улики</button><button data-page="puzzles">Загадки</button><button data-page="notes">Заметки</button><button data-page="hypotheses">Версии</button><button data-page="links">Связи</button><button data-page="report">Итоговое заключение</button>
@@ -40,6 +40,7 @@ async function edge(name,body={}) {
 }
 async function refreshCatalog(){
  catalog=await edge("player_catalog");
+ $("catalogLoading").classList.add("hidden");
  const list=[];
  for(const s of catalog.seasons||[])for(const c of s.cases||[])for(const v of c.versions||[])list.push({season:s,case:c,version:v});
  $("cases").innerHTML=list.length?list.map(x=>'<article class="item"><div class="eyebrow">Сезон '+esc(x.season.season_number)+' · '+esc(x.case.code)+'</div><h3>'+esc(x.case.title)+'</h3><p class="muted">'+esc(x.case.short_description||"Описание пока не добавлено.")+'</p><button class="primary" data-start="'+esc(x.version.id)+'">Начать расследование</button></article>').join(""):'<div class="note">Пока нет опубликованных дел. Черновики автора здесь не отображаются.</div>';
