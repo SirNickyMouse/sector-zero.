@@ -216,7 +216,7 @@ function render(page){
  return;}
 }
 
-async function boot(){const {data:{user}}=await sb.auth.getUser();if(!user)return;$("experience").classList.add("hidden");$("login").classList.add("hidden");$("app").classList.remove("hidden");$("userLabel").textContent=user.email||"Игрок";try{await refreshCatalog();}catch(e){$("catalogStatus").textContent=e.message;}}
+async function boot(){const {data:{user}}=await sb.auth.getUser();if(!user)return;$("login").classList.add("hidden");$("app").classList.add("hidden");$("experience").classList.remove("hidden");$("userLabel").textContent=user.email||"Игрок";try{await refreshCatalog();}catch(e){$("catalogStatus").textContent=e.message;}}
 $("logout").onclick=async()=>{await sb.auth.signOut();location.reload();};
 sb.auth.getSession().then(({data})=>{if(data.session)boot().catch(e=>{$("catalogStatus").textContent=e.message;});});
 </script><script>
@@ -272,7 +272,7 @@ sb.auth.getSession().then(({data})=>{if(data.session)boot().catch(e=>{$("catalog
  $("expJournalOpen").onclick=()=>{journal();show("expJournalModal");};
  $("expCloseJournal").onclick=()=>hide("expJournalModal");
  $("expSolve").onclick=()=>{const answer=$("expPuzzleAnswer").value.trim().toLocaleUpperCase("ru-RU").replace(/Ё/g,"Е");if(answer==="ВАС"){note("Газетная загадка","Ответ: ВАС. Шифр 3—1—19 расшифрован по алфавиту, где А = 1.");$("expPuzzleFeedback").textContent="Верно. Ответ записан в блокнот."; $("expPuzzleFeedback").style.color="#47744c";$("expSolve").disabled=true;}else{$("expPuzzleFeedback").textContent="Не сходится. Проверь соответствие чисел буквам."; $("expPuzzleFeedback").style.color="#8e302b";}};
- $("expLogin").onclick=()=>{$("experience").classList.add("hidden");$("login").classList.remove("hidden");window.scrollTo({top:0,behavior:"smooth"});};
+ $("expLogin").onclick=async()=>{const {data:{session}}=await sb.auth.getSession();$("experience").classList.add("hidden");if(session){$("app").classList.remove("hidden");window.scrollTo({top:0,behavior:"smooth"});}else{$("login").classList.remove("hidden");window.scrollTo({top:0,behavior:"smooth"});}};
 })();
 </script>
 </body></html>
