@@ -204,10 +204,77 @@ body{background:#08090b}
   <button class="hotspot car" id="expCar">Старый автомобиль<small>ОСМОТРЕТЬ</small></button>
   <div class="exp-footer"><span>ИССЛЕДУЙ УЛИЦУ · НАЖИМАЙ НА ОБЪЕКТЫ</span><button class="exp-btn" id="expLogin">Войти в расследование</button></div>
   <div id="expKioskModal" class="exp-modal" hidden><div class="exp-card"><div class="exp-kicker">Газетный киоск</div><h2>Последний выпуск</h2><p>Продавец поправляет стопку газет и внимательно смотрит на тебя.</p><p><em>— Поздновато для прогулок. Но газеты ещё горячие. Сегодня город опять не спит.</em></p><div class="row"><button class="exp-btn" id="expBuyPaper">Купить газету</button><button class="exp-btn" id="expCloseKiosk">Отойти</button></div></div></div>
-  <div id="expCafeModal" class="exp-modal" hidden><div class="exp-card"><div class="exp-kicker">Кафе «24 часа»</div><h2>Тёплый свет в холодном городе</h2><p>За стойкой бариста протирает чашку. У окна сидит человек, который, кажется, давно наблюдает за улицей.</p><p><em>— Чёрный кофе? Ночь будет длинной.</em></p><div class="row"><button class="exp-btn" id="expCoffee">Заказать кофе</button><button class="exp-btn" id="expCloseCafe">Вернуться на улицу</button></div><div id="expCafeStatus" class="small"></div></div></div>
+
   <div id="expCarModal" class="exp-modal" hidden><div class="exp-card"><div class="exp-kicker">Осмотр автомобиля</div><h2>Седан без опознавательных знаков</h2><p>На заднем стекле остался чистый прямоугольник среди пыли. Машину недавно мыли — но только с одной стороны.</p><p class="small">Пока недостаточно данных, чтобы связать автомобиль с делом.</p><button class="exp-btn" id="expCloseCar">Закрыть</button></div></div>
   <div id="expPaperModal" class="exp-modal" hidden><div class="exp-card"><div class="paper"><div class="paper-date">ЭЙЗЕНБРУК · ВЫПУСК № 184 · 23:40</div><h2>ГОРОДСКОЙ ВЕСТНИК</h2><p class="paper-story"><strong>НОЧЬ НЕ ОТВЕЧАЕТ НА ВОПРОСЫ</strong><br>Полиция пока не комментирует происшествие у старого вокзала. Очевидцы утверждают, что незадолго до полуночи видели человека, который оставил на скамье записку.</p><div class="puzzle-box"><strong>Заметка на полях</strong><p>«Три числа. Один алфавит. А = 1. Что хотел сказать неизвестный?»</p><div style="font-size:22px;letter-spacing:8px;text-align:center;color:#29231c;margin:12px">3 — 1 — 19</div><label for="expPuzzleAnswer">Твой ответ</label><input id="expPuzzleAnswer" maxlength="40" placeholder="Введи слово"><div class="row" style="margin-top:12px"><button class="exp-btn" id="expSolve">Проверить</button><button class="exp-btn" id="expClosePaper">Закрыть газету</button></div><div id="expPuzzleFeedback" class="small" style="margin-top:10px;color:#8e302b"></div></div></div></div></div>
   <div id="expJournalModal" class="exp-modal" hidden><div class="exp-card"><div class="exp-kicker">Личный блокнот</div><h2>Записи следователя</h2><div id="expJournalEntries"></div><button class="exp-btn" id="expCloseJournal">Вернуться</button></div></div>
+ </div>
+
+ <div id="expCafeScene" class="exp-screen cafe-scene" hidden>
+  <svg viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" role="presentation" aria-hidden="true">
+   <defs>
+    <linearGradient id="ciWall" x2="0" y2="1"><stop stop-color="#292522"/><stop offset="1" stop-color="#100f10"/></linearGradient>
+    <linearGradient id="ciFloor" x2="0" y2="1"><stop stop-color="#39302a"/><stop offset="1" stop-color="#090a0c"/></linearGradient>
+    <linearGradient id="ciWindow" x2="0" y2="1"><stop stop-color="#d8a76c" stop-opacity=".8"/><stop offset="1" stop-color="#76502f" stop-opacity=".25"/></linearGradient>
+    <filter id="ciGlow"><feGaussianBlur stdDeviation="24"/></filter>
+   </defs>
+   <rect width="1440" height="900" fill="#090a0c"/>
+   <path d="M0 0h1440v650H0z" fill="url(#ciWall)"/>
+   <path d="M0 0h1440v85H0z" fill="#090a0c"/>
+   <path d="M0 100h1440" stroke="#5b4633" stroke-width="7" opacity=".6"/>
+   <g opacity=".5" fill="#c58d50" filter="url(#ciGlow)"><ellipse cx="420" cy="210" rx="230" ry="90"/><ellipse cx="1110" cy="245" rx="230" ry="100"/></g>
+   <!-- rain-streaked street windows -->
+   <rect x="70" y="130" width="390" height="430" fill="#101317" stroke="#08090b" stroke-width="22"/>
+   <rect x="92" y="152" width="346" height="386" fill="url(#ciWindow)" opacity=".5"/>
+   <path d="M265 152v386M92 340h346" stroke="#171719" stroke-width="18"/>
+   <g stroke="#e4c08c" stroke-width="3" opacity=".25"><path d="M120 180l-18 120M175 170l-25 180M380 160l-18 130M420 220l-20 160"/></g>
+   <!-- framed mirror and wall lights -->
+   <rect x="535" y="135" width="310" height="245" rx="3" fill="#17191b" stroke="#826648" stroke-width="10"/>
+   <rect x="552" y="152" width="276" height="211" fill="#34302b"/>
+   <path d="M690 152v211M552 258h276" stroke="#806348" stroke-width="4"/>
+   <g fill="#d6a36a"><path d="M505 190h14v52h-14zM861 190h14v52h-14z"/></g>
+   <g fill="#e0b574" opacity=".55" filter="url(#ciGlow)"><circle cx="512" cy="216" r="28"/><circle cx="868" cy="216" r="28"/></g>
+   <!-- menu board -->
+   <rect x="930" y="120" width="390" height="205" fill="#111214" stroke="#6c5945" stroke-width="7"/>
+   <text x="1125" y="165" fill="#d3a66d" font-family="Georgia,serif" font-size="30" text-anchor="middle" letter-spacing="8">CAFÉ 24</text>
+   <g fill="#c9c0b3" font-family="Georgia,serif" font-size="17" opacity=".8"><text x="980" y="215">КОФЕ</text><text x="980" y="252">ЧАЙ</text><text x="980" y="289">ЗАВТРАКИ</text></g>
+   <g fill="#c9c0b3" font-family="Georgia,serif" font-size="16" text-anchor="end" opacity=".7"><text x="1270" y="215">2.40</text><text x="1270" y="252">1.80</text><text x="1270" y="289">4.50</text></g>
+   <!-- counter -->
+   <path d="M300 510h820l90 95H235z" fill="#4a3325" stroke="#120f0d" stroke-width="18"/>
+   <path d="M255 605h950v120H255z" fill="#171516" stroke="#08090b" stroke-width="12"/>
+   <path d="M290 620h880" stroke="#8b6544" stroke-width="5" opacity=".6"/>
+   <!-- coffee machine -->
+   <rect x="790" y="390" width="205" height="120" rx="8" fill="#343638" stroke="#090a0b" stroke-width="10"/>
+   <rect x="815" y="410" width="155" height="55" fill="#17191b" stroke="#9b754c" stroke-width="4"/>
+   <circle cx="840" cy="485" r="10" fill="#c49a66"/><circle cx="875" cy="485" r="10" fill="#c49a66"/>
+   <path d="M900 465v40h40v-40" fill="none" stroke="#c6c0b6" stroke-width="8"/>
+   <!-- cups and warm pendant lamps -->
+   <g fill="#d7d0c3"><path d="M610 470h48l-5 36h-38zM670 470h48l-5 36h-38z"/></g>
+   <g stroke="#171719" stroke-width="7"><path d="M410 0v160M1080 0v150"/></g>
+   <path d="M370 155h80l-15 34h-50zM1040 145h80l-15 34h-50z" fill="#d7a66b"/>
+   <g fill="#e2b675" opacity=".45" filter="url(#ciGlow)"><ellipse cx="410" cy="185" rx="75" ry="55"/><ellipse cx="1080" cy="175" rx="75" ry="55"/></g>
+   <!-- barista silhouette -->
+   <ellipse cx="655" cy="405" rx="42" ry="48" fill="#171719"/>
+   <path d="M603 452q52-42 104 0l30 105H575z" fill="#29292b" stroke="#090a0b" stroke-width="8"/>
+   <path d="M619 470l-30 65M698 470l28 65" stroke="#b9a38b" stroke-width="13" stroke-linecap="round"/>
+   <path d="M630 365q25-35 54 0" stroke="#090a0b" stroke-width="16" fill="none"/>
+   <!-- guest booth -->
+   <rect x="1130" y="475" width="235" height="145" rx="8" fill="#4a2523" stroke="#120e0e" stroke-width="12"/>
+   <path d="M1145 510h205M1145 565h205" stroke="#a05d4c" stroke-width="7" opacity=".4"/>
+   <ellipse cx="1235" cy="420" rx="36" ry="43" fill="#161719"/>
+   <path d="M1190 465q45-40 90 0l35 105h-160z" fill="#202327"/>
+   <path d="M1200 440l70 30" stroke="#0b0c0e" stroke-width="9"/>
+   <!-- floor and reflections -->
+   <path d="M0 650h1440v250H0z" fill="url(#ciFloor)"/>
+   <path d="M0 650h1440" stroke="#8e6c4b" stroke-width="8" opacity=".4"/>
+   <path d="M300 740h820M180 800h1100" stroke="#c08e57" stroke-width="4" opacity=".12"/>
+   <rect width="1440" height="900" fill="none" stroke="#030405" stroke-width="100" opacity=".55"/>
+  </svg>
+  <div class="cafe-hud"><div><div class="location">КАФЕ «24 ЧАСА»</div><div class="time">ЭЙЗЕНБРУК · 23:53 · ВНУТРИ ТЕПЛО</div></div><button class="exp-btn" id="expCafeReturnTop">На улицу</button></div>
+  <button class="cafe-hotspot door" id="expCafeDoor">Входная дверь<small>ВЕРНУТЬСЯ</small></button>
+  <button class="cafe-hotspot barista" id="expCafeBarista">Бариста<small>ПОГОВОРИТЬ</small></button>
+  <button class="cafe-hotspot guest" id="expCafeGuest">Посетитель у окна<small>ОБРАТИТЬСЯ</small></button>
+  <div class="cafe-dialogue" id="expCafeDialogue"><div class="speaker" id="expCafeSpeaker">Бариста · за стойкой</div><p id="expCafeLine">— Доброй ночи. Хотя, судя по погоде, она сегодня будет не самой доброй. Что-нибудь согревающее?</p><div class="cafe-actions"><button class="exp-btn" id="expCafeCoffee">Заказать чёрный кофе</button><button class="exp-btn" id="expCafeReturn">Вернуться на улицу</button></div></div>
  </div>
 </section>
 
@@ -360,9 +427,15 @@ sb.auth.getSession().then(({data})=>{if(data.session)boot().catch(e=>{$("catalog
  $("expCloseKiosk").onclick=()=>hide("expKioskModal");
  $("expBuyPaper").onclick=()=>{hide("expKioskModal");show("expPaperModal");};
  $("expClosePaper").onclick=()=>hide("expPaperModal");
- $("expCafe").onclick=()=>show("expCafeModal");
- $("expCloseCafe").onclick=()=>hide("expCafeModal");
- $("expCoffee").onclick=()=>{$("expCafeStatus").textContent="Бариста ставит чашку на стойку. В блокноте появляется запись.";note("Кафе «24 часа»","Заказан чёрный кофе. Бариста сказал: «Ночь будет длинной».");};
+ const enterCafe=()=>{hide("expStreet");show("expCafeScene");};
+ const returnStreet=()=>{hide("expCafeScene");show("expStreet");};
+ $("expCafe").onclick=enterCafe;
+ $("expCafeReturn").onclick=returnStreet;
+ $("expCafeReturnTop").onclick=returnStreet;
+ $("expCafeDoor").onclick=returnStreet;
+ $("expCafeBarista").onclick=()=>{$("expCafeSpeaker").textContent="Бариста · за стойкой";$ ("expCafeLine").textContent="— Чёрный кофе? Без сахара? Здесь многие приходят переждать дождь. Некоторые — не только дождь.";};
+ $("expCafeGuest").onclick=()=>{$("expCafeSpeaker").textContent="Незнакомец · у окна";$ ("expCafeLine").textContent="— Вы не местный, верно? В Эйзенбруке обычно не задают вопросов тем, кто сидит у окна. И не советую начинать.";};
+ $("expCafeCoffee").onclick=()=>{const once=localStorage.getItem("sector-zero-coffee-ordered");if(!once){note("Кафе «24 часа»","Заказан чёрный кофе. Бариста сказал: «Ночь будет длинной». В зале — незнакомец у окна.");localStorage.setItem("sector-zero-coffee-ordered","1");}$("expCafeSpeaker").textContent="Бариста · заказ принят";$ ("expCafeLine").textContent="— Чёрный, без сахара. Сейчас будет. И да… тот человек у окна сидит здесь уже больше часа.";$("expCafeCoffee").disabled=true;$("expCafeCoffee").textContent="Кофе заказан";};
  $("expCar").onclick=()=>show("expCarModal");
  $("expCloseCar").onclick=()=>hide("expCarModal");
  $("expJournalOpen").onclick=()=>{journal();show("expJournalModal");};
