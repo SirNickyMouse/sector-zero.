@@ -77,6 +77,22 @@ body{background:#08090b}
 .exp-footer span{font-size:10px;letter-spacing:2px;color:#a7a29a}
 @media(max-width:650px){.experience,.exp-screen{min-height:calc(100vh - 20px)}.city-row{height:43%;bottom:35%}.kiosk-art{left:8%;width:24%;bottom:35%;height:20%}.cafe-art{right:4%;width:33%;bottom:35%;height:24%}.hotspot.kiosk{left:4%;width:29%;bottom:35%;height:23%}.hotspot.cafe{right:2%;width:35%;bottom:35%;height:25%}.car-art{left:37%;width:30%;bottom:19%}.hotspot.car{left:34%;width:34%;bottom:17%}.street-ground{height:40%}.cover-copy{margin-top:-15vh}.exp-dialogue{padding:14px}.exp-dialogue p{font-size:16px}.exp-card{padding:16px}.paper{padding:15px}}
 
+
+/* Illustrated Eisenbrook street scene — custom vector environment */
+.scene-art{position:absolute;inset:0;z-index:1;overflow:hidden;background:#090b0f}
+.scene-art svg{width:100%;height:100%;display:block}
+.street .rain{z-index:2;opacity:.16;background-image:repeating-linear-gradient(105deg,transparent 0 20px,#d7dce2 21px,#d7dce2 22px,transparent 23px 48px)}
+.street-hud{z-index:5}
+.street .hotspot{z-index:4}
+.street .exp-footer{z-index:5}
+.hotspot.kiosk{left:8%;bottom:32%;width:23%;height:27%}
+.hotspot.cafe{right:7%;bottom:32%;width:30%;height:31%}
+.hotspot.car{left:37%;bottom:14%;width:27%;height:17%}
+@media(max-width:650px){
+ .hotspot.kiosk{left:4%;bottom:35%;width:29%;height:23%}
+ .hotspot.cafe{right:2%;bottom:35%;width:35%;height:25%}
+ .hotspot.car{left:34%;bottom:17%;width:34%;height:16%}
+}
 </style>
 </head>
 <body><div class="wrap">
@@ -98,10 +114,90 @@ body{background:#08090b}
   </div>
  </div>
  <div id="expStreet" class="exp-screen street" hidden>
-  <div class="street-sky"></div>
-  <div class="city-row"><div class="city-building"></div><div class="city-building"></div><div class="city-building"></div><div class="city-building"></div><div class="city-building"></div></div>
-  <div class="kiosk-art"></div><div class="cafe-art"></div><div class="car-art"></div><div class="lamp"></div>
-  <div class="street-ground"></div><div class="street-glow"></div><div class="rain"></div>
+  <div class="scene-art" aria-hidden="true">
+  <svg viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" role="presentation">
+   <defs>
+    <linearGradient id="szSky" x2="0" y2="1"><stop stop-color="#080b10"/><stop offset=".58" stop-color="#25282d"/><stop offset="1" stop-color="#101216"/></linearGradient>
+    <linearGradient id="szRoad" x2="0" y2="1"><stop stop-color="#343236"/><stop offset=".3" stop-color="#17191e"/><stop offset="1" stop-color="#08090c"/></linearGradient>
+    <linearGradient id="szWall" x2="1"><stop stop-color="#111316"/><stop offset=".5" stop-color="#343337"/><stop offset="1" stop-color="#111316"/></linearGradient>
+    <linearGradient id="szWindow" x2="0" y2="1"><stop stop-color="#e2b879" stop-opacity=".9"/><stop offset="1" stop-color="#8e6035" stop-opacity=".35"/></linearGradient>
+    <linearGradient id="szNeon" x2="0" y2="1"><stop stop-color="#d65b4f"/><stop offset="1" stop-color="#762c2a"/></linearGradient>
+    <linearGradient id="szCar" x2="0" y2="1"><stop stop-color="#5c6064"/><stop offset=".45" stop-color="#24282d"/><stop offset="1" stop-color="#080a0c"/></linearGradient>
+    <filter id="szBlur"><feGaussianBlur stdDeviation="22"/></filter>
+    <filter id="szGlow"><feGaussianBlur stdDeviation="8"/></filter>
+   </defs>
+   <rect width="1440" height="900" fill="url(#szSky)"/>
+   <ellipse cx="1070" cy="250" rx="360" ry="180" fill="#a2a0a0" opacity=".07" filter="url(#szBlur)"/>
+   <!-- old city facades -->
+   <path d="M0 140h190v430H0z" fill="#111316"/><path d="M0 190h190v18H0z" fill="#29292b"/>
+   <path d="M185 80h250v500H185z" fill="url(#szWall)"/><path d="M185 80h250v24H185z" fill="#090b0e"/>
+   <path d="M430 155h210v430H430z" fill="#17191d"/><path d="M640 115h230v470H640z" fill="url(#szWall)"/>
+   <path d="M870 175h180v405H870z" fill="#141619"/><path d="M1045 90h240v500h-240z" fill="url(#szWall)"/>
+   <path d="M1280 145h160v440h-160z" fill="#111316"/>
+   <g fill="#c69a61" opacity=".35">
+    <path d="M220 140h38v72h-38zM290 140h38v72h-38zM360 140h38v72h-38zM220 260h38v72h-38zM290 260h38v72h-38zM360 260h38v72h-38z"/>
+    <path d="M475 205h42v78h-42zM550 205h42v78h-42zM685 160h42v78h-42zM760 160h42v78h-42zM685 285h42v78h-42zM760 285h42v78h-42z"/>
+    <path d="M1080 145h42v78h-42zM1155 145h42v78h-42zM1230 145h30v78h-30zM1080 270h42v78h-42zM1155 270h42v78h-42z"/>
+   </g>
+   <g stroke="#090a0c" stroke-width="8" fill="none" opacity=".8">
+    <path d="M210 130h210M210 245h210M465 195h140M675 150h155M1070 135h190M1070 260h190"/>
+    <path d="M278 135v205M348 135v205M496 200v85M570 200v85M706 155v205M782 155v205M1100 140v210M1176 140v210"/>
+   </g>
+   <!-- street-level shops -->
+   <path d="M95 455h330v165H95z" fill="#171719" stroke="#08090b" stroke-width="12"/>
+   <path d="M115 475h290v110H115z" fill="#5d4935" opacity=".32"/>
+   <path d="M95 445h330v32H95z" fill="#242326"/>
+   <path d="M135 448h250v20H135z" fill="#c89a5c" opacity=".45" filter="url(#szGlow)"/>
+   <path d="M145 488h230v82H145z" fill="url(#szWindow)" opacity=".4"/>
+   <!-- newspaper kiosk -->
+   <path d="M155 525h245v150H155z" fill="#292523" stroke="#090a0c" stroke-width="9"/>
+   <path d="M140 515h275l-22-36H162z" fill="#3b3029" stroke="#090a0c" stroke-width="8"/>
+   <path d="M165 524h225v28H165z" fill="#171719"/>
+   <text x="278" y="544" fill="#d5b27c" font-family="Georgia,serif" font-size="18" text-anchor="middle" letter-spacing="5">ПРЕССА</text>
+   <rect x="176" y="565" width="205" height="72" fill="#c9c1b2" opacity=".2"/>
+   <g fill="#d8d1c4" opacity=".8"><path d="M184 575h54v58h-54zM244 575h54v58h-54zM304 575h66v58h-66z"/></g>
+   <g stroke="#62594d" stroke-width="3"><path d="M190 585h42M190 594h42M250 585h42M250 594h42M310 585h52M310 594h52"/></g>
+   <!-- cafe frontage -->
+   <path d="M940 395h405v245H940z" fill="#171719" stroke="#090a0c" stroke-width="13"/>
+   <path d="M965 430h355v175H965z" fill="url(#szWindow)" opacity=".48"/>
+   <path d="M925 380h435v48H925z" fill="#171719" stroke="#090a0c" stroke-width="8"/>
+   <rect x="965" y="385" width="355" height="34" fill="url(#szNeon)" opacity=".85" filter="url(#szGlow)"/>
+   <text x="1142" y="411" fill="#f0d5b1" font-family="Georgia,serif" font-size="25" text-anchor="middle" letter-spacing="8">CAFÉ 24</text>
+   <path d="M1125 432v174M965 605h355" stroke="#1a1715" stroke-width="13"/>
+   <g fill="#d8a86c" opacity=".55"><rect x="985" y="450" width="118" height="135"/><rect x="1150" y="450" width="145" height="135"/></g>
+   <path d="M985 450h118v135H985zM1150 450h145v135h-145z" fill="none" stroke="#171719" stroke-width="8"/>
+   <ellipse cx="1145" cy="655" rx="250" ry="28" fill="#bd7545" opacity=".2" filter="url(#szBlur)"/>
+   <!-- pavement and wet road -->
+   <path d="M0 590L1440 565V900H0z" fill="url(#szRoad)"/>
+   <path d="M0 600L1440 575" stroke="#85807a" stroke-opacity=".22" stroke-width="4"/>
+   <g opacity=".28" filter="url(#szBlur)">
+    <path d="M130 650h270l-50 185H95z" fill="#bd874d"/>
+    <path d="M970 645h340l-90 200H900z" fill="#b84d42"/>
+    <path d="M620 680h170l-25 140H590z" fill="#b9a17d"/>
+   </g>
+   <g stroke="#a8a7a4" stroke-opacity=".15" stroke-width="3">
+    <path d="M0 690l450-25M40 760l530-34M790 690l550-30M700 785l650-38"/>
+   </g>
+   <!-- street lamp -->
+   <path d="M820 150v470" stroke="#090b0e" stroke-width="13"/>
+   <path d="M815 154q-3-48 53-48h42" fill="none" stroke="#090b0e" stroke-width="13"/>
+   <path d="M904 100h55l-8 19h-42z" fill="#d5ad73"/>
+   <ellipse cx="925" cy="130" rx="75" ry="90" fill="#d6ad71" opacity=".12" filter="url(#szBlur)"/>
+   <!-- parked sedan -->
+   <path d="M520 660l55-72q18-22 55-27l145-5q45 0 73 36l47 68 27 16v52H480v-45z" fill="url(#szCar)" stroke="#080a0c" stroke-width="10"/>
+   <path d="M604 575l32-25q12-10 32-11l95-2q28 0 43 20l36 42H585z" fill="#11181d" stroke="#080a0c" stroke-width="8"/>
+   <path d="M680 542v55M790 540l20 58" stroke="#42474b" stroke-width="5"/>
+   <path d="M497 674h397" stroke="#a3a5a5" stroke-opacity=".3" stroke-width="4"/>
+   <path d="M500 690h48M850 690h40" stroke="#d4a16a" stroke-width="8" opacity=".7"/>
+   <circle cx="570" cy="725" r="32" fill="#08090b" stroke="#55585b" stroke-width="9"/><circle cx="570" cy="725" r="10" fill="#8b8b87"/>
+   <circle cx="835" cy="725" r="32" fill="#08090b" stroke="#55585b" stroke-width="9"/><circle cx="835" cy="725" r="10" fill="#8b8b87"/>
+   <!-- distant red signal -->
+   <circle cx="1380" cy="320" r="9" fill="#bd493e"/><circle cx="1380" cy="320" r="35" fill="#bd493e" opacity=".16" filter="url(#szGlow)"/>
+   <!-- vignette -->
+   <rect width="1440" height="900" fill="none" stroke="#050608" stroke-width="90" opacity=".72"/>
+  </svg>
+ </div>
+ <div class="rain"></div>
   <div class="street-hud"><div><div class="location">УЛИЦА СЕВЕРНОГО ВОКЗАЛА</div><div class="time">ЭЙЗЕНБРУК · 23:51</div></div><button class="exp-btn" id="expJournalOpen">Блокнот <span id="expJournalCount">0</span></button></div>
   <button class="hotspot kiosk" id="expKiosk">Газетный киоск<small>ПОГОВОРИТЬ</small></button>
   <button class="hotspot cafe" id="expCafe">Кафе «24 часа»<small>ЗАЙТИ</small></button>
