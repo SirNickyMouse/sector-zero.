@@ -271,7 +271,7 @@ body{background:#08090b}
   <button class="hotspot kiosk" id="expKiosk">Газетный киоск<small>ПОГОВОРИТЬ</small></button>
   <button class="hotspot cafe" id="expCafe">Кафе «24 часа»<small>ЗАЙТИ</small></button>
   <button class="hotspot car" id="expCar">Старый автомобиль<small>ОСМОТРЕТЬ</small></button>
-  <div class="exp-footer"><span>ИССЛЕДУЙ УЛИЦУ · НАЖИМАЙ НА ОБЪЕКТЫ</span><div class="row"><button class="exp-btn" id="expGoOffice">В кабинет</button><button class="exp-btn" id="expLogin">Войти в расследование</button></div></div>
+  <div class="exp-footer"><span>ИССЛЕДУЙ УЛИЦУ · НАЖИМАЙ НА ОБЪЕКТЫ</span><div class="row"><button class="exp-btn" id="expGoOffice">В кабинет</button></div></div>
       <div id="expCarModal" class="exp-modal" hidden><div class="exp-card"><div class="exp-kicker">Осмотр автомобиля</div><h2>Седан без опознавательных знаков</h2><p>На заднем стекле остался чистый прямоугольник среди пыли. Машину недавно мыли — но только с одной стороны.</p><p class="small">Пока недостаточно данных, чтобы связать автомобиль с делом.</p><button class="exp-btn" id="expCloseCar">Закрыть</button></div></div>
   
   <div id="expJournalModal" class="exp-modal" hidden><div class="exp-card"><div class="exp-kicker">Личный блокнот</div><h2>Записи следователя</h2><div id="expJournalEntries"></div><button class="exp-btn" id="expCloseJournal">Вернуться</button></div></div>
@@ -614,7 +614,7 @@ sb.auth.getSession().then(({data})=>{if(data.session)boot().catch(e=>{$("catalog
   $("expOfficeWindow").onclick=()=>{officeMessage("ОКНО · ЭЙЗЕНБРУК","С улицы доносится гул редких машин. Напротив горит только одно окно.");officeModal("ВИД НА СЕВЕРНЫЙ РАЙОН","Город не спит",'<p>Дождь размывает свет фонарей. Напротив, в здании старой почты, на третьем этаже горит окно.</p><p>Ты не можешь разобрать, есть ли там кто-нибудь. Но свет включён недавно: на стекле ещё не осела пыль.</p>');};
   $("expOfficeNotebook").onclick=()=>{journal();officeModal("ЛИЧНЫЕ ЗАПИСИ","Блокнот следователя",$("expJournalEntries").innerHTML||'<p>Пока записей нет.</p>');};
 
- $("expLogin").onclick=()=>{enterOffice();$("expOfficeFolder").click();};
+
 })();
 </script>
 
