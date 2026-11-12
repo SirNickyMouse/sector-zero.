@@ -309,9 +309,6 @@ body{background:#08090b}
   <button class="cafe-hotspot guest" id="expCafeGuest">Посетитель у окна<small>ОБРАТИТЬСЯ</small></button>
   <div class="cafe-dialogue" id="expCafeDialogue"><div class="speaker" id="expCafeSpeaker">Бариста · за стойкой</div><p id="expCafeLine">— Доброй ночи. Хотя, судя по погоде, она сегодня будет не самой доброй. Что-нибудь согревающее?</p><div class="cafe-actions"><button class="exp-btn" id="expCafeCoffee">Заказать чёрный кофе</button><button class="exp-btn" id="expCafeReturn">Вернуться на улицу</button></div></div>
  </div>
-</section>
-
-
 <div id="expOfficeScene" class="exp-screen office-scene" hidden>
 <svg viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
 <defs><linearGradient id="ofWall" x2="0" y2="1"><stop stop-color="#29272a"/><stop offset="1" stop-color="#111216"/></linearGradient><linearGradient id="ofFloor" x2="0" y2="1"><stop stop-color="#332b28"/><stop offset="1" stop-color="#08090b"/></linearGradient><linearGradient id="ofDesk" x2="0" y2="1"><stop stop-color="#765238"/><stop offset="1" stop-color="#211713"/></linearGradient><linearGradient id="ofGlass" x2="0" y2="1"><stop stop-color="#8b7968"/><stop offset=".5" stop-color="#29313a"/><stop offset="1" stop-color="#090c11"/></linearGradient><filter id="ofBlur"><feGaussianBlur stdDeviation="24"/></filter></defs>
@@ -333,6 +330,8 @@ body{background:#08090b}
 <div id="expOfficeModal" class="office-modal" hidden><div class="office-card"><div class="office-label" id="expOfficeModalKicker">КАБИНЕТ СЛЕДОВАТЕЛЯ</div><h2 id="expOfficeModalTitle">Материалы дела</h2><div id="expOfficeModalBody"></div><div class="office-actions"><button class="exp-btn" id="expOfficeModalClose">Закрыть</button><button class="exp-btn" id="expOfficeEnterCase">Перейти к расследованию</button></div></div></div>
 </div>
 
+
+</section>
 <section id="login" class="panel login hidden"><div class="eyebrow">Личный кабинет</div><h2>Вход в расследование</h2><p class="muted">Войди, чтобы начать дело или продолжить сохранённое расследование.</p>
 <div id="loginForm"><div class="field"><label>Электронная почта</label><input id="email" type="email" autocomplete="username" required></div><div class="field"><label>Пароль</label><input id="password" type="password" autocomplete="current-password" required></div><button id="loginButton" class="primary" type="button" style="width:100%">Войти</button></div><div class="row" style="margin-top:12px"><button id="createAccount" type="button">Создать аккаунт</button></div><div id="loginStatus" class="status"></div></section>
 <section id="app" class="hidden">
