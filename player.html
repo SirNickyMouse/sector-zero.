@@ -114,6 +114,7 @@ body{background:#08090b}
 .office-dialogue .speaker{font:10px Arial,sans-serif;letter-spacing:2px;color:#d2a46b}
 .office-dialogue p{font:15px Georgia,serif;line-height:1.5;color:#e0d9ce;margin:7px 0 0}
 .office-modal{position:absolute;z-index:12;inset:0;display:grid;place-items:center;padding:18px;background:#030405d9;backdrop-filter:blur(5px)}
+.office-modal[hidden]{display:none!important}
 .office-card{width:min(720px,100%);max-height:86%;overflow:auto;background:linear-gradient(145deg,#201e1c,#0c0d0f);border:1px solid #76634e;padding:24px;box-shadow:0 20px 70px #000}
 .office-card h2{font:26px Georgia,serif;color:#eee9df;margin:8px 0}
 .office-card p{color:#c3beb5;line-height:1.65}
@@ -526,64 +527,8 @@ sb.auth.getSession().then(({data})=>{if(data.session)boot().catch(e=>{$("catalog
   $("expOfficeWindow").onclick=()=>{officeMessage("ОКНО · ЭЙЗЕНБРУК","С улицы доносится гул редких машин. Напротив горит только одно окно.");officeModal("ВИД НА СЕВЕРНЫЙ РАЙОН","Город не спит",'<p>Дождь размывает свет фонарей. Напротив, в здании старой почты, на третьем этаже горит окно.</p><p>Ты не можешь разобрать, есть ли там кто-нибудь. Но свет включён недавно: на стекле ещё не осела пыль.</p>');};
   $("expOfficeNotebook").onclick=()=>{journal();officeModal("ЛИЧНЫЕ ЗАПИСИ","Блокнот следователя",$("expJournalEntries").innerHTML||'<p>Пока записей нет.</p>');};
 
- $("expLogin").onclick=async()=>{const {data:{session}}=await sb.auth.getSession();$("experience").classList.add("hidden");if(session){$("app").classList.remove("hidden");window.scrollTo({top:0,behavior:"smooth"});}else{$("login").classList.remove("hidden");window.scrollTo({top:0,behavior:"smooth"});}};
+ $("expLogin").onclick=()=>{enterOffice();$("expOfficeFolder").click();};
 })();
 </script>
 
-<script>
-/* Reliable entry points for the cinematic investigation flow. */
-(function(){
- const $=id=>document.getElementById(id);
- const say=(message,isError=false)=>{
-  const box=$("catalogStatus");
-  if(box){box.textContent=message;box.className="status "+(isError?"error":"");}
- };
- const openInvestigationEntry=async()=>{
-  const experience=$("experience"),login=$("login"),app=$("app");
-  try{
-   const {data:{session}}=await sb.auth.getSession();
-   if(!session){
-    if(experience)experience.classList.add("hidden");
-    if(app)app.classList.add("hidden");
-    if(login)login.classList.remove("hidden");
-    const box=$("loginStatus");
-    if(box){box.textContent="Войди в аккаунт, чтобы открыть материалы расследования.";box.className="status";}
-    window.scrollTo({top:0,behavior:"smooth"});
-    return;
-   }
-   if(!catalog) await refreshCatalog();
-   $("expStreet")?.setAttribute("hidden","");
-   $("expOfficeScene")?.removeAttribute("hidden");
-   $("expOfficeModal")?.setAttribute("hidden","");
-   experience?.classList.remove("hidden");
-   app?.classList.add("office-app-overlay");
-   app?.classList.remove("hidden");
-   const active=(catalog?.investigations||[])[0];
-   if(active){
-    $("catalog")?.classList.add("hidden");
-    await openInvestigation(active.id,active.case_version_id);
-   }else{
-    $("workspace")?.classList.add("hidden");
-    $("catalog")?.classList.remove("hidden");
-    say("Активного расследования пока нет. Выбери опубликованное дело, чтобы начать.");
-   }
-   window.scrollTo({top:0,behavior:"smooth"});
-  }catch(error){
-   const message=error?.message||"Не удалось открыть расследование.";
-   if($("app")&&!$("app").classList.contains("hidden")) say(message,true);
-   else{
-    const box=$("loginStatus");
-    if(box){box.textContent=message;box.className="status error";}
-   }
-  }
- };
- const bind=()=>{
-  const officeEnter=$("expOfficeEnterCase");
-  const streetEnter=$("expLogin");
-  if(officeEnter)officeEnter.onclick=openInvestigationEntry;
-  if(streetEnter)streetEnter.onclick=openInvestigationEntry;
- };
- bind();
-})();
-</script>
 </body></html>
