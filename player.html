@@ -160,6 +160,7 @@ body{background:#08090b}
 .case-folder-foot{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 2px 0;color:#c8b89e;font:10px Arial,sans-serif;letter-spacing:1px}
 .case-folder-close{border:1px solid #a58a63;background:#171513;color:#eee4d3;border-radius:2px;padding:9px 14px;font:10px Arial,sans-serif;letter-spacing:2px;text-transform:uppercase}
 .case-folder-close:hover{background:#8d3d34}
+.folder-subnav{display:flex;flex-wrap:wrap;gap:7px;margin:0 0 16px;padding:0 0 12px;border-bottom:1px solid #9b8a70}.case-inner-tab{border:1px solid #86765e;background:#d4c5a8;color:#30281e;border-radius:3px;padding:7px 10px;font:10px Arial,sans-serif;letter-spacing:.5px}.case-inner-tab:hover{background:#eee3cd}
 @media(max-width:650px){.case-folder-shell{padding:10px}.case-folder-head{align-items:flex-start}.case-folder-head h2{font-size:20px}.case-folder-tab{min-width:82px;padding:9px 9px 11px;font-size:9px}.case-folder-paper{padding:12px}.case-folder-foot{font-size:9px}}
 
 </style>
@@ -373,14 +374,10 @@ body{background:#08090b}
   <div class="case-folder-head"><div><div class="folder-kicker">АРХИВ · ДЕЛО № 001</div><h2>Пятый экземпляр</h2></div><button id="expCaseFolderClose" class="case-folder-close" type="button">Закрыть папку</button></div>
   <nav class="case-folder-tabs" aria-label="Разделы дела">
    <button class="case-folder-tab" type="button" data-folder-page="overview" aria-current="page">Досье</button>
-   <button class="case-folder-tab" type="button" data-folder-page="stages">Этапы</button>
    <button class="case-folder-tab" type="button" data-folder-page="characters">Подозреваемые</button>
-   <button class="case-folder-tab" type="button" data-folder-page="evidence">Улики</button>
+   <button class="case-folder-tab" type="button" data-folder-page="materials">Материалы</button>
    <button class="case-folder-tab" type="button" data-folder-page="hypotheses">Версии</button>
-   <button class="case-folder-tab" type="button" data-folder-page="links">Связи</button>
-   <button class="case-folder-tab" type="button" data-folder-page="documents">Документы</button>
-   <button class="case-folder-tab" type="button" data-folder-page="puzzles">Загадки</button>
-   <button class="case-folder-tab" type="button" data-folder-page="notes">Заметки</button>
+   <button class="case-folder-tab" type="button" data-folder-page="notebook">Блокнот</button>
    <button class="case-folder-tab" type="button" data-folder-page="report">Заключение</button>
   </nav>
   <div class="case-folder-paper"><div id="caseFolderPage" class="case-folder-page"></div><div id="caseFolderStatus"></div></div>
@@ -451,11 +448,25 @@ async function loadState(){
  const reportRows=(r.final_reports||[]).slice().reverse();reportId=reportRows.find(x=>x.status==="draft")?.id||reportRows[0]?.id||uid();
  const existing=(r.final_reports||[]).find(x=>x.id===reportId);reportAnswers={};(existing?.answers||[]).forEach(a=>reportAnswers[a.question_code]=a.answer);
 }
-function nav(page){if(page==="report"&&state?.stage_state&&!state.stage_state.final_unlocked){status("Финальный этап пока закрыт. Сначала выполни условия расследования.","error");return;}activePage=page;document.querySelectorAll(".nav [data-page]").forEach(b=>b.classList.toggle("active",b.dataset.page===page));render(page);}
+function nav(page){if(page==="report"&&state?.stage_state&&!state.stage_state.final_unlocked){status("Финальный этап пока закрыт. Сначала выполни условия расследования.","error");return;}activePage=page;document.querySelectorAll(".nav [data-page]").forEach(b=>b.classList.toggle("active",b.dataset.page===page));render(page);if(typeof window.__syncCaseFolder==="function")window.__syncCaseFolder(page);}
 document.querySelectorAll(".nav [data-page]").forEach(b=>b.onclick=()=>nav(b.dataset.page));
 $("backCatalog").onclick=()=>{$("workspace").classList.add("hidden");$("catalog").classList.remove("hidden");};
 function render(page){
  status("");const c=$("pageContent");
+ if(page==="materialsHub"){
+  c.innerHTML='<div class="eyebrow">Архив расследования</div><h2>Материалы дела</h2><p class="muted">Здесь собраны документы, обнаруженные улики и загадки. Связи помогают сопоставлять объекты между собой.</p><div class="grid"><article class="item"><h3>Документы</h3><p class="muted">Изучай доступные материалы и открывай новые по мере выполнения условий.</p><button data-hub-page="documents">Открыть документы</button></article><article class="item"><h3>Улики</h3><p class="muted">Факты, извлечённые из уже изученных материалов.</p><button data-hub-page="evidence">Смотреть улики</button></article><article class="item"><h3>Загадки</h3><p class="muted">Нерешённые вопросы, ответы и подсказки.</p><button data-hub-page="puzzles">Перейти к загадкам</button></article><article class="item"><h3>Связи объектов</h3><p class="muted">Создавай и проверяй связи между материалами, уликами, людьми и заметками.</p><button data-hub-page="links">Открыть связи</button></article></div>';
+  c.querySelectorAll("[data-hub-page]").forEach(b=>b.onclick=()=>nav(b.dataset.hubPage));
+  return;
+ }
+ if(page==="notebookHub"){
+  c.innerHTML='<div class="eyebrow">Личный архив следователя</div><h2>Блокнот</h2><p class="muted">Здесь будут храниться твои записи и отдельная история внутреннего голоса героя.</p><div class="grid"><article class="item"><h3>Личные заметки</h3><p class="muted">Свободные записи, наблюдения и собственные выводы. Их можно редактировать, сохраняя историю.</p><button data-notebook-page="notes">Открыть заметки</button></article><article class="item"><h3>Мысли следователя</h3><p class="muted">Авторские наблюдения, гипотезы и следующие шаги героя. Они не заменяют твои заметки и не раскрывают ответы заранее.</p><button data-notebook-page="thoughts">Открыть мысли героя</button></article></div>';
+  c.querySelectorAll("[data-notebook-page]").forEach(b=>b.onclick=()=>nav(b.dataset.notebookPage));
+  return;
+ }
+ if(page==="thoughts"){
+  c.innerHTML='<div class="eyebrow">Внутренний голос</div><h2>Мысли следователя</h2><p>Это отдельная авторская лента героя: наблюдения, осторожные гипотезы и предложения следующего шага.</p><div class="note">История внутреннего голоса ещё не подключена к серверным событиям этого тестового дела. Здесь пока не отображаются вымышленные записи: когда механика будет подключена, мысли будут появляться по заданным сюжетным условиям и сохраняться отдельно от личных заметок.</div>';
+  return;
+ }
  if(page==="overview"){const current=state.stage_state?.current_stage;const progress=state.stage_state||{};c.innerHTML='<div class="eyebrow">Личное дело</div><h2>'+esc(state.case.title)+'</h2><p class="muted">'+esc(state.case.short_description||"Расследование начато.")+'</p><div class="item"><div class="eyebrow">Текущий этап</div><h3>'+esc(current?.title||(progress.final_unlocked?"Можно оформить итоговое заключение":"Расследование продолжается"))+'</h3><p class="muted">'+esc(current?.description||"Следи за условиями открытия следующих этапов.")+'</p><div class="small">Обязательные этапы: '+(progress.completed_required_stage_count||0)+' / '+(progress.required_stage_count||0)+' завершено</div></div><div class="grid"><div class="item"><span class="small">Открыто документов</span><h2>'+state.opened_materials.length+'</h2></div><div class="item"><span class="small">Загадок в деле</span><h2>'+state.puzzles.length+'</h2></div><div class="item"><span class="small">Заметок</span><h2>'+state.notes.length+'</h2></div><div class="item"><span class="small">Версий</span><h2>'+state.hypotheses.length+'</h2></div></div><div class="note">Записывай не только вывод, но и степень уверенности. Отсутствие записи само по себе ещё не доказывает, что события не было.</div>';return;}
  if(page==="stages"){const progress=state.stage_state||{};const stages=progress.stages||[];const labels={completed:"Завершён",available:"Доступен",locked:"Закрыт"};c.innerHTML='<div class="eyebrow">Ход расследования</div><h2>Этапы расследования</h2><p class="muted">Этапы открываются по выполнению игровых условий. Внутри доступного этапа ты можешь выбирать порядок действий самостоятельно.</p><div class="item"><strong>Прогресс обязательных этапов</strong><div class="small">'+(progress.completed_required_stage_count||0)+' из '+(progress.required_stage_count||0)+' завершено</div></div>'+stages.map(s=>'<article class="item"><div class="between"><strong>'+esc(s.title)+'</strong><span class="tag">'+(labels[s.status]||"Неизвестно")+'</span></div><p class="muted">'+esc(s.description||"")+'</p>'+(s.is_final&&s.status==="available"?"<p class='small'>Финальное заключение теперь доступно.</p>":"")+'</article>').join("")||'<p class="muted">Для этого дела этапы ещё не настроены.</p>';return;}
  if(page==="documents"){
@@ -586,8 +597,32 @@ sb.auth.getSession().then(({data})=>{if(data.session)boot().catch(e=>{$("catalog
   $("officeReturnFromApp").onclick=()=>{$("app").classList.add("hidden");$("app").classList.remove("office-app-overlay");$("experience").classList.remove("hidden");$("expOfficeScene").hidden=false;hide("expOfficeModal");window.scrollTo({top:0,behavior:"smooth"});};
 
   
-  const folderPageMap={overview:"overview",stages:"stages",characters:"characters",evidence:"evidence",hypotheses:"hypotheses",links:"links",documents:"documents",puzzles:"puzzles",notes:"notes",report:"report"};
-  const syncFolderTabs=()=>{document.querySelectorAll("[data-folder-page]").forEach(b=>{b.setAttribute("aria-current",b.dataset.folderPage===activePage?"page":"false");const source=document.querySelector('.nav [data-page="'+b.dataset.folderPage+'"]');b.disabled=!!source?.disabled;if(b.dataset.folderPage==="report"&&source?.disabled)b.title="Финальное заключение пока закрыто";else b.removeAttribute("title");});};
+  const folderPageMap={overview:"overview",characters:"characters",materials:"materialsHub",hypotheses:"hypotheses",notebook:"notebookHub",report:"report"};
+  const folderTabForPage={overview:"overview",stages:"overview",characters:"characters",materialsHub:"materials",evidence:"materials",documents:"materials",puzzles:"materials",links:"materials",hypotheses:"hypotheses",notebookHub:"notebook",notes:"notebook",thoughts:"notebook",report:"report"};
+  const syncFolderTabs=()=>{
+   document.querySelectorAll("[data-folder-page]").forEach(b=>{
+    const tab=folderTabForPage[activePage]||activePage;
+    b.setAttribute("aria-current",b.dataset.folderPage===tab?"page":"false");
+    const source=document.querySelector('.nav [data-page="'+(b.dataset.folderPage==="report"?"report":b.dataset.folderPage==="characters"?"characters":b.dataset.folderPage==="hypotheses"?"hypotheses":"overview")+'"]');
+    b.disabled=b.dataset.folderPage==="report"&&!!source?.disabled;
+    if(b.disabled)b.title="Финальное заключение пока закрыто";else b.removeAttribute("title");
+   });
+   const host=$("caseFolderPage");
+   host.querySelector(".folder-subnav")?.remove();
+   let links=[];
+   if(activePage==="overview")links=[["stages","Этапы расследования"]];
+   if(["evidence","documents","puzzles","links"].includes(activePage))links=[["materialsHub","Все материалы"],["evidence","Улики"],["documents","Документы"],["puzzles","Загадки"],["links","Связи объектов"]];
+   if(activePage==="stages")links=[["overview","← К досье"]];
+   if(activePage==="notes")links=[["thoughts","Мысли следователя"]];
+   if(activePage==="thoughts")links=[["notes","← К личным заметкам"]];
+   if(links.length){
+    const bar=document.createElement("div");bar.className="folder-subnav";
+    bar.innerHTML=links.map(([page,label])=>'<button type="button" class="case-inner-tab" data-folder-subpage="'+page+'">'+label+'</button>').join("");
+    host.prepend(bar);
+    bar.querySelectorAll("[data-folder-subpage]").forEach(b=>b.onclick=()=>{nav(b.dataset.folderSubpage);syncFolderTabs();});
+   }
+  };
+  window.__syncCaseFolder=syncFolderTabs;
   const openCaseFolder=async()=>{
    const {data:{session}}=await sb.auth.getSession();
    if(!session){hide("expCaseFolder");await openOfficeWorkspace();return;}
