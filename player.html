@@ -94,6 +94,38 @@ body{background:#08090b}
  .hotspot.car{left:34%;bottom:17%;width:34%;height:16%}
 }
 .kiosk-scene{position:relative;overflow:hidden;min-height:680px;background:#090b0e;color:#eee9df}.kiosk-scene>svg{position:absolute;inset:0;width:100%;height:100%}.kiosk-hud{position:absolute;z-index:5;top:18px;left:22px;right:22px;display:flex;justify-content:space-between;align-items:center;gap:12px}.kiosk-hud .location{font:18px Georgia,serif;letter-spacing:2px;text-shadow:0 2px 12px #000}.kiosk-hud .time{font-size:10px;letter-spacing:2px;color:#c69b65;margin-top:6px}.kiosk-hotspot{position:absolute;z-index:6;border:1px solid #c69b6540;background:#090a0b66;color:#f1e9dc;padding:10px 14px;font:13px Georgia,serif;letter-spacing:1px;text-shadow:0 2px 8px #000}.kiosk-hotspot small{display:block;color:#d2a46b;font:9px Arial,sans-serif;letter-spacing:2px;margin-top:4px}.kiosk-hotspot.seller{left:62%;top:39%;width:20%;height:23%}.kiosk-hotspot.papers{left:17%;top:50%;width:27%;height:16%}.kiosk-hotspot.exit{left:2%;bottom:22%;width:18%}.kiosk-dialogue{position:absolute;z-index:7;left:22%;right:22px;bottom:18px;background:#101114ed;border:1px solid #76634e;padding:16px 20px;box-shadow:0 12px 40px #000a}.kiosk-dialogue .speaker{font:11px Arial,sans-serif;letter-spacing:2px;color:#d2a46b;text-transform:uppercase}.kiosk-dialogue p{font:16px Georgia,serif;line-height:1.55;color:#e0d9ce;margin:10px 0 14px}.kiosk-actions{display:flex;gap:10px;flex-wrap:wrap}@media(max-width:650px){.kiosk-scene{min-height:calc(100vh - 20px)}.kiosk-hud{left:12px;right:12px;top:12px}.kiosk-hud .location{font-size:14px}.kiosk-hotspot.seller{left:58%;top:37%;width:30%;height:19%}.kiosk-hotspot.papers{left:10%;top:48%;width:36%;height:18%}.kiosk-hotspot.exit{left:3%;bottom:27%;width:30%}.kiosk-dialogue{left:10px;right:10px;bottom:10px;padding:12px}.kiosk-dialogue p{font-size:14px}}
+
+/* Investigator office scene */
+.office-scene{position:relative;min-height:680px;overflow:hidden;background:#090a0c;color:#eee9df}
+.office-scene>svg{position:absolute;inset:0;width:100%;height:100%}
+.office-hud{position:absolute;z-index:5;top:18px;left:22px;right:22px;display:flex;justify-content:space-between;align-items:center;gap:12px}
+.office-hud .location{font:18px Georgia,serif;letter-spacing:2px;text-shadow:0 2px 12px #000}
+.office-hud .time{font-size:10px;letter-spacing:2px;color:#c69b65;margin-top:6px}
+.office-hotspot{position:absolute;z-index:6;border:1px solid #c69b6544;background:#090a0b99;color:#f1e9dc;padding:10px 12px;font:13px Georgia,serif;letter-spacing:1px;text-shadow:0 2px 8px #000}
+.office-hotspot:hover{background:#9a704055;border-color:#d4aa70;box-shadow:0 0 22px #c69b6533}
+.office-hotspot small{display:block;color:#d2a46b;font:9px Arial,sans-serif;letter-spacing:2px;margin-top:4px}
+.office-hotspot.board{left:6%;top:31%;width:25%;height:18%}
+.office-hotspot.window{left:38%;top:22%;width:20%;height:14%}
+.office-hotspot.folder{left:34%;top:64%;width:24%;height:13%}
+.office-hotspot.computer{right:7%;top:57%;width:23%;height:15%}
+.office-hotspot.phone{right:30%;top:70%;width:15%;height:9%}
+.office-hotspot.deskbook{left:61%;top:77%;width:15%;height:8%}
+.office-dialogue{position:absolute;z-index:7;left:22%;right:22px;bottom:18px;background:#101114ed;border:1px solid #76634e;padding:14px 18px;box-shadow:0 12px 40px #000a}
+.office-dialogue .speaker{font:10px Arial,sans-serif;letter-spacing:2px;color:#d2a46b}
+.office-dialogue p{font:15px Georgia,serif;line-height:1.5;color:#e0d9ce;margin:7px 0 0}
+.office-modal{position:absolute;z-index:12;inset:0;display:grid;place-items:center;padding:18px;background:#030405d9;backdrop-filter:blur(5px)}
+.office-card{width:min(720px,100%);max-height:86%;overflow:auto;background:linear-gradient(145deg,#201e1c,#0c0d0f);border:1px solid #76634e;padding:24px;box-shadow:0 20px 70px #000}
+.office-card h2{font:26px Georgia,serif;color:#eee9df;margin:8px 0}
+.office-card p{color:#c3beb5;line-height:1.65}
+.office-label{font:10px Arial,sans-serif;letter-spacing:3px;color:#c69b65}
+.office-terminal{background:#080e10;border:1px solid #395047;padding:16px;color:#a9c7b2;font:13px/1.7 ui-monospace,monospace;margin:14px 0}
+.office-terminal strong{color:#e1c28c}
+.office-file{background:#d6cbb5;color:#29231c;padding:18px;margin:14px 0;font-family:Georgia,serif}
+.office-file h3{color:#211c17;text-align:center;border-bottom:2px solid #766b5b;padding-bottom:10px;letter-spacing:2px}
+.office-file p{color:#332c24}
+.office-actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:14px}
+@media(max-width:650px){.office-scene{min-height:calc(100vh - 20px)}.office-hud{left:12px;right:12px;top:12px}.office-hud .location{font-size:14px}.office-hotspot{padding:8px 6px;font-size:11px;letter-spacing:0}.office-hotspot.board{left:3%;top:33%;width:31%;height:16%}.office-hotspot.folder{left:30%;top:63%;width:29%;height:12%}.office-hotspot.computer{right:2%;top:57%;width:27%;height:15%}.office-hotspot.phone{right:28%;top:70%;width:18%;height:9%}.office-hotspot.window{left:38%;top:22%;width:24%;height:14%}.office-hotspot.deskbook{left:61%;top:77%;width:18%;height:8%}.office-dialogue{left:10px;right:10px;bottom:10px;padding:11px}.office-dialogue p{font-size:13px}.office-card{padding:16px}}
+
 </style>
 </head>
 <body><div class="wrap">
@@ -203,7 +235,7 @@ body{background:#08090b}
   <button class="hotspot kiosk" id="expKiosk">Газетный киоск<small>ПОГОВОРИТЬ</small></button>
   <button class="hotspot cafe" id="expCafe">Кафе «24 часа»<small>ЗАЙТИ</small></button>
   <button class="hotspot car" id="expCar">Старый автомобиль<small>ОСМОТРЕТЬ</small></button>
-  <div class="exp-footer"><span>ИССЛЕДУЙ УЛИЦУ · НАЖИМАЙ НА ОБЪЕКТЫ</span><button class="exp-btn" id="expLogin">Войти в расследование</button></div>
+  <div class="exp-footer"><span>ИССЛЕДУЙ УЛИЦУ · НАЖИМАЙ НА ОБЪЕКТЫ</span><div class="row"><button class="exp-btn" id="expGoOffice">В кабинет</button><button class="exp-btn" id="expLogin">Войти в расследование</button></div></div>
       <div id="expCarModal" class="exp-modal" hidden><div class="exp-card"><div class="exp-kicker">Осмотр автомобиля</div><h2>Седан без опознавательных знаков</h2><p>На заднем стекле остался чистый прямоугольник среди пыли. Машину недавно мыли — но только с одной стороны.</p><p class="small">Пока недостаточно данных, чтобы связать автомобиль с делом.</p><button class="exp-btn" id="expCloseCar">Закрыть</button></div></div>
   
   <div id="expJournalModal" class="exp-modal" hidden><div class="exp-card"><div class="exp-kicker">Личный блокнот</div><h2>Записи следователя</h2><div id="expJournalEntries"></div><button class="exp-btn" id="expCloseJournal">Вернуться</button></div></div>
@@ -278,6 +310,28 @@ body{background:#08090b}
   <div class="cafe-dialogue" id="expCafeDialogue"><div class="speaker" id="expCafeSpeaker">Бариста · за стойкой</div><p id="expCafeLine">— Доброй ночи. Хотя, судя по погоде, она сегодня будет не самой доброй. Что-нибудь согревающее?</p><div class="cafe-actions"><button class="exp-btn" id="expCafeCoffee">Заказать чёрный кофе</button><button class="exp-btn" id="expCafeReturn">Вернуться на улицу</button></div></div>
  </div>
 </section>
+
+
+<div id="expOfficeScene" class="exp-screen office-scene" hidden>
+<svg viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+<defs><linearGradient id="ofWall" x2="0" y2="1"><stop stop-color="#29272a"/><stop offset="1" stop-color="#111216"/></linearGradient><linearGradient id="ofFloor" x2="0" y2="1"><stop stop-color="#332b28"/><stop offset="1" stop-color="#08090b"/></linearGradient><linearGradient id="ofDesk" x2="0" y2="1"><stop stop-color="#765238"/><stop offset="1" stop-color="#211713"/></linearGradient><linearGradient id="ofGlass" x2="0" y2="1"><stop stop-color="#8b7968"/><stop offset=".5" stop-color="#29313a"/><stop offset="1" stop-color="#090c11"/></linearGradient><filter id="ofBlur"><feGaussianBlur stdDeviation="24"/></filter></defs>
+<rect width="1440" height="900" fill="url(#ofWall)"/>
+<rect x="70" y="90" width="390" height="390" fill="#090a0c" stroke="#171719" stroke-width="22"/><rect x="92" y="112" width="346" height="346" fill="url(#ofGlass)"/><path d="M265 112v346M92 285h346" stroke="#171719" stroke-width="16"/><ellipse cx="270" cy="330" rx="220" ry="150" fill="#c0905b" opacity=".12" filter="url(#ofBlur)"/>
+<rect x="530" y="100" width="350" height="270" fill="#151719" stroke="#08090b" stroke-width="18"/><path d="M555 130h300v210H555z" fill="#282426"/><path d="M575 155h260v12H575zM575 190h220v8H575zM575 225h260v8H575z" fill="#79634c"/>
+<rect x="970" y="95" width="330" height="380" fill="#111316" stroke="#08090b" stroke-width="20"/><rect x="990" y="115" width="290" height="340" fill="#252326"/><g stroke="#6a5643" stroke-width="7" fill="none"><rect x="1010" y="135" width="110" height="130"/><rect x="1140" y="135" width="115" height="130"/><rect x="1010" y="285" width="110" height="145"/><rect x="1140" y="285" width="115" height="145"/></g>
+<!-- board --> <rect x="90" y="190" width="390" height="290" fill="#49382d" stroke="#090a0c" stroke-width="18"/><rect x="110" y="210" width="350" height="250" fill="#a28c70"/><g fill="#d7cbb4" stroke="#65513d" stroke-width="5"><rect x="130" y="230" width="125" height="90"/><rect x="280" y="230" width="155" height="90"/><rect x="130" y="340" width="145" height="95"/><rect x="300" y="340" width="135" height="95"/></g><g stroke="#99443c" stroke-width="5" fill="none"><path d="M190 275L355 275L205 385L365 385L355 275"/><path d="M190 275L205 385"/></g><g fill="#a3463d"><circle cx="190" cy="275" r="8"/><circle cx="355" cy="275" r="8"/><circle cx="205" cy="385" r="8"/><circle cx="365" cy="385" r="8"/></g>
+<!-- desk and objects --><path d="M180 570h1080l100 90H100z" fill="url(#ofDesk)" stroke="#08090b" stroke-width="18"/><path d="M160 650h1160l-55 250H220z" fill="#241a17" stroke="#08090b" stroke-width="16"/>
+<rect x="990" y="405" width="270" height="175" rx="7" fill="#080b0d" stroke="#655443" stroke-width="12"/><rect x="1008" y="423" width="234" height="138" fill="#13201d"/><path d="M1025 450h180M1025 475h205M1025 500h140M1025 525h185" stroke="#88a891" stroke-width="5" opacity=".75"/><path d="M1080 580v35h80v-35" fill="#252326" stroke="#08090b" stroke-width="8"/>
+<path d="M430 525h310l25 25H410z" fill="#9a754d" stroke="#181411" stroke-width="8"/><path d="M420 550h350l-30 105H390z" fill="#b69a6e" stroke="#201a15" stroke-width="8"/><text x="575" y="610" font-family="Georgia" font-size="24" fill="#30261c" text-anchor="middle" letter-spacing="4">ДЕЛО № 001</text>
+<path d="M790 525q-18-28 12-38l85-10q35 0 40 28l-8 43-120 12z" fill="#171719" stroke="#090a0c" stroke-width="9"/><path d="M810 500q35-25 85-10" stroke="#a17b54" stroke-width="9" fill="none"/>
+<path d="M820 560l110-8 25 75-112 12z" fill="#d0c4aa" stroke="#241d18" stroke-width="7"/><path d="M842 580l80-5M846 595l82-5M850 610l55-4" stroke="#655744" stroke-width="3"/>
+<path d="M0 620h1440v280H0z" fill="url(#ofFloor)" opacity=".65"/><rect width="1440" height="900" fill="none" stroke="#030405" stroke-width="90" opacity=".48"/>
+</svg>
+<div class="office-hud"><div><div class="location">КАБИНЕТ СЛЕДОВАТЕЛЯ</div><div class="time">ЭЙЗЕНБРУК · 00:06 · ДОЖДЬ ЗА ОКНОМ</div></div><button class="exp-btn" id="expOfficeStreet">На улицу</button></div>
+<button class="office-hotspot board" id="expOfficeBoard">Доска улик<small>ОСМОТРЕТЬ</small></button><button class="office-hotspot window" id="expOfficeWindow">Окно<small>ВЗГЛЯНУТЬ</small></button><button class="office-hotspot folder" id="expOfficeFolder">Папка дела<small>ОТКРЫТЬ</small></button><button class="office-hotspot computer" id="expOfficeComputer">Компьютер<small>БАЗА ДАННЫХ</small></button><button class="office-hotspot phone" id="expOfficePhone">Телефон<small>ПРОСЛУШАТЬ</small></button><button class="office-hotspot deskbook" id="expOfficeNotebook">Блокнот<small>ЗАПИСИ</small></button>
+<div class="office-dialogue"><div class="speaker" id="expOfficeSpeaker">ЛИЧНАЯ ЗАПИСЬ · 00:06</div><p id="expOfficeLine">Дождь не прекращается. На столе ждёт папка, а на доске — несколько пустых мест. Пора разобраться, с чего всё началось.</p></div>
+<div id="expOfficeModal" class="office-modal" hidden><div class="office-card"><div class="office-label" id="expOfficeModalKicker">КАБИНЕТ СЛЕДОВАТЕЛЯ</div><h2 id="expOfficeModalTitle">Материалы дела</h2><div id="expOfficeModalBody"></div><div class="office-actions"><button class="exp-btn" id="expOfficeModalClose">Закрыть</button><button class="exp-btn" id="expOfficeEnterCase">Перейти к расследованию</button></div></div></div>
+</div>
 
 <section id="login" class="panel login hidden"><div class="eyebrow">Личный кабинет</div><h2>Вход в расследование</h2><p class="muted">Войди, чтобы начать дело или продолжить сохранённое расследование.</p>
 <div id="loginForm"><div class="field"><label>Электронная почта</label><input id="email" type="email" autocomplete="username" required></div><div class="field"><label>Пароль</label><input id="password" type="password" autocomplete="current-password" required></div><button id="loginButton" class="primary" type="button" style="width:100%">Войти</button></div><div class="row" style="margin-top:12px"><button id="createAccount" type="button">Создать аккаунт</button></div><div id="loginStatus" class="status"></div></section>
@@ -448,6 +502,20 @@ sb.auth.getSession().then(({data})=>{if(data.session)boot().catch(e=>{$("catalog
  $("expJournalOpen").onclick=()=>{journal();show("expJournalModal");};
  $("expCloseJournal").onclick=()=>hide("expJournalModal");
  $("expSolve").onclick=()=>{const answer=$("expPuzzleAnswer").value.trim().toLocaleUpperCase("ru-RU").replace(/Ё/g,"Е");if(answer==="ВАС"){note("Газетная загадка","Ответ: ВАС. Шифр 3—1—19 расшифрован по алфавиту, где А = 1.");$("expPuzzleFeedback").textContent="Верно. Ответ записан в блокнот."; $("expPuzzleFeedback").style.color="#47744c";$("expSolve").disabled=true;}else{$("expPuzzleFeedback").textContent="Не сходится. Проверь соответствие чисел буквам."; $("expPuzzleFeedback").style.color="#8e302b";}};
+
+  const officeModal=(k,t,b,enter=false)=>{$("expOfficeModalKicker").textContent=k;$("expOfficeModalTitle").textContent=t;$("expOfficeModalBody").innerHTML=b;$("expOfficeEnterCase").hidden=!enter;show("expOfficeModal");};
+  const officeMessage=(s,l)=>{$("expOfficeSpeaker").textContent=s;$("expOfficeLine").textContent=l;};
+  const enterOffice=()=>{hide("expStreet");show("expOfficeScene");officeMessage("ЛИЧНАЯ ЗАПИСЬ · 00:06","Дождь не прекращается. На столе ждёт папка, а на доске — несколько пустых мест. Пора разобраться, с чего всё началось.");};
+  const leaveOffice=()=>{hide("expOfficeScene");show("expStreet");};
+  $("expGoOffice").onclick=enterOffice;$("expOfficeStreet").onclick=leaveOffice;$("expOfficeModalClose").onclick=()=>hide("expOfficeModal");
+  $("expOfficeEnterCase").onclick=async()=>{const {data:{session}}=await sb.auth.getSession();$("experience").classList.add("hidden");hide("expOfficeModal");if(session){$("app").classList.remove("hidden");window.scrollTo({top:0,behavior:"smooth"});}else{$("login").classList.remove("hidden");window.scrollTo({top:0,behavior:"smooth"});}};
+  $("expOfficeFolder").onclick=()=>{officeMessage("ПАПКА ДЕЛА · № 001","На обложке — номер, дата и короткая пометка, сделанная чужой рукой.");officeModal("АРХИВ · ДЕЛО № 001","Пятый экземпляр",'<div class="office-file"><h3>ДЕЛО № 001 · ПЯТЫЙ ЭКЗЕМПЛЯР</h3><p><b>Статус:</b> предварительная проверка</p><p><b>Место:</b> Эйзенбрук, старый район у Северного вокзала</p><p><b>Примечание:</b> В материалах упоминается документ, существующий в нескольких копиях. Количество экземпляров не совпадает с описью.</p><p>Пока это лишь обложка. Настоящие материалы будут подшиваться по мере продвижения расследования.</p></div>',true);};
+  $("expOfficeBoard").onclick=()=>{officeMessage("ДОСКА УЛИК","Нити пока не соединяют факты. Здесь появятся фотографии, показания и найденные документы.");officeModal("РАБОЧАЯ СТЕНА","Доска улик",'<p>На доске отмечены три сектора:</p><div class="item"><b>ЛЮДИ</b><p>Подозреваемые, свидетели и те, кто пока не попал в поле зрения.</p></div><div class="item"><b>МЕСТА И ВРЕМЯ</b><p>Последовательность событий и точки, которые предстоит проверить.</p></div><div class="item"><b>ПРОТИВОРЕЧИЯ</b><p>Несовпадения в документах и показаниях. Не спеши связывать их между собой.</p></div>');};
+  $("expOfficeComputer").onclick=()=>{officeMessage("РАБОЧАЯ СТАНЦИЯ","Старый компьютер подключён к локальному архиву. Внешняя сеть отключена.");officeModal("ЛОКАЛЬНЫЙ АРХИВ · OFFLINE","Терминал следователя",'<div class="office-terminal"><div>EISENBROOK / MUNICIPAL ARCHIVE</div><div>CONNECTION: <strong>LOCAL ONLY</strong></div><div>DATABASE: CASE RECORDS</div><div>STATUS: READY</div><hr style="border-color:#304b3b"><p>Доступны только вымышленные игровые записи. Поиск по реальным людям и внешним базам не выполняется.</p><div><strong>Последняя запись:</strong> транспортное средство у Северного вокзала — карточка ожидает открытия в материалах дела.</div><div>&gt; awaiting investigator command_</div></div><p>Позже здесь появится игровой поиск по регистрационным номерам, телефонным записям и архивным карточкам — только внутри Эйзенбрука.</p>');};
+  $("expOfficePhone").onclick=()=>{officeMessage("ТЕЛЕФОН · НЕПРОСЛУШАННОЕ СООБЩЕНИЕ","На автоответчике сохранилась запись. Голос говорит тихо, словно опасается, что его услышат.");officeModal("АВТООТВЕТЧИК · 1 СООБЩЕНИЕ","Голосовое сообщение",'<div class="office-terminal"><div>INCOMING · 23:58 · UNKNOWN NUMBER</div><p>«Вы нашли не тот экземпляр. Если собираетесь проверять бумаги, начните с даты на обороте. И не доверяйте первой копии».</p><div>END OF MESSAGE</div></div><p>Источник вызова пока не установлен.</p>');note("Телефон · голосовое сообщение","23:58 · Неизвестный номер. «Вы нашли не тот экземпляр. Если собираетесь проверять бумаги, начните с даты на обороте. И не доверяйте первой копии».");};
+  $("expOfficeWindow").onclick=()=>{officeMessage("ОКНО · ЭЙЗЕНБРУК","С улицы доносится гул редких машин. Напротив горит только одно окно.");officeModal("ВИД НА СЕВЕРНЫЙ РАЙОН","Город не спит",'<p>Дождь размывает свет фонарей. Напротив, в здании старой почты, на третьем этаже горит окно.</p><p>Ты не можешь разобрать, есть ли там кто-нибудь. Но свет включён недавно: на стекле ещё не осела пыль.</p>');};
+  $("expOfficeNotebook").onclick=()=>{journal();officeModal("ЛИЧНЫЕ ЗАПИСИ","Блокнот следователя",$("expJournalEntries").innerHTML||'<p>Пока записей нет.</p>');};
+
  $("expLogin").onclick=async()=>{const {data:{session}}=await sb.auth.getSession();$("experience").classList.add("hidden");if(session){$("app").classList.remove("hidden");window.scrollTo({top:0,behavior:"smooth"});}else{$("login").classList.remove("hidden");window.scrollTo({top:0,behavior:"smooth"});}};
 })();
 </script>
