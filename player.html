@@ -134,6 +134,34 @@ body{background:#08090b}
 #app .office-return{border:1px solid #8a704e;color:#e9dfd0;background:#171719;padding:9px 12px;white-space:nowrap}
 @media(max-width:650px){#app.office-app-overlay{padding:10px}#app.office-app-overlay .top{gap:8px;flex-wrap:wrap}}
 
+
+/* Physical case folder: tabs are the navigation for the investigation workspace */
+.case-folder{position:fixed;z-index:110;inset:0;display:flex;flex-direction:column;padding:clamp(10px,2.5vw,28px);background:radial-gradient(ellipse at 50% 0%,#3a3028 0,#151312 58%,#08090b 100%);color:#eee8dc}
+.case-folder[hidden]{display:none!important}
+.case-folder-shell{width:min(1180px,100%);height:100%;min-height:0;margin:auto;display:flex;flex-direction:column;border:1px solid #806b50;border-radius:8px;background:linear-gradient(145deg,#55422e,#30251d 28%,#211b17 100%);box-shadow:0 25px 90px #000c;padding:clamp(12px,2vw,24px);position:relative}
+.case-folder-head{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:4px 4px 14px;border-bottom:1px solid #9a795244}
+.case-folder-head .folder-kicker{font:10px Arial,sans-serif;letter-spacing:3px;color:#d0aa72}
+.case-folder-head h2{font:clamp(20px,3vw,30px) Georgia,serif;color:#eee4d3;margin:5px 0 0}
+.case-folder-tabs{display:flex;gap:5px;align-items:flex-end;overflow-x:auto;padding:12px 2px 0;scrollbar-width:thin}
+.case-folder-tab{flex:0 0 auto;min-width:92px;border:1px solid #8a795f;border-bottom:0;border-radius:5px 5px 0 0;background:linear-gradient(#c9b99b,#a99779);color:#28221a;padding:10px 12px 12px;font:10px Arial,sans-serif;letter-spacing:1px;text-transform:uppercase;box-shadow:0 -4px 12px #0003;transition:transform .18s,background .18s}
+.case-folder-tab:hover{transform:translateY(-3px);background:#e0d2b7}
+.case-folder-tab[aria-current="page"]{background:linear-gradient(#eee5d2,#d6c7aa);transform:translateY(-4px);font-weight:800}
+.case-folder-tab:disabled{opacity:.38;cursor:not-allowed;transform:none}
+.case-folder-paper{position:relative;flex:1;min-height:0;overflow:auto;border:1px solid #c1ad8d;border-radius:2px 4px 5px 5px;background:linear-gradient(115deg,#d7cbb4,#c7b99e 48%,#d9ceb9);color:#28231d;padding:clamp(14px,2.4vw,28px);box-shadow:inset 0 0 35px #6b533522,0 12px 30px #0005}
+.case-folder-paper:before{content:"";position:absolute;inset:0;pointer-events:none;opacity:.18;background:repeating-linear-gradient(0deg,transparent 0 28px,#76664e22 29px 30px)}
+.case-folder-page{position:relative;z-index:1;color:#28231d}
+.case-folder-page #pageContent{color:#28231d}
+.case-folder-page #pageContent .eyebrow,.case-folder-page #pageContent .muted,.case-folder-page #pageContent .small{color:#615747}
+.case-folder-page #pageContent h2,.case-folder-page #pageContent h3{color:#28231d}
+.case-folder-page #pageContent .item{background:#eee5d5;border-color:#a99a80;color:#28231d}
+.case-folder-page #pageContent .note{background:#e8deca;color:#514735}
+.case-folder-page #pageContent button{background:#40382e;color:#f2e8d8;border-color:#75664e}
+.case-folder-page #pageContent input,.case-folder-page #pageContent textarea,.case-folder-page #pageContent select{background:#f4eddf;color:#29241d;border-color:#9b8c72}
+.case-folder-foot{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 2px 0;color:#c8b89e;font:10px Arial,sans-serif;letter-spacing:1px}
+.case-folder-close{border:1px solid #a58a63;background:#171513;color:#eee4d3;border-radius:2px;padding:9px 14px;font:10px Arial,sans-serif;letter-spacing:2px;text-transform:uppercase}
+.case-folder-close:hover{background:#8d3d34}
+@media(max-width:650px){.case-folder-shell{padding:10px}.case-folder-head{align-items:flex-start}.case-folder-head h2{font-size:20px}.case-folder-tab{min-width:82px;padding:9px 9px 11px;font-size:9px}.case-folder-paper{padding:12px}.case-folder-foot{font-size:9px}}
+
 </style>
 </head>
 <body><div class="wrap">
@@ -339,6 +367,26 @@ body{background:#08090b}
 </div>
 
 
+
+<div id="expCaseFolder" class="case-folder" hidden>
+ <div class="case-folder-shell">
+  <div class="case-folder-head"><div><div class="folder-kicker">АРХИВ · ДЕЛО № 001</div><h2>Пятый экземпляр</h2></div><button id="expCaseFolderClose" class="case-folder-close" type="button">Закрыть папку</button></div>
+  <nav class="case-folder-tabs" aria-label="Разделы дела">
+   <button class="case-folder-tab" type="button" data-folder-page="overview" aria-current="page">Досье</button>
+   <button class="case-folder-tab" type="button" data-folder-page="stages">Этапы</button>
+   <button class="case-folder-tab" type="button" data-folder-page="characters">Подозреваемые</button>
+   <button class="case-folder-tab" type="button" data-folder-page="evidence">Улики</button>
+   <button class="case-folder-tab" type="button" data-folder-page="hypotheses">Версии</button>
+   <button class="case-folder-tab" type="button" data-folder-page="links">Связи</button>
+   <button class="case-folder-tab" type="button" data-folder-page="documents">Документы</button>
+   <button class="case-folder-tab" type="button" data-folder-page="puzzles">Загадки</button>
+   <button class="case-folder-tab" type="button" data-folder-page="notes">Заметки</button>
+   <button class="case-folder-tab" type="button" data-folder-page="report">Заключение</button>
+  </nav>
+  <div class="case-folder-paper"><div id="caseFolderPage" class="case-folder-page"></div><div id="caseFolderStatus"></div></div>
+  <div class="case-folder-foot"><span>МАТЕРИАЛЫ РАССЛЕДОВАНИЯ · ЭЙЗЕНБРУК</span><span>ЛИСТАЙ ЗАКЛАДКАМИ</span></div>
+ </div>
+</div>
 </section>
 <section id="login" class="panel login hidden"><div class="eyebrow">Личный кабинет</div><h2>Вход в расследование</h2><p class="muted">Войди, чтобы начать дело или продолжить сохранённое расследование.</p>
 <div id="loginForm"><div class="field"><label>Электронная почта</label><input id="email" type="email" autocomplete="username" required></div><div class="field"><label>Пароль</label><input id="password" type="password" autocomplete="current-password" required></div><button id="loginButton" class="primary" type="button" style="width:100%">Войти</button></div><div class="row" style="margin-top:12px"><button id="createAccount" type="button">Создать аккаунт</button></div><div id="loginStatus" class="status"></div></section>
@@ -349,7 +397,7 @@ body{background:#08090b}
 <aside class="panel nav">
 <button class="active" data-page="overview">Досье</button><button data-page="stages">Этапы расследования</button><button data-page="documents">Документы</button><button data-page="characters">Персонажи</button><button data-page="evidence">Улики</button><button data-page="puzzles">Загадки</button><button data-page="notes">Заметки</button><button data-page="hypotheses">Версии</button><button data-page="links">Связи</button><button data-page="report">Итоговое заключение</button>
 <button id="backCatalog">К списку дел</button>
-</aside><main class="panel"><div id="pageContent"></div><div id="status" class="status"></div></main>
+</aside><main class="panel"><div id="pageContentHome"></div><div id="pageContent"></div><div id="statusHome"></div><div id="status" class="status"></div></main>
 </div></section></div>
 <script>
 const SUPABASE_URL="https://wwmlwgqzzseqauozzolx.supabase.co";
@@ -537,7 +585,29 @@ sb.auth.getSession().then(({data})=>{if(data.session)boot().catch(e=>{$("catalog
   $("expOfficeEnterCase").onclick=()=>openOfficeWorkspace().catch(e=>{status(e.message,"error");});
   $("officeReturnFromApp").onclick=()=>{$("app").classList.add("hidden");$("app").classList.remove("office-app-overlay");$("experience").classList.remove("hidden");$("expOfficeScene").hidden=false;hide("expOfficeModal");window.scrollTo({top:0,behavior:"smooth"});};
 
-  $("expOfficeFolder").onclick=()=>{officeMessage("ПАПКА ДЕЛА · № 001","На обложке — номер, дата и короткая пометка, сделанная чужой рукой.");officeModal("АРХИВ · ДЕЛО № 001","Пятый экземпляр",'<div class="office-file"><h3>ДЕЛО № 001 · ПЯТЫЙ ЭКЗЕМПЛЯР</h3><p><b>Статус:</b> предварительная проверка</p><p><b>Место:</b> Эйзенбрук, старый район у Северного вокзала</p><p><b>Примечание:</b> В материалах упоминается документ, существующий в нескольких копиях. Количество экземпляров не совпадает с описью.</p><p>Пока это лишь обложка. Настоящие материалы будут подшиваться по мере продвижения расследования.</p></div>',true);};
+  
+  const folderPageMap={overview:"overview",stages:"stages",characters:"characters",evidence:"evidence",hypotheses:"hypotheses",links:"links",documents:"documents",puzzles:"puzzles",notes:"notes",report:"report"};
+  const syncFolderTabs=()=>{document.querySelectorAll("[data-folder-page]").forEach(b=>{b.setAttribute("aria-current",b.dataset.folderPage===activePage?"page":"false");const source=document.querySelector('.nav [data-page="'+b.dataset.folderPage+'"]');b.disabled=!!source?.disabled;if(b.dataset.folderPage==="report"&&source?.disabled)b.title="Финальное заключение пока закрыто";else b.removeAttribute("title");});};
+  const openCaseFolder=async()=>{
+   const {data:{session}}=await sb.auth.getSession();
+   if(!session){hide("expCaseFolder");await openOfficeWorkspace();return;}
+   await openOfficeWorkspace();
+   if($("workspace").classList.contains("hidden")){status("Не удалось открыть активное дело. Проверь список доступных расследований.","error");return;}
+   $("caseFolderPage").appendChild($("pageContent"));
+   $("caseFolderStatus").appendChild($("status"));
+   show("expCaseFolder");document.body.classList.add("case-folder-open");
+   nav("overview");syncFolderTabs();
+  };
+  const closeCaseFolder=()=>{
+   if($("pageContentHome"))$("pageContentHome").after($("pageContent"));
+   if($("statusHome"))$("statusHome").after($("status"));
+   hide("expCaseFolder");document.body.classList.remove("case-folder-open");
+   $("officeReturnFromApp").click();
+  };
+  $("expCaseFolderClose").onclick=closeCaseFolder;
+  document.querySelectorAll("[data-folder-page]").forEach(b=>b.onclick=()=>{const page=folderPageMap[b.dataset.folderPage];if(!page)return;nav(page);syncFolderTabs();});
+  $("expOfficeFolder").onclick=()=>openCaseFolder().catch(e=>{status(e.message,"error");});
+
   $("expOfficeBoard").onclick=()=>{officeMessage("ДОСКА УЛИК","Нити пока не соединяют факты. Здесь появятся фотографии, показания и найденные документы.");officeModal("РАБОЧАЯ СТЕНА","Доска улик",'<p>На доске отмечены три сектора:</p><div class="item"><b>ЛЮДИ</b><p>Подозреваемые, свидетели и те, кто пока не попал в поле зрения.</p></div><div class="item"><b>МЕСТА И ВРЕМЯ</b><p>Последовательность событий и точки, которые предстоит проверить.</p></div><div class="item"><b>ПРОТИВОРЕЧИЯ</b><p>Несовпадения в документах и показаниях. Не спеши связывать их между собой.</p></div>');};
   $("expOfficeComputer").onclick=()=>{officeMessage("РАБОЧАЯ СТАНЦИЯ","Старый компьютер подключён к локальному архиву. Внешняя сеть отключена.");officeModal("ЛОКАЛЬНЫЙ АРХИВ · OFFLINE","Терминал следователя",'<div class="office-terminal"><div>EISENBROOK / MUNICIPAL ARCHIVE</div><div>CONNECTION: <strong>LOCAL ONLY</strong></div><div>DATABASE: CASE RECORDS</div><div>STATUS: READY</div><hr style="border-color:#304b3b"><p>Доступны только вымышленные игровые записи. Поиск по реальным людям и внешним базам не выполняется.</p><div><strong>Последняя запись:</strong> транспортное средство у Северного вокзала — карточка ожидает открытия в материалах дела.</div><div>&gt; awaiting investigator command_</div></div><p>Позже здесь появится игровой поиск по регистрационным номерам, телефонным записям и архивным карточкам — только внутри Эйзенбрука.</p>');};
   $("expOfficePhone").onclick=()=>{officeMessage("ТЕЛЕФОН · НЕПРОСЛУШАННОЕ СООБЩЕНИЕ","На автоответчике сохранилась запись. Голос говорит тихо, словно опасается, что его услышат.");officeModal("АВТООТВЕТЧИК · 1 СООБЩЕНИЕ","Голосовое сообщение",'<div class="office-terminal"><div>INCOMING · 23:58 · UNKNOWN NUMBER</div><p>«Вы нашли не тот экземпляр. Если собираетесь проверять бумаги, начните с даты на обороте. И не доверяйте первой копии».</p><div>END OF MESSAGE</div></div><p>Источник вызова пока не установлен.</p>');note("clue:office:voicemail:unknown-001","Телефон · голосовое сообщение","23:58 · Неизвестный номер. «Вы нашли не тот экземпляр. Если собираетесь проверять бумаги, начните с даты на обороте. И не доверяйте первой копии».");};
