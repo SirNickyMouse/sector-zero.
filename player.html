@@ -479,9 +479,25 @@ sb.auth.getSession().then(({data})=>{if(data.session)boot().catch(e=>{$("catalog
  const $=id=>document.getElementById(id);
  const show=id=>$(id).hidden=false, hide=id=>$(id).hidden=true;
  const noteKey=(title,body)=>[title,body].map(v=>String(v||"").replace(/\s+/g," ").trim().toLocaleLowerCase("ru-RU")).join("|");
- const entries=()=>{try{const raw=JSON.parse(localStorage.getItem("sector-zero-prologue-notes")||"[]");const seen=new Set();return raw.filter(x=>{const key=noteKey(x.title,x.body);if(seen.has(key))return false;seen.add(key);return true;});}catch{return[]}};
+ const legacyActionId=x=>{
+  const title=String(x?.title||"").trim().toLocaleLowerCase("ru-RU");
+  if(title==="газетная загадка")return "puzzle:newspaper:issue-184";
+  if(title==="газетный киоск")return "purchase:newspaper:issue-184";
+  if(title==="кафе «24 часа»")return "interaction:cafe:coffee-order";
+  if(title==="телефон · голосовое сообщение")return "clue:office:voicemail:unknown-001";
+  return "legacy:"+noteKey(x?.title,x?.body);
+ };
+ const entries=()=>{try{
+  const raw=JSON.parse(localStorage.getItem("sector-zero-prologue-notes")||"[]");
+  if(!Array.isArray(raw))return[];
+  const seen=new Set();
+  return raw.map(x=>({...x,id:String(x?.id||legacyActionId(x))})).filter(x=>{
+   if(seen.has(x.id))return false;
+   seen.add(x.id);return true;
+  });
+ }catch{return[]}};
  const save=items=>{localStorage.setItem("sector-zero-prologue-notes",JSON.stringify(items));$("expJournalCount").textContent=items.length;};
- const note=(title,body)=>{const a=entries();if(a.some(x=>noteKey(x.title,x.body)===noteKey(title,body))){save(a);return;}a.unshift({title,body,created:new Date().toLocaleString("ru-RU")});save(a);};
+ const note=(id,title,body)=>{const a=entries();if(a.some(x=>x.id===id)){save(a);return false;}a.unshift({id,title,body,created:new Date().toLocaleString("ru-RU")});save(a);return true;};
  const journal=()=>{const a=entries();$("expJournalEntries").innerHTML=a.length?a.map(x=>'<div class="exp-journal"><strong>'+String(x.title).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))+'</strong><p>'+String(x.body).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))+'</p><div class="small">'+x.created+'</div></div>').join(""):'<p class="muted">Пока записей нет.</p>';};
  save(entries());
  $("expBegin").onclick=()=>{show("expIntroDialogue");$("expBegin").hidden=true;};
@@ -494,7 +510,7 @@ sb.auth.getSession().then(({data})=>{if(data.session)boot().catch(e=>{$("catalog
   $("expKioskDoor").onclick=leaveKiosk;
   $("expKioskSeller").onclick=()=>{$("expKioskSpeaker").textContent="Продавец · за прилавком";$("expKioskLine").textContent="— Весь город сегодня обсуждает старый вокзал. А я всего лишь продаю бумагу. Хотя иногда в газетах правды больше, чем в полицейских сводках.";};
   $("expKioskPapers").onclick=()=>{$("expKioskSpeaker").textContent="Последний экземпляр · выпуск № 184";$("expKioskLine").textContent="На первой полосе заметка о происшествии у старого вокзала. На полях кто-то оставил короткую загадку. Бумага ещё пахнет типографской краской.";};
-  $("expBuyPaper").onclick=()=>{if(!localStorage.getItem("sector-zero-paper-purchased")){note("Газетный киоск","Куплен выпуск № 184 газеты «Городской вестник». Продавец упомянул происшествие у старого вокзала.");localStorage.setItem("sector-zero-paper-purchased","1");}$("expKioskSpeaker").textContent="Продавец · покупка";$("expKioskLine").textContent="— Береги газету. Сегодняшний выпуск может оказаться интереснее, чем кажется.";show("expPaperModal");};
+  $("expBuyPaper").onclick=()=>{if(!localStorage.getItem("sector-zero-paper-purchased")){note("purchase:newspaper:issue-184","Газетный киоск","Куплен выпуск № 184 газеты «Городской вестник». Продавец упомянул происшествие у старого вокзала.");localStorage.setItem("sector-zero-paper-purchased","1");}$("expKioskSpeaker").textContent="Продавец · покупка";$("expKioskLine").textContent="— Береги газету. Сегодняшний выпуск может оказаться интереснее, чем кажется.";show("expPaperModal");};
   $("expClosePaper").onclick=()=>hide("expPaperModal");
   const enterCafe=()=>{hide("expStreet");show("expCafeScene");};
  const returnStreet=()=>{hide("expCafeScene");show("expStreet");};
@@ -504,12 +520,12 @@ sb.auth.getSession().then(({data})=>{if(data.session)boot().catch(e=>{$("catalog
  $("expCafeDoor").onclick=returnStreet;
  $("expCafeBarista").onclick=()=>{$("expCafeSpeaker").textContent="Бариста · за стойкой";$ ("expCafeLine").textContent="— Чёрный кофе? Без сахара? Здесь многие приходят переждать дождь. Некоторые — не только дождь.";};
  $("expCafeGuest").onclick=()=>{$("expCafeSpeaker").textContent="Незнакомец · у окна";$ ("expCafeLine").textContent="— Вы не местный, верно? В Эйзенбруке обычно не задают вопросов тем, кто сидит у окна. И не советую начинать.";};
- $("expCafeCoffee").onclick=()=>{const once=localStorage.getItem("sector-zero-coffee-ordered");if(!once){note("Кафе «24 часа»","Заказан чёрный кофе. Бариста сказал: «Ночь будет длинной». В зале — незнакомец у окна.");localStorage.setItem("sector-zero-coffee-ordered","1");}$("expCafeSpeaker").textContent="Бариста · заказ принят";$ ("expCafeLine").textContent="— Чёрный, без сахара. Сейчас будет. И да… тот человек у окна сидит здесь уже больше часа.";$("expCafeCoffee").disabled=true;$("expCafeCoffee").textContent="Кофе заказан";};
+ $("expCafeCoffee").onclick=()=>{const once=localStorage.getItem("sector-zero-coffee-ordered");if(!once){note("interaction:cafe:coffee-order","Кафе «24 часа»","Заказан чёрный кофе. Бариста сказал: «Ночь будет длинной». В зале — незнакомец у окна.");localStorage.setItem("sector-zero-coffee-ordered","1");}$("expCafeSpeaker").textContent="Бариста · заказ принят";$ ("expCafeLine").textContent="— Чёрный, без сахара. Сейчас будет. И да… тот человек у окна сидит здесь уже больше часа.";$("expCafeCoffee").disabled=true;$("expCafeCoffee").textContent="Кофе заказан";};
  $("expCar").onclick=()=>show("expCarModal");
  $("expCloseCar").onclick=()=>hide("expCarModal");
  $("expJournalOpen").onclick=()=>{journal();show("expJournalModal");};
  $("expCloseJournal").onclick=()=>hide("expJournalModal");
- $("expSolve").onclick=()=>{const answer=$("expPuzzleAnswer").value.trim().toLocaleUpperCase("ru-RU").replace(/Ё/g,"Е");if(answer==="ВАС"){note("Газетная загадка","Ответ: ВАС. Шифр 3—1—19 расшифрован по алфавиту, где А = 1.");$("expPuzzleFeedback").textContent="Верно. Ответ записан в блокнот."; $("expPuzzleFeedback").style.color="#47744c";$("expSolve").disabled=true;}else{$("expPuzzleFeedback").textContent="Не сходится. Проверь соответствие чисел буквам."; $("expPuzzleFeedback").style.color="#8e302b";}};
+ $("expSolve").onclick=()=>{const answer=$("expPuzzleAnswer").value.trim().toLocaleUpperCase("ru-RU").replace(/Ё/g,"Е");if(answer==="ВАС"){note("puzzle:newspaper:issue-184","Газетная загадка","Ответ: ВАС. Шифр 3—1—19 расшифрован по алфавиту, где А = 1.");$("expPuzzleFeedback").textContent="Верно. Ответ записан в блокнот."; $("expPuzzleFeedback").style.color="#47744c";$("expSolve").disabled=true;}else{$("expPuzzleFeedback").textContent="Не сходится. Проверь соответствие чисел буквам."; $("expPuzzleFeedback").style.color="#8e302b";}};
 
   const officeModal=(k,t,b,enter=false)=>{$("expOfficeModalKicker").textContent=k;$("expOfficeModalTitle").textContent=t;$("expOfficeModalBody").innerHTML=b;$("expOfficeEnterCase").hidden=!enter;show("expOfficeModal");};
   const officeMessage=(s,l)=>{$("expOfficeSpeaker").textContent=s;$("expOfficeLine").textContent=l;};
@@ -524,7 +540,7 @@ sb.auth.getSession().then(({data})=>{if(data.session)boot().catch(e=>{$("catalog
   $("expOfficeFolder").onclick=()=>{officeMessage("ПАПКА ДЕЛА · № 001","На обложке — номер, дата и короткая пометка, сделанная чужой рукой.");officeModal("АРХИВ · ДЕЛО № 001","Пятый экземпляр",'<div class="office-file"><h3>ДЕЛО № 001 · ПЯТЫЙ ЭКЗЕМПЛЯР</h3><p><b>Статус:</b> предварительная проверка</p><p><b>Место:</b> Эйзенбрук, старый район у Северного вокзала</p><p><b>Примечание:</b> В материалах упоминается документ, существующий в нескольких копиях. Количество экземпляров не совпадает с описью.</p><p>Пока это лишь обложка. Настоящие материалы будут подшиваться по мере продвижения расследования.</p></div>',true);};
   $("expOfficeBoard").onclick=()=>{officeMessage("ДОСКА УЛИК","Нити пока не соединяют факты. Здесь появятся фотографии, показания и найденные документы.");officeModal("РАБОЧАЯ СТЕНА","Доска улик",'<p>На доске отмечены три сектора:</p><div class="item"><b>ЛЮДИ</b><p>Подозреваемые, свидетели и те, кто пока не попал в поле зрения.</p></div><div class="item"><b>МЕСТА И ВРЕМЯ</b><p>Последовательность событий и точки, которые предстоит проверить.</p></div><div class="item"><b>ПРОТИВОРЕЧИЯ</b><p>Несовпадения в документах и показаниях. Не спеши связывать их между собой.</p></div>');};
   $("expOfficeComputer").onclick=()=>{officeMessage("РАБОЧАЯ СТАНЦИЯ","Старый компьютер подключён к локальному архиву. Внешняя сеть отключена.");officeModal("ЛОКАЛЬНЫЙ АРХИВ · OFFLINE","Терминал следователя",'<div class="office-terminal"><div>EISENBROOK / MUNICIPAL ARCHIVE</div><div>CONNECTION: <strong>LOCAL ONLY</strong></div><div>DATABASE: CASE RECORDS</div><div>STATUS: READY</div><hr style="border-color:#304b3b"><p>Доступны только вымышленные игровые записи. Поиск по реальным людям и внешним базам не выполняется.</p><div><strong>Последняя запись:</strong> транспортное средство у Северного вокзала — карточка ожидает открытия в материалах дела.</div><div>&gt; awaiting investigator command_</div></div><p>Позже здесь появится игровой поиск по регистрационным номерам, телефонным записям и архивным карточкам — только внутри Эйзенбрука.</p>');};
-  $("expOfficePhone").onclick=()=>{officeMessage("ТЕЛЕФОН · НЕПРОСЛУШАННОЕ СООБЩЕНИЕ","На автоответчике сохранилась запись. Голос говорит тихо, словно опасается, что его услышат.");officeModal("АВТООТВЕТЧИК · 1 СООБЩЕНИЕ","Голосовое сообщение",'<div class="office-terminal"><div>INCOMING · 23:58 · UNKNOWN NUMBER</div><p>«Вы нашли не тот экземпляр. Если собираетесь проверять бумаги, начните с даты на обороте. И не доверяйте первой копии».</p><div>END OF MESSAGE</div></div><p>Источник вызова пока не установлен.</p>');note("Телефон · голосовое сообщение","23:58 · Неизвестный номер. «Вы нашли не тот экземпляр. Если собираетесь проверять бумаги, начните с даты на обороте. И не доверяйте первой копии».");};
+  $("expOfficePhone").onclick=()=>{officeMessage("ТЕЛЕФОН · НЕПРОСЛУШАННОЕ СООБЩЕНИЕ","На автоответчике сохранилась запись. Голос говорит тихо, словно опасается, что его услышат.");officeModal("АВТООТВЕТЧИК · 1 СООБЩЕНИЕ","Голосовое сообщение",'<div class="office-terminal"><div>INCOMING · 23:58 · UNKNOWN NUMBER</div><p>«Вы нашли не тот экземпляр. Если собираетесь проверять бумаги, начните с даты на обороте. И не доверяйте первой копии».</p><div>END OF MESSAGE</div></div><p>Источник вызова пока не установлен.</p>');note("clue:office:voicemail:unknown-001","Телефон · голосовое сообщение","23:58 · Неизвестный номер. «Вы нашли не тот экземпляр. Если собираетесь проверять бумаги, начните с даты на обороте. И не доверяйте первой копии».");};
   $("expOfficeWindow").onclick=()=>{officeMessage("ОКНО · ЭЙЗЕНБРУК","С улицы доносится гул редких машин. Напротив горит только одно окно.");officeModal("ВИД НА СЕВЕРНЫЙ РАЙОН","Город не спит",'<p>Дождь размывает свет фонарей. Напротив, в здании старой почты, на третьем этаже горит окно.</p><p>Ты не можешь разобрать, есть ли там кто-нибудь. Но свет включён недавно: на стекле ещё не осела пыль.</p>');};
   $("expOfficeNotebook").onclick=()=>{journal();officeModal("ЛИЧНЫЕ ЗАПИСИ","Блокнот следователя",$("expJournalEntries").innerHTML||'<p>Пока записей нет.</p>');};
 
