@@ -478,9 +478,10 @@ sb.auth.getSession().then(({data})=>{if(data.session)boot().catch(e=>{$("catalog
 (function(){
  const $=id=>document.getElementById(id);
  const show=id=>$(id).hidden=false, hide=id=>$(id).hidden=true;
- const entries=()=>{try{return JSON.parse(localStorage.getItem("sector-zero-prologue-notes")||"[]")}catch{return[]}};
+ const noteKey=(title,body)=>[title,body].map(v=>String(v||"").replace(/\s+/g," ").trim().toLocaleLowerCase("ru-RU")).join("|");
+ const entries=()=>{try{const raw=JSON.parse(localStorage.getItem("sector-zero-prologue-notes")||"[]");const seen=new Set();return raw.filter(x=>{const key=noteKey(x.title,x.body);if(seen.has(key))return false;seen.add(key);return true;});}catch{return[]}};
  const save=items=>{localStorage.setItem("sector-zero-prologue-notes",JSON.stringify(items));$("expJournalCount").textContent=items.length;};
- const note=(title,body)=>{const a=entries();a.unshift({title,body,created:new Date().toLocaleString("ru-RU")});save(a);};
+ const note=(title,body)=>{const a=entries();if(a.some(x=>noteKey(x.title,x.body)===noteKey(title,body))){save(a);return;}a.unshift({title,body,created:new Date().toLocaleString("ru-RU")});save(a);};
  const journal=()=>{const a=entries();$("expJournalEntries").innerHTML=a.length?a.map(x=>'<div class="exp-journal"><strong>'+String(x.title).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))+'</strong><p>'+String(x.body).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))+'</p><div class="small">'+x.created+'</div></div>').join(""):'<p class="muted">Пока записей нет.</p>';};
  save(entries());
  $("expBegin").onclick=()=>{show("expIntroDialogue");$("expBegin").hidden=true;};
