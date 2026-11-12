@@ -126,6 +126,13 @@ body{background:#08090b}
 .office-actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:14px}
 @media(max-width:650px){.office-scene{min-height:calc(100vh - 20px)}.office-hud{left:12px;right:12px;top:12px}.office-hud .location{font-size:14px}.office-hotspot{padding:8px 6px;font-size:11px;letter-spacing:0}.office-hotspot.board{left:3%;top:33%;width:31%;height:16%}.office-hotspot.folder{left:30%;top:63%;width:29%;height:12%}.office-hotspot.computer{right:2%;top:57%;width:27%;height:15%}.office-hotspot.phone{right:28%;top:70%;width:18%;height:9%}.office-hotspot.window{left:38%;top:22%;width:24%;height:14%}.office-hotspot.deskbook{left:61%;top:77%;width:18%;height:8%}.office-dialogue{left:10px;right:10px;bottom:10px;padding:11px}.office-dialogue p{font-size:13px}.office-card{padding:16px}}
 
+
+/* Keep the investigation workspace inside the office experience */
+#app.office-app-overlay{display:block!important;position:fixed;inset:0;z-index:60;overflow:auto;background:#0c121a;padding:16px;box-sizing:border-box}
+#app.office-app-overlay .top{position:sticky;top:0;z-index:4;background:#0c121a;padding:8px 0 14px;border-bottom:1px solid #29313b}
+#app .office-return{border:1px solid #8a704e;color:#e9dfd0;background:#171719;padding:9px 12px;white-space:nowrap}
+@media(max-width:650px){#app.office-app-overlay{padding:10px}#app.office-app-overlay .top{gap:8px;flex-wrap:wrap}}
+
 </style>
 </head>
 <body><div class="wrap">
@@ -335,7 +342,7 @@ body{background:#08090b}
 <section id="login" class="panel login hidden"><div class="eyebrow">Личный кабинет</div><h2>Вход в расследование</h2><p class="muted">Войди, чтобы начать дело или продолжить сохранённое расследование.</p>
 <div id="loginForm"><div class="field"><label>Электронная почта</label><input id="email" type="email" autocomplete="username" required></div><div class="field"><label>Пароль</label><input id="password" type="password" autocomplete="current-password" required></div><button id="loginButton" class="primary" type="button" style="width:100%">Войти</button></div><div class="row" style="margin-top:12px"><button id="createAccount" type="button">Создать аккаунт</button></div><div id="loginStatus" class="status"></div></section>
 <section id="app" class="hidden">
-<div class="top"><div><div class="eyebrow">Игровое дело</div><div id="caseName" class="muted">Выбери расследование</div></div><div class="row"><span id="userLabel" class="tag">Игрок</span><button id="logout">Выйти</button></div></div>
+<div class="top"><div><div class="eyebrow">Игровое дело</div><div id="caseName" class="muted">Выбери расследование</div></div><div class="row"><button id="officeReturnFromApp" class="office-return" type="button">Вернуться в кабинет</button><span id="userLabel" class="tag">Игрок</span><button id="logout">Выйти</button></div></div>
 <div id="catalog" class="panel"><h2>Доступные дела</h2><p id="catalogLoading" class="muted">Загружаем опубликованные расследования…</p><div id="cases"></div><div id="catalogStatus" class="status"></div></div>
 <div id="workspace" class="hidden layout" style="margin-top:16px">
 <aside class="panel nav">
@@ -507,7 +514,11 @@ sb.auth.getSession().then(({data})=>{if(data.session)boot().catch(e=>{$("catalog
   const enterOffice=()=>{hide("expStreet");show("expOfficeScene");officeMessage("ЛИЧНАЯ ЗАПИСЬ · 00:06","Дождь не прекращается. На столе ждёт папка, а на доске — несколько пустых мест. Пора разобраться, с чего всё началось.");};
   const leaveOffice=()=>{hide("expOfficeScene");show("expStreet");};
   $("expGoOffice").onclick=enterOffice;$("expOfficeStreet").onclick=leaveOffice;$("expOfficeModalClose").onclick=()=>hide("expOfficeModal");
-  $("expOfficeEnterCase").onclick=async()=>{const {data:{session}}=await sb.auth.getSession();$("experience").classList.add("hidden");hide("expOfficeModal");if(session){$("app").classList.remove("hidden");window.scrollTo({top:0,behavior:"smooth"});}else{$("login").classList.remove("hidden");window.scrollTo({top:0,behavior:"smooth"});}};
+  
+  const openOfficeWorkspace=async()=>{const {data:{session}}=await sb.auth.getSession();hide("expOfficeModal");if(!session){$("login").classList.remove("hidden");window.scrollTo({top:0,behavior:"smooth"});return;}$("experience").classList.remove("hidden");$("expOfficeScene").hidden=false;$("app").classList.add("office-app-overlay");$("app").classList.remove("hidden");const active=(catalog?.investigations||[])[0];if(active){$("catalog").classList.add("hidden");await openInvestigation(active.id,active.case_version_id);}else{$("catalog").classList.remove("hidden");$("workspace").classList.add("hidden");}window.scrollTo({top:0,behavior:"smooth"});};
+  $("expOfficeEnterCase").onclick=()=>openOfficeWorkspace().catch(e=>{status(e.message,"error");});
+  $("officeReturnFromApp").onclick=()=>{$("app").classList.add("hidden");$("app").classList.remove("office-app-overlay");$("experience").classList.remove("hidden");$("expOfficeScene").hidden=false;hide("expOfficeModal");window.scrollTo({top:0,behavior:"smooth"});};
+
   $("expOfficeFolder").onclick=()=>{officeMessage("ПАПКА ДЕЛА · № 001","На обложке — номер, дата и короткая пометка, сделанная чужой рукой.");officeModal("АРХИВ · ДЕЛО № 001","Пятый экземпляр",'<div class="office-file"><h3>ДЕЛО № 001 · ПЯТЫЙ ЭКЗЕМПЛЯР</h3><p><b>Статус:</b> предварительная проверка</p><p><b>Место:</b> Эйзенбрук, старый район у Северного вокзала</p><p><b>Примечание:</b> В материалах упоминается документ, существующий в нескольких копиях. Количество экземпляров не совпадает с описью.</p><p>Пока это лишь обложка. Настоящие материалы будут подшиваться по мере продвижения расследования.</p></div>',true);};
   $("expOfficeBoard").onclick=()=>{officeMessage("ДОСКА УЛИК","Нити пока не соединяют факты. Здесь появятся фотографии, показания и найденные документы.");officeModal("РАБОЧАЯ СТЕНА","Доска улик",'<p>На доске отмечены три сектора:</p><div class="item"><b>ЛЮДИ</b><p>Подозреваемые, свидетели и те, кто пока не попал в поле зрения.</p></div><div class="item"><b>МЕСТА И ВРЕМЯ</b><p>Последовательность событий и точки, которые предстоит проверить.</p></div><div class="item"><b>ПРОТИВОРЕЧИЯ</b><p>Несовпадения в документах и показаниях. Не спеши связывать их между собой.</p></div>');};
   $("expOfficeComputer").onclick=()=>{officeMessage("РАБОЧАЯ СТАНЦИЯ","Старый компьютер подключён к локальному архиву. Внешняя сеть отключена.");officeModal("ЛОКАЛЬНЫЙ АРХИВ · OFFLINE","Терминал следователя",'<div class="office-terminal"><div>EISENBROOK / MUNICIPAL ARCHIVE</div><div>CONNECTION: <strong>LOCAL ONLY</strong></div><div>DATABASE: CASE RECORDS</div><div>STATUS: READY</div><hr style="border-color:#304b3b"><p>Доступны только вымышленные игровые записи. Поиск по реальным людям и внешним базам не выполняется.</p><div><strong>Последняя запись:</strong> транспортное средство у Северного вокзала — карточка ожидает открытия в материалах дела.</div><div>&gt; awaiting investigator command_</div></div><p>Позже здесь появится игровой поиск по регистрационным номерам, телефонным записям и архивным карточкам — только внутри Эйзенбрука.</p>');};
