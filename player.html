@@ -500,7 +500,7 @@ function render(page){
  return;}
 }
 
-async function boot(){const {data:{user}}=await sb.auth.getUser();if(!user)return;$("login").classList.add("hidden");$("app").classList.add("hidden");$("experience").classList.remove("hidden");$("userLabel").textContent=user.email||"Игрок";try{await refreshCatalog();if(typeof window.__restoreCaseLocation==="function")await window.__restoreCaseLocation(user.id);}catch(e){$("catalogStatus").textContent=e.message;}}
+async function boot(){const {data:{user}}=await sb.auth.getUser();if(!user)return;window.__caseLocationUserId=user.id;$("login").classList.add("hidden");$("app").classList.add("hidden");$("experience").classList.remove("hidden");$("userLabel").textContent=user.email||"Игрок";try{await refreshCatalog();if(typeof window.__restoreCaseLocation==="function")await window.__restoreCaseLocation(user.id);}catch(e){$("catalogStatus").textContent=e.message;}}
 $("logout").onclick=async()=>{await sb.auth.signOut();location.reload();};
 sb.auth.getSession().then(({data})=>{if(data.session)boot().catch(e=>{$("catalogStatus").textContent=e.message;});});
 </script><script>
@@ -631,13 +631,16 @@ sb.auth.getSession().then(({data})=>{if(data.session)boot().catch(e=>{$("catalog
    $("caseFolderPage").appendChild($("pageContent"));
    $("caseFolderStatus").appendChild($("status"));
    show("expCaseFolder");document.body.classList.add("case-folder-open");
+   const paper=document.querySelector(".case-folder-paper");if(paper&&!paper.dataset.locationSaveBound){paper.dataset.locationSaveBound="1";paper.addEventListener("scroll",()=>window.__saveCaseLocation?.(),{passive:true});}
    nav(restorePage||"overview");syncFolderTabs();
    if(restoreScroll>0)requestAnimationFrame(()=>{const paper=document.querySelector(".case-folder-paper");if(paper)paper.scrollTop=restoreScroll;});
    window.__saveCaseLocation?.(activePage);
   };
   const locationKey=userId=>"sector-zero-case-location:"+userId;
   window.__saveCaseLocation=(page=activePage)=>{
-   sb.auth.getUser().then(({data:{user}})=>{if(!user||!document.body.classList.contains("case-folder-open")||!investigationId)return;const paper=document.querySelector(".case-folder-paper");try{localStorage.setItem(locationKey(user.id),JSON.stringify({investigationId,caseVersionId,page,folderOpen:true,scrollTop:paper?.scrollTop||0,updatedAt:Date.now()}));}catch(e){console.warn("Не удалось сохранить положение в деле",e);}}).catch(e=>console.warn("Не удалось определить игрока для сохранения позиции",e));
+   const userId=window.__caseLocationUserId;if(!userId||!document.body.classList.contains("case-folder-open")||!investigationId)return;
+   const paper=document.querySelector(".case-folder-paper");
+   try{localStorage.setItem(locationKey(userId),JSON.stringify({investigationId,caseVersionId,page,folderOpen:true,scrollTop:paper?.scrollTop||0,updatedAt:Date.now()}));}catch(e){console.warn("Не удалось сохранить положение в деле",e);}
   };
   window.__restoreCaseLocation=async userId=>{
    let saved;try{saved=JSON.parse(localStorage.getItem(locationKey(userId))||"null");}catch(e){return;}
@@ -652,7 +655,7 @@ sb.auth.getSession().then(({data})=>{if(data.session)boot().catch(e=>{$("catalog
    if($("pageContentHome"))$("pageContentHome").after($("pageContent"));
    if($("statusHome"))$("statusHome").after($("status"));
    const paper=document.querySelector(".case-folder-paper");
-   sb.auth.getUser().then(({data:{user}})=>{if(!user||!investigationId)return;try{localStorage.setItem(locationKey(user.id),JSON.stringify({investigationId,caseVersionId,page:activePage,folderOpen:false,scrollTop:paper?.scrollTop||0,updatedAt:Date.now()}));}catch(e){console.warn("Не удалось сохранить положение в деле",e);}});
+   const userId=window.__caseLocationUserId;if(userId&&investigationId){try{localStorage.setItem(locationKey(userId),JSON.stringify({investigationId,caseVersionId,page:activePage,folderOpen:false,scrollTop:paper?.scrollTop||0,updatedAt:Date.now()}));}catch(e){console.warn("Не удалось сохранить положение в деле",e);}}
    hide("expCaseFolder");document.body.classList.remove("case-folder-open");
    $("officeReturnFromApp").click();
   };
