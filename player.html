@@ -448,7 +448,7 @@ async function loadState(){
  const reportRows=(r.final_reports||[]).slice().reverse();reportId=reportRows.find(x=>x.status==="draft")?.id||reportRows[0]?.id||uid();
  const existing=(r.final_reports||[]).find(x=>x.id===reportId);reportAnswers={};(existing?.answers||[]).forEach(a=>reportAnswers[a.question_code]=a.answer);
 }
-function nav(page){if(page==="report"&&state?.stage_state&&!state.stage_state.final_unlocked){status("Финальный этап пока закрыт. Сначала выполни условия расследования.","error");return;}activePage=page;document.querySelectorAll(".nav [data-page]").forEach(b=>b.classList.toggle("active",b.dataset.page===page));render(page);if(typeof window.__syncCaseFolder==="function")window.__syncCaseFolder(page);}
+function nav(page){if(page==="report"&&state?.stage_state&&!state.stage_state.final_unlocked){status("Финальный этап пока закрыт. Сначала выполни условия расследования.","error");return;}activePage=page;document.querySelectorAll(".nav [data-page]").forEach(b=>b.classList.toggle("active",b.dataset.page===page));render(page);if(typeof window.__syncCaseFolder==="function")window.__syncCaseFolder(page);if(document.body.classList.contains("case-folder-open")&&typeof window.__saveCaseLocation==="function")window.__saveCaseLocation(page);}
 document.querySelectorAll(".nav [data-page]").forEach(b=>b.onclick=()=>nav(b.dataset.page));
 $("backCatalog").onclick=()=>{$("workspace").classList.add("hidden");$("catalog").classList.remove("hidden");};
 function render(page){
@@ -500,7 +500,7 @@ function render(page){
  return;}
 }
 
-async function boot(){const {data:{user}}=await sb.auth.getUser();if(!user)return;$("login").classList.add("hidden");$("app").classList.add("hidden");$("experience").classList.remove("hidden");$("userLabel").textContent=user.email||"Игрок";try{await refreshCatalog();}catch(e){$("catalogStatus").textContent=e.message;}}
+async function boot(){const {data:{user}}=await sb.auth.getUser();if(!user)return;$("login").classList.add("hidden");$("app").classList.add("hidden");$("experience").classList.remove("hidden");$("userLabel").textContent=user.email||"Игрок";try{await refreshCatalog();if(typeof window.__restoreCaseLocation==="function")await window.__restoreCaseLocation(user.id);}catch(e){$("catalogStatus").textContent=e.message;}}
 $("logout").onclick=async()=>{await sb.auth.signOut();location.reload();};
 sb.auth.getSession().then(({data})=>{if(data.session)boot().catch(e=>{$("catalogStatus").textContent=e.message;});});
 </script><script>
@@ -623,7 +623,7 @@ sb.auth.getSession().then(({data})=>{if(data.session)boot().catch(e=>{$("catalog
    }
   };
   window.__syncCaseFolder=syncFolderTabs;
-  const openCaseFolder=async()=>{
+  const openCaseFolder=async(restorePage="overview",restoreScroll=0)=>{
    const {data:{session}}=await sb.auth.getSession();
    if(!session){hide("expCaseFolder");await openOfficeWorkspace();return;}
    await openOfficeWorkspace();
@@ -631,11 +631,28 @@ sb.auth.getSession().then(({data})=>{if(data.session)boot().catch(e=>{$("catalog
    $("caseFolderPage").appendChild($("pageContent"));
    $("caseFolderStatus").appendChild($("status"));
    show("expCaseFolder");document.body.classList.add("case-folder-open");
-   nav("overview");syncFolderTabs();
+   nav(restorePage||"overview");syncFolderTabs();
+   if(restoreScroll>0)requestAnimationFrame(()=>{const paper=document.querySelector(".case-folder-paper");if(paper)paper.scrollTop=restoreScroll;});
+   window.__saveCaseLocation?.(activePage);
+  };
+  const locationKey=userId=>"sector-zero-case-location:"+userId;
+  window.__saveCaseLocation=(page=activePage)=>{
+   sb.auth.getUser().then(({data:{user}})=>{if(!user||!document.body.classList.contains("case-folder-open")||!investigationId)return;const paper=document.querySelector(".case-folder-paper");try{localStorage.setItem(locationKey(user.id),JSON.stringify({investigationId,caseVersionId,page,folderOpen:true,scrollTop:paper?.scrollTop||0,updatedAt:Date.now()}));}catch(e){console.warn("Не удалось сохранить положение в деле",e);}}).catch(e=>console.warn("Не удалось определить игрока для сохранения позиции",e));
+  };
+  window.__restoreCaseLocation=async userId=>{
+   let saved;try{saved=JSON.parse(localStorage.getItem(locationKey(userId))||"null");}catch(e){return;}
+   if(!saved?.folderOpen||!saved.investigationId)return;
+   const active=(catalog?.investigations||[]).find(x=>x.id===saved.investigationId);
+   if(!active)return;
+   const allowed=["overview","stages","characters","materialsHub","evidence","documents","puzzles","links","hypotheses","notebookHub","notes","thoughts","report"];
+   const page=allowed.includes(saved.page)?saved.page:"overview";
+   await openCaseFolder(page,Number(saved.scrollTop)||0);
   };
   const closeCaseFolder=()=>{
    if($("pageContentHome"))$("pageContentHome").after($("pageContent"));
    if($("statusHome"))$("statusHome").after($("status"));
+   const paper=document.querySelector(".case-folder-paper");
+   sb.auth.getUser().then(({data:{user}})=>{if(!user||!investigationId)return;try{localStorage.setItem(locationKey(user.id),JSON.stringify({investigationId,caseVersionId,page:activePage,folderOpen:false,scrollTop:paper?.scrollTop||0,updatedAt:Date.now()}));}catch(e){console.warn("Не удалось сохранить положение в деле",e);}});
    hide("expCaseFolder");document.body.classList.remove("case-folder-open");
    $("officeReturnFromApp").click();
   };
