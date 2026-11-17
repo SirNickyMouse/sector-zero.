@@ -148,3 +148,10 @@ This is a documentation-only snapshot. It is deliberately outside `supabase/func
 ### Updated status
 
 **Live Edge Function source snapshot complete; migration reconciliation remains open.** The migration history still contains 46 applied entries while only three migration SQL files are tracked. No production or QA state was modified.
+
+
+### Tracked source synchronization
+
+The deployable branch source `supabase/functions/get_investigation_state/index.ts` has now been synchronized to the archived live version 10 and verified byte-for-byte. The key difference was the server-side stage-state read via `game.get_investigation_stage_state` and the `stage_state` response field. This keeps the tracked source aligned with the currently deployed stage engine.
+
+The other two tracked Edge Functions already matched their live snapshots. The branch now has source parity for all three functions it previously tracked.
