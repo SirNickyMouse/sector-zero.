@@ -75,6 +75,41 @@
 .stage:after{content:"";position:absolute;inset:0;z-index:9;pointer-events:none;border:1px solid #c5a77a22;box-shadow:inset 0 0 0 7px #07090a22}
 @media(max-width:700px){.world::after{opacity:.28}.stage:after{box-shadow:inset 0 0 0 4px #07090a22}.scene-title strong{font-size:13px}}
 
+
+/* Character rig v0.2 — layered CSS puppet; art-ready without changing movement APIs */
+.hero{width:58px;height:132px;bottom:16.5%;transform-origin:50% 100%;filter:drop-shadow(0 10px 8px #000b);isolation:isolate}
+.hero .shadow{position:absolute;z-index:-1;left:2px;bottom:-5px;width:54px;height:12px;border-radius:50%;background:#050607a8;filter:blur(4px)}
+.hero .head{z-index:4;top:3px;left:19px;width:21px;height:25px;border:1px solid #342b27;border-radius:46% 46% 42% 42%;background:linear-gradient(110deg,#d1b39a,#987b68 72%,#6f5b50);box-shadow:inset -4px -2px 0 #59483f}
+.hero .head:after{content:"";position:absolute;left:4px;top:12px;width:12px;height:5px;border-bottom:1px solid #514038;border-radius:50%;opacity:.8}
+.hero .hair{z-index:5;top:0;left:17px;width:25px;height:12px;border-radius:65% 45% 18% 22%;background:linear-gradient(135deg,#494448,#17191d 72%);clip-path:polygon(0 38%,13% 0,44% 17%,65% 0,100% 24%,88% 75%,70% 61%,52% 100%,33% 65%,15% 90%)}
+.hero .neck{position:absolute;z-index:3;top:23px;left:25px;width:10px;height:9px;background:#806757}
+.hero .coat{z-index:2;top:28px;left:10px;width:39px;height:66px;clip-path:polygon(24% 0,76% 0,100% 100%,57% 88%,48% 100%,0 100%);background:linear-gradient(90deg,#101419,#343b42 38%,#252b31 68%,#101418);border:0;box-shadow:inset 2px 0 #8d969322,inset -3px 0 #050709}
+.hero .coat:before{content:"";position:absolute;left:17px;top:3px;width:2px;height:57px;background:#0b0e11;box-shadow:3px 0 #a4a09a22}
+.hero .lapel{position:absolute;z-index:4;top:29px;left:25px;width:13px;height:27px;background:linear-gradient(135deg,#59616a,#20262c);clip-path:polygon(0 0,100% 0,54% 100%,28% 57%);opacity:.9}
+.hero .scarf{z-index:5;top:26px;left:31px;width:7px;height:48px;background:linear-gradient(90deg,#55483f,#a18b78 52%,#493c35);transform:rotate(-5deg);box-shadow:1px 0 #d2b99b44}
+.hero .arm{position:absolute;z-index:3;top:36px;width:10px;height:48px;border-radius:5px;background:linear-gradient(90deg,#171c21,#41464a);transform-origin:50% 5px}
+.hero .arm.left{left:7px;transform:rotate(5deg)}
+.hero .arm.right{right:5px;transform:rotate(-7deg)}
+.hero .hand{position:absolute;z-index:4;top:78px;right:4px;width:8px;height:9px;border-radius:40%;background:#9a806d}
+.hero .leg{z-index:1;top:86px;width:13px;height:38px;background:linear-gradient(90deg,#101317,#292d31);border-radius:2px 2px 3px 3px;transform-origin:50% 4px}
+.hero .leg.left{left:17px}.hero .leg.right{left:32px}
+.hero .shoe{position:absolute;z-index:2;top:119px;width:17px;height:7px;border-radius:3px 5px 2px 2px;background:linear-gradient(#393a39,#111315);border-bottom:2px solid #08090a}
+.hero .shoe.left{left:12px}.hero .shoe.right{left:29px}
+.hero[data-state="idle"]{animation:heroBreath 3.8s ease-in-out infinite}
+.hero[data-state="idle"] .scarf{animation:scarfDrift 4.5s ease-in-out infinite}
+.hero[data-state="walking"] .arm.left{animation:armSwing .28s ease-in-out infinite alternate}
+.hero[data-state="walking"] .arm.right{animation:armSwing .28s ease-in-out infinite alternate-reverse}
+.hero[data-state="walking"] .leg.left{animation:step .22s infinite alternate}
+.hero[data-state="walking"] .leg.right{animation:step .22s infinite alternate-reverse}
+.hero[data-state="interacting"] .head{transform:translateY(-1px) rotate(-3deg)}
+.hero[data-state="interacting"] .scarf{transform:rotate(-2deg)}
+@keyframes heroBreath{0%,100%{transform:translateX(-50%) scaleX(var(--facing,1)) translateY(0)}50%{transform:translateX(-50%) scaleX(var(--facing,1)) translateY(-1.5px)}}
+@keyframes scarfDrift{0%,100%{translate:0 0}50%{translate:1px 1px}}
+@keyframes armSwing{to{transform:rotate(17deg)}}
+.hero.walking{animation:heroWalk .22s ease-in-out infinite alternate}
+@keyframes heroWalk{to{translate:0 -2px}}
+@media(prefers-reduced-motion:reduce){.hero,.hero *,.street-npc,.tram,.cyclist,.loose-paper{animation:none!important;transition:none!important}}
+
 </style>
 </head>
 <body>
@@ -223,7 +258,7 @@
    <div class="tram" aria-hidden="true"><svg viewBox="0 0 430 155"><defs><linearGradient id="tramPaint" x2="0" y2="1"><stop stop-color="#c7b99d"/><stop offset=".55" stop-color="#777363"/><stop offset="1" stop-color="#3a4141"/></linearGradient><linearGradient id="tramGlass" x2="0" y2="1"><stop stop-color="#a9b7b7"/><stop offset="1" stop-color="#27353a"/></linearGradient></defs><path d="M58 23L95 2h76l-12 22M120 23l25-21h76l-8 21" fill="none" stroke="#252a2b" stroke-width="7" stroke-linecap="round"/><path d="M152 2l-22-20m22 20l25-20" stroke="#252a2b" stroke-width="5"/><path d="M17 42Q20 18 49 18h335q27 0 29 28v76q0 14-18 14H34q-17 0-17-17z" fill="url(#tramPaint)" stroke="#15191b" stroke-width="8"/><path d="M42 34h340q14 0 14 16v40H35V48q0-14 7-14z" fill="#2c393d" stroke="#1b2022" stroke-width="5"/><g fill="url(#tramGlass)" stroke="#182125" stroke-width="5"><rect x="48" y="40" width="53" height="43" rx="4"/><rect x="111" y="40" width="53" height="43" rx="4"/><rect x="174" y="40" width="53" height="43" rx="4"/><rect x="237" y="40" width="53" height="43" rx="4"/><rect x="300" y="40" width="53" height="43" rx="4"/></g><path d="M359 31h34q15 0 15 17v42h-49z" fill="#253136" stroke="#171c1e" stroke-width="5"/><rect x="364" y="38" width="36" height="40" rx="4" fill="#9eacaa" stroke="#20282b" stroke-width="4"/><rect x="25" y="93" width="380" height="8" fill="#963e36"/><rect x="25" y="104" width="380" height="6" fill="#d2c2a1"/><rect x="29" y="20" width="75" height="17" rx="2" fill="#171c1d"/><text x="66" y="32" text-anchor="middle" fill="#f1d9a7" font-size="10" font-family="Arial" letter-spacing="2">LINIE 4</text><rect x="300" y="112" width="82" height="17" fill="#171b1c"/><text x="341" y="124" text-anchor="middle" fill="#ead8b5" font-size="8" font-family="Arial" letter-spacing="1">EISENBRÜCK</text><circle cx="90" cy="133" r="17" fill="#111416" stroke="#66645d" stroke-width="6"/><circle cx="325" cy="133" r="17" fill="#111416" stroke="#66645d" stroke-width="6"/><path d="M16 89h-10v-17h10m400 17h8v-17h-8" fill="#d9c89f"/><path d="M387 80l16 7-16 7" fill="#d5b77d"/></svg></div>
    <div class="cyclist" aria-hidden="true"><svg viewBox="0 0 110 64"><circle cx="23" cy="48" r="13" fill="none" stroke="#17191b" stroke-width="4"/><circle cx="84" cy="48" r="13" fill="none" stroke="#17191b" stroke-width="4"/><path d="M23 48L43 24L58 48H23L38 30H66L84 48L70 20" fill="none" stroke="#b7a58b" stroke-width="3"/><circle cx="69" cy="10" r="6" fill="#b99c7d"/><path d="M67 17L55 29L68 34L78 23M55 29L43 24" fill="none" stroke="#353a3c" stroke-width="6" stroke-linecap="round"/></svg></div>
    <div class="loose-paper" aria-hidden="true"></div>
-   <div class="street-npc npc-a" aria-hidden="true"><i></i><b></b></div><div class="street-npc npc-b" aria-hidden="true"><i></i><b></b></div><div class="street-npc npc-c" aria-hidden="true"><i></i><b></b></div><div class="hero" id="hero" aria-label="Главный герой"><span class="head"></span><span class="hair"></span><span class="coat"></span><span class="scarf"></span><span class="leg left"></span><span class="leg right"></span></div>
+   <div class="street-npc npc-a" aria-hidden="true"><i></i><b></b></div><div class="street-npc npc-b" aria-hidden="true"><i></i><b></b></div><div class="street-npc npc-c" aria-hidden="true"><i></i><b></b></div><div class="hero" id="hero" data-state="idle" role="img" aria-label="Главный герой — следователь"><span class="shadow"></span><span class="head"></span><span class="hair"></span><span class="neck"></span><span class="coat"></span><span class="lapel"></span><span class="scarf"></span><span class="arm left"></span><span class="arm right"></span><span class="hand"></span><span class="leg left"></span><span class="leg right"></span><span class="shoe left"></span><span class="shoe right"></span></div>
    <button class="hotspot" data-target="bookshop" style="left:380px">Книжный магазин<small>ВИТРИНА</small></button>
    <button class="hotspot" data-target="kiosk" style="left:648px">Газетный киоск<small>ПОГОВОРИТЬ</small></button>
    <button class="hotspot" data-target="tramStop" style="left:980px">Остановка<small>РАСПИСАНИЕ</small></button>
@@ -251,7 +286,7 @@
 <script>
 (()=>{
 const $=id=>document.getElementById(id),world=$('world'),hero=$('hero'),stage=$('stage');
-const S={x:1120,dir:1,near:null,inside:false,dialogue:false,paper:false,coffee:false,minute:492,notes:[],camera:"wide"};
+const S={x:1120,dir:1,near:null,inside:false,dialogue:false,paper:false,coffee:false,minute:492,notes:[],camera:"wide",moving:false};
 try{S.notes=JSON.parse(localStorage.getItem('sz-autumn-prologue-v1')||'[]')}catch{}
 const O={bookshop:{x:380,label:'Книжный магазин',sub:'Осмотреть витрину'},kiosk:{x:648,label:'Газетный киоск',sub:'Поговорить с продавцом'},passerbyA:{x:820,label:'Прохожая',sub:'Перекинуться парой слов'},tramStop:{x:980,label:'Трамвайная остановка',sub:'Посмотреть расписание'},car:{x:1300,label:'Audi Q5',sub:'Осмотреть автомобиль'},passerbyB:{x:1570,label:'Пассажир',sub:'Поговорить'},cafe:{x:1745,label:'Кафе «24 часа»',sub:'Войти в кафе'}};
 const streetMoments=[
@@ -290,7 +325,7 @@ function updateNear(){
  if(S.near){$('contextBtn').childNodes[0].textContent=O[S.near].label;$('contextSub').textContent=O[S.near].sub}
  document.querySelectorAll('.hotspot').forEach(b=>b.classList.toggle('near',b.dataset.target===S.near));
 }
-function place(){hero.style.left=S.x+'px';hero.style.transform='translateX(-50%) scaleX('+S.dir+')';camera();updateNear()}
+function place(){hero.style.left=S.x+'px';hero.style.setProperty('--facing',String(S.dir));hero.dataset.state=S.moving?'walking':(S.dialogue||S.inside?'interacting':'idle');hero.style.transform='translateX(-50%) scaleX('+S.dir+')';camera();updateNear()}
 function dialogue(who,words,choices){
  S.dialogue=true;$('speaker').textContent=who;$('line').textContent=words;
  let host=$('dialogueActions');host.innerHTML='';
@@ -356,9 +391,9 @@ const keys=new Set();let joy=0,last=0;
 window.addEventListener('keydown',e=>{let k=e.key.toLowerCase();if(['arrowleft','arrowright','arrowup','arrowdown',' '].includes(k))e.preventDefault();if(k==='e'){nearby();return}if(k==='j'){$('journalBtn').click();return}keys.add(k)});
 window.addEventListener('keyup',e=>keys.delete(e.key.toLowerCase()));window.addEventListener('blur',()=>keys.clear());
 function frame(t){if(!last)last=t;let dt=Math.min((t-last)/1000,.04);last=t;let locked=!$('intro').hidden||!$('dialogue').hidden||!$('modal').hidden||!$('interior').hidden||!$('journal').hidden;
- if(!locked){let v=0;if(keys.has('a')||keys.has('arrowleft'))v--;if(keys.has('d')||keys.has('arrowright'))v++;v=Math.max(-1,Math.min(1,v+joy));if(v){S.x=Math.max(70,Math.min(2330,S.x+v*260*dt));S.dir=v>0?1:-1;hero.classList.add('walking')}else hero.classList.remove('walking');place()}
+ if(!locked){let v=0;if(keys.has('a')||keys.has('arrowleft'))v--;if(keys.has('d')||keys.has('arrowright'))v++;v=Math.max(-1,Math.min(1,v+joy));S.moving=!!v;if(v){S.x=Math.max(70,Math.min(2330,S.x+v*260*dt));S.dir=v>0?1:-1}place()}else{S.moving=false;place()}
  requestAnimationFrame(frame)}
-function place(){hero.style.left=S.x+'px';hero.style.transform='translateX(-50%) scaleX('+S.dir+')';camera();updateNear()}
+function place(){hero.style.left=S.x+'px';hero.style.setProperty('--facing',String(S.dir));hero.dataset.state=S.moving?'walking':(S.dialogue||S.inside?'interacting':'idle');hero.style.transform='translateX(-50%) scaleX('+S.dir+')';camera();updateNear()}
 const joypad=$('joystick'),stick=$('stick');let pointer=null;
 function moveStick(e){let r=joypad.getBoundingClientRect(),dx=e.clientX-(r.left+r.width/2),dy=e.clientY-(r.top+r.height/2);joy=Math.max(-1,Math.min(1,dx/42));stick.style.transform='translate('+Math.max(-32,Math.min(32,dx))+'px,'+Math.max(-18,Math.min(18,dy))+'px)'}
 joypad.addEventListener('pointerdown',e=>{pointer=e.pointerId;joypad.setPointerCapture(pointer);moveStick(e)});
