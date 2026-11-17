@@ -129,3 +129,22 @@ Their names resemble three applied migrations, but their timestamp prefixes do *
 ## Status
 
 **Inventory complete; reconciliation not yet complete.** No production or QA state was modified.
+
+
+## Snapshot archive completed — 2026-11-17 follow-up
+
+All **20 currently active Edge Function sources** were retrieved from Supabase and archived under:
+
+`docs/architecture/supabase-live-edge-functions/2026-11-17/<function_slug>/index.ts`
+
+This is a documentation-only snapshot. It is deliberately outside `supabase/functions`, so it is not a deployable source tree and cannot be mistaken for code ready to deploy. No function was redeployed or changed in Supabase.
+
+### Source comparison for the three existing deployable function files
+
+- `player_material_catalog`: tracked source matches the live snapshot byte-for-byte.
+- `submit_puzzle_answer`: tracked source matches the live snapshot byte-for-byte.
+- `get_investigation_state`: tracked source differs from the live snapshot (13,617 vs 14,278 characters). It must be reviewed before deciding which source is canonical; no automatic overwrite was made.
+
+### Updated status
+
+**Live Edge Function source snapshot complete; migration reconciliation remains open.** The migration history still contains 46 applied entries while only three migration SQL files are tracked. No production or QA state was modified.
