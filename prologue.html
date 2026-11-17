@@ -154,6 +154,37 @@
 .npc-c:before{background:linear-gradient(#7a766e 0 28%,#b99d7e 29% 100%)}
 .npc-c:after{height:38px;background:linear-gradient(90deg,#343c45,#59616a 50%,#343c45)}
 
+
+/* Motion pass v0.4 — grounded gait, coat follow-through and readable pedestrian pauses */
+.hero[data-state="walking"] .leg.left{animation:heroStrideLeft .42s ease-in-out infinite}
+.hero[data-state="walking"] .leg.right{animation:heroStrideRight .42s ease-in-out infinite}
+.hero[data-state="walking"] .shoe.left{animation:shoeStrideLeft .42s ease-in-out infinite}
+.hero[data-state="walking"] .shoe.right{animation:shoeStrideRight .42s ease-in-out infinite}
+.hero[data-state="walking"] .arm.left{animation:heroArmLeft .42s ease-in-out infinite}
+.hero[data-state="walking"] .arm.right{animation:heroArmRight .42s ease-in-out infinite}
+.hero[data-state="walking"] .coat{animation:coatSway .84s ease-in-out infinite}
+.hero[data-state="walking"] .scarf{animation:scarfStep .55s ease-in-out infinite}
+.hero[data-state="interacting"] .arm.right{transform:rotate(-18deg)}
+.hero[data-state="interacting"] .head{transform:translateY(-1px) rotate(-4deg)}
+@keyframes heroStrideLeft{0%,100%{transform:rotate(15deg)}50%{transform:rotate(-19deg)}}
+@keyframes heroStrideRight{0%,100%{transform:rotate(-19deg)}50%{transform:rotate(15deg)}}
+@keyframes shoeStrideLeft{0%,100%{translate:5px 0;rotate:12deg}50%{translate:-4px -2px;rotate:-10deg}}
+@keyframes shoeStrideRight{0%,100%{translate:-4px -2px;rotate:-10deg}50%{translate:5px 0;rotate:12deg}}
+@keyframes heroArmLeft{0%,100%{transform:rotate(-17deg)}50%{transform:rotate(18deg)}}
+@keyframes heroArmRight{0%,100%{transform:rotate(18deg)}50%{transform:rotate(-17deg)}}
+@keyframes coatSway{0%,100%{translate:0 0}50%{translate:0 1px}}
+@keyframes scarfStep{0%,100%{transform:rotate(-4deg) translateX(0)}50%{transform:rotate(2deg) translateX(2px)}}
+/* A pedestrian really pauses instead of sliding through the scene while "idle". */
+.street-npc[data-state="idle"]{animation-play-state:paused}
+.street-npc[data-state="walking"]{animation-play-state:running}
+.street-npc[data-state="idle"]:before{transform:rotate(-3deg);filter:brightness(.96)}
+.street-npc[data-state="walking"]:before{animation:npcHeadBob .48s ease-in-out infinite alternate}
+.street-npc[data-state="walking"]:after{animation:npcCoatStep .48s ease-in-out infinite alternate}
+.street-npc[data-state="walking"] b{animation:npcArm .48s ease-in-out infinite alternate}
+@keyframes npcHeadBob{to{translate:0 -1px}}
+@keyframes npcCoatStep{to{transform:skewX(2deg);filter:brightness(1.08)}}
+@media(prefers-reduced-motion:reduce){.hero[data-state],.hero[data-state] *, .street-npc[data-state],.street-npc[data-state] *{animation:none!important}}
+
 </style>
 </head>
 <body>
