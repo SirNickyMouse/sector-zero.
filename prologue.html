@@ -35,11 +35,26 @@
 .ambient-note.show{opacity:1;transform:translateX(-50%) translateY(0)}
 @media(max-width:700px){.cyclist{width:82px;height:48px;bottom:19%}.loose-paper{bottom:25%;width:10px;height:14px}.ambient-note{top:105px;font-size:11px;max-width:calc(100% - 24px)}}
 
+
+/* Eisenbruck day rhythm */
+.day-shade{position:absolute;inset:0;z-index:3;pointer-events:none;opacity:0;transition:background 5s ease,opacity 5s ease}
+.world[data-period="morning"] .day-shade{opacity:.12;background:linear-gradient(115deg,#d6a66b55,#d5c6a522 55%,#536b7a33)}
+.world[data-period="day"] .day-shade{opacity:0}
+.world[data-period="evening"] .day-shade{opacity:.34;background:linear-gradient(115deg,#c47b4a88,#8d604b55 55%,#27374766)}
+.world[data-period="night"] .day-shade{opacity:.62;background:linear-gradient(115deg,#101a2cbb,#17233799 55%,#080f1cdd)}
+.world[data-period="evening"] svg[aria-label="Осенняя улица Эйзенбрука после дождя"],
+.world[data-period="night"] svg[aria-label="Осенняя улица Эйзенбрука после дождя"]{filter:brightness(.78) saturate(.78);transition:filter 5s ease}
+.world[data-period="morning"] svg[aria-label="Осенняя улица Эйзенбрука после дождя"]{filter:sepia(.12) brightness(1.04);transition:filter 5s ease}
+.world[data-period="day"] svg[aria-label="Осенняя улица Эйзенбрука после дождя"]{filter:none;transition:filter 5s ease}
+.world[data-period="night"] .street-npc{filter:brightness(.78) drop-shadow(0 5px 5px #0009)}
+.world[data-period="night"] .ambient-note{background:#090e18e8;border-color:#7788a055}
+.time-label{color:var(--gold);font-size:9px;letter-spacing:1.5px;margin-left:2px}
+@media(max-width:700px){.time-label{display:none}}
 </style>
 </head>
 <body>
 <div class="game">
-<header class="topbar"><div class="brand">СЕКТОР НОЛЬ<small>ИНТЕРАКТИВНАЯ ДЕТЕКТИВНАЯ НОВЕЛЛА</small></div><div class="hud"><span class="date">СРЕДА · 14 ОКТЯБРЯ</span><span id="clock">08:12</span><div class="camera-controls" aria-label="Ракурс камеры"><button id="cameraWide" class="active">ОБЩИЙ</button><button id="cameraFollow">СЛЕДОМ</button><button id="cameraClose">БЛИЖЕ</button></div><button class="quiet-btn" id="journalBtn">Блокнот <span id="count">0</span></button></div></header>
+<header class="topbar"><div class="brand">СЕКТОР НОЛЬ<small>ИНТЕРАКТИВНАЯ ДЕТЕКТИВНАЯ НОВЕЛЛА</small></div><div class="hud"><span class="date">СРЕДА · 14 ОКТЯБРЯ</span><span id="clock">08:12</span><span class="time-label" id="periodLabel">УТРО</span><div class="camera-controls" aria-label="Ракурс камеры"><button id="cameraWide" class="active">ОБЩИЙ</button><button id="cameraFollow">СЛЕДОМ</button><button id="cameraClose">БЛИЖЕ</button></div><button class="quiet-btn" id="journalBtn">Блокнот <span id="count">0</span></button></div></header>
 <main class="stage" id="stage">
  <div class="viewport" id="viewport">
   <div class="world" id="world">
@@ -100,10 +115,10 @@
    <button class="hotspot" data-target="passerbyA" style="left:820px">Прохожая<small>ПОГОВОРИТЬ</small></button>
    <button class="hotspot" data-target="passerbyB" style="left:1570px">Пассажир<small>ПОГОВОРИТЬ</small></button>
    <button class="hotspot" data-target="cafe" style="left:1745px">Кафе «24 часа»<small>ЗАЙТИ</small></button>
-   <div class="mist"></div><div class="rain"></div><div class="vignette"></div>
+   <div class="day-shade" aria-hidden="true"></div><div class="mist"></div><div class="rain"></div><div class="vignette"></div>
   </div>
  </div>
- <div class="scene-title"><strong>УТРО В ЭЙЗЕНБРУКЕ</strong><span>ЦЕНТРАЛЬНЫЙ РАЙОН · ОСЕНЬ</span></div>
+ <div class="scene-title"><strong>УТРО В ЭЙЗЕНБРУКЕ</strong><span id="scenePeriod">ЦЕНТРАЛЬНЫЙ РАЙОН · УТРО</span></div>
  <div class="objective"><b>СЕЙЧАС</b><span id="objective">Оглядеться и начать утро привычным образом.</span></div>
  <div class="camera-note">КАМЕРА СЛЕДУЕТ ЗА ГЕРОЕМ</div>
  <div class="bottom-ui"><div class="hint" id="hint">WASD / стрелки — движение · E — взаимодействие</div><button class="context" id="contextBtn">Осмотреть<small id="contextSub">рядом</small></button></div>
@@ -120,7 +135,7 @@
 <script>
 (()=>{
 const $=id=>document.getElementById(id),world=$('world'),hero=$('hero'),stage=$('stage');
-const S={x:1120,dir:1,near:null,inside:false,dialogue:false,paper:false,coffee:false,minute:12,notes:[],camera:"wide"};
+const S={x:1120,dir:1,near:null,inside:false,dialogue:false,paper:false,coffee:false,minute:492,notes:[],camera:"wide"};
 try{S.notes=JSON.parse(localStorage.getItem('sz-autumn-prologue-v1')||'[]')}catch{}
 const O={bookshop:{x:380,label:'Книжный магазин',sub:'Осмотреть витрину'},kiosk:{x:648,label:'Газетный киоск',sub:'Поговорить с продавцом'},passerbyA:{x:820,label:'Прохожая',sub:'Перекинуться парой слов'},tramStop:{x:980,label:'Трамвайная остановка',sub:'Посмотреть расписание'},car:{x:1300,label:'Audi Q5',sub:'Осмотреть автомобиль'},passerbyB:{x:1570,label:'Пассажир',sub:'Поговорить'},cafe:{x:1745,label:'Кафе «24 часа»',sub:'Войти в кафе'}};
 const streetMoments=[
@@ -234,9 +249,21 @@ joypad.addEventListener('pointerdown',e=>{pointer=e.pointerId;joypad.setPointerC
 joypad.addEventListener('pointermove',e=>{if(pointer===e.pointerId)moveStick(e)});
 function stop(e){if(pointer===e.pointerId){pointer=null;joy=0;stick.style.transform='translate(0,0)'}}
 joypad.addEventListener('pointerup',stop);joypad.addEventListener('pointercancel',stop);
-function tick(){S.minute++;$('clock').textContent=String(8+Math.floor(S.minute/60)).padStart(2,'0')+':'+String(S.minute%60).padStart(2,'0')}
-setInterval(()=>{if($('intro').hidden&&$('dialogue').hidden&&$('modal').hidden&&$('interior').hidden)tick()},18000);
-window.addEventListener('resize',camera);save();place();requestAnimationFrame(frame);
+function updateWorldTime(){
+ const minutes=S.minute%(24*60),hour=Math.floor(minutes/60),minute=minutes%60;
+ $('clock').textContent=String(hour).padStart(2,'0')+':'+String(minute).padStart(2,'0');
+ let period='day',label='ДЕНЬ';
+ if(hour>=5&&hour<11){period='morning';label='УТРО'}
+ else if(hour>=17&&hour<21){period='evening';label='ВЕЧЕР'}
+ else if(hour>=21||hour<5){period='night';label='НОЧЬ'}
+ world.dataset.period=period;
+ $('periodLabel').textContent=label;
+ const subtitle=$('scenePeriod');
+ if(subtitle)subtitle.textContent='ЦЕНТРАЛЬНЫЙ РАЙОН · '+label;
+}
+function tick(){S.minute=(S.minute+1)%(24*60);updateWorldTime()}
+setInterval(()=>{if($('intro').hidden)tick()},3000);
+window.addEventListener('resize',camera);updateWorldTime();save();place();requestAnimationFrame(frame);
 })();
 </script>
 </body>
