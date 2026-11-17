@@ -87,73 +87,98 @@
 </div>
 <script>
 (()=>{
- const $=id=>document.getElementById(id);
- const world=$('world'),hero=$('hero'),stage=$('stage'),viewport=$('viewport');
- const state={x:1120,dir:1,near:null,dialogue:false,inside:null,coffee:false,paper:false,read:false,minute:12,notes:[],lastThought:0};
- try{state.notes=JSON.parse(localStorage.getItem('sz-autumn-prologue-v1')||'[]')}catch{}
- const objects={
-  bookshop:{x:380,label:'Книжный магазин',sub:'Осмотреть витрину',text:'За стеклом — новые романы, несколько книг по истории Эйзенбрука и старые городские альбомы. Владелец ещё не открылся.'},
-  kiosk:{x:648,label:'Газетный киоск',sub:'Поговорить с продавцом',text:'За прилавком пожилой продавец раскладывает свежие газеты. Он замечает тебя и кивает.'},
-  car:{x:1300,label:'Audi Q5',sub:'Осмотреть автомобиль',text:'Графитовый кузов покрыт мелкими каплями. Машина выглядит ухоженной. На пассажирском сиденье лежит сложенная карта Эйзенбрука.'},
-  cafe:{x:1745,label:'Кафе «24 часа»',sub:'Войти в кафе',text:'За большими окнами уже горит тёплый свет. Бариста протирает стойку, у окна свободен столик.'}
- };
- function save(){localStorage.setItem('sz-autumn-prologue-v1',JSON.stringify(state.notes));$('count').textContent=state.notes.length}
- function note(title,text){if(!state.notes.some(n=>n.title===title)){state.notes.unshift({title,text,time:$('clock').textContent});save();toast('Запись добавлена в блокнот');}}
- function toast(text){$('toast').textContent=text;$('toast').classList.add('show');setTimeout(()=>$('toast').classList.remove('show'),2200)}
- function camera(){const w=stage.clientWidth;const max=2400-w;const offset=Math.max(0,Math.min(max,state.x-w*.5));world.style.transform='translateX('+(-offset)+'px)';}
- function placeHero(){hero.style.left=state.x+'px';hero.style.transform='translateX(-50%) scaleX('+state.dir+')';camera();updateNear()}
- function updateNear(){
-  let found=null,dist=Infinity;
-  for(const [id,o] of Object.entries(objects)){const d=Math.abs(state.x-o.x);if(d<dist){dist=d;found=id}}
-  state.near=dist<150?found:null;
-  $('contextBtn').classList.toggle('show',!!state.near&&!state.inside&&!state.dialogue);
-  if(state.near){$('contextBtn').childNodes[0].textContent=objects[state.near].label;$('contextSub').textContent=objects[state.near].sub}
-  document.querySelectorAll('.hotspot').forEach(b=>b.classList.toggle('near',b.dataset.target===state.near));
- }
- function openDialogue(speaker,text,actions){state.dialogue=true;$('speaker').textContent=speaker;$('line').textContent=text;const host=$('dialogueActions');host.innerHTML='';for(const [label,fn] of actions){const b=document.createElement('button');b.className='action-btn';b.textContent=label;b.onclick=fn;host.append(b)}$('dialogue').hidden=false;updateNear()}
- function closeDialogue(){state.dialogue=false;$('dialogue').hidden=true;updateNear()}
- function showModal(html){$('modalContent').innerHTML=html;$('modal').hidden=false}
- function closeModal(){$('modal').hidden=true}
- function interior(title,text,actions){state.inside=title;$('interiorTitle').textContent=title;$('interiorText').textContent=text;$('interiorKicker').textContent='ЭЙЗЕНБРУК · ОСЕНЬ';const host=$('interiorActions');host.innerHTML='';for(const [label,fn] of actions){const b=document.createElement('button');b.className='action-btn';b.textContent=label;b.onclick=fn;host.append(b)}$('interior').hidden=false;updateNear()}
- function leaveInterior(){state.inside=null;$('interior').hidden=true;updateNear()}
- function interact(id){if(!id)return;const o=objects[id];if(!o)return;
-  if(id==='bookshop'){openDialogue('ВНУТРЕННИЙ ГОЛОС',o.text,[['Отойти',closeDialogue]]);return}
-  if(id==='car'){openDialogue('ВНУТРЕННИЙ ГОЛОС',o.text+' Карта сложена так, что виден только северный берег реки.',[['Осмотреть карту',()=>{note('Карта в автомобиле','На пассажирском сиденье лежит карта Эйзенбрука. Видна часть северного берега и старый железный мост.');openDialogue('ЗАМЕТКА', 'На карте есть карандашная отметка возле старого железного моста. Пока непонятно, кто и когда её поставил.',[['Закрыть',closeDialogue]])}],['Закрыть',closeDialogue]]);return}
-  if(id==='kiosk'){interior('Газетный киоск','Свежий выпуск «Городского вестника». Продавец придерживает стопку газет ладонью, чтобы ветер не перелистнул страницы.',[['Поговорить с продавцом',()=>openDialogue('ПРОДАВЕЦ КИОСКА','— Доброе утро. Сегодня город проснулся раньше обычного. Газету берёте?', [['Купить газету',()=>{state.paper=true;note('Газета · выпуск № 184','Куплен утренний выпуск «Городского вестника», № 184.');showPaper()}],['Спросить о городе',()=>openDialogue('ПРОДАВЕЦ КИОСКА','— Да всё как всегда. Только типография опять прислала странную корректуру. Не моё дело, конечно.',[['Купить газету',()=>{state.paper=true;note('Газета · выпуск № 184','Куплен утренний выпуск «Городского вестника», № 184.');showPaper()}],['Попрощаться',()=>{$('interior').hidden=false;closeDialogue()}]])],['Посмотреть газеты',()=>{openDialogue('ВНУТРЕННИЙ ГОЛОС','Свежая бумага ещё пахнет типографской краской. На верхнем экземпляре заметна красная метка возле последней полосы.',[['Купить выпуск',()=>{state.paper=true;note('Газета · выпуск № 184','Куплен утренний выпуск «Городского вестника», № 184.');showPaper()}],['Назад',()=>{$('interior').hidden=false;closeDialogue()}]])}]]),['Осмотреть витрину',()=>openDialogue('ВНУТРЕННИЙ ГОЛОС','Газеты разложены по датам. Один экземпляр лежит отдельно, словно его отложили для кого-то.',[['Вернуться',()=>{$('interior').hidden=false;closeDialogue()}]])],['Выйти на улицу',leaveInterior]])}
-  if(id==='cafe'){interior('Кафе «24 часа»','Внутри пахнет свежемолотым кофе и тёплым деревом. За окном трамвай скользит по мокрым рельсам. У окна свободен столик.',[['Заказать кофе',()=>{state.coffee=true;note('Кафе · утренний кофе','Заказан чёрный кофе. Бариста узнаёт героя и помнит его привычный заказ.');openDialogue('БАРИСТА','— Чёрный, как обычно? Сейчас будет. Сегодня утром опять звонили из типографии. Странные у них дела.',[['Сесть у окна',()=>{openDialogue('ВНУТРЕННИЙ ГОЛОС','Кофе горячий. На стекле медленно ползут дождевые капли. Газетный киоск виден через дорогу.',[['Почитать газету',()=>{if(state.paper){state.read=true;note('Газета прочитана','На последней полосе опубликовано короткое объявление: «Пятый экземпляр не уничтожен. Тот, кто знает дату, поймёт». Подписи нет.');showPaper()}else{openDialogue('ВНУТРЕННИЙ ГОЛОС','Сначала стоит купить свежий выпуск в киоске. Утренний ритуал ещё не завершён.',[['Хорошо',closeDialogue]])}}],['Выйти на улицу',leaveInterior]])],['Выйти на улицу',leaveInterior]])],['Выбрать столик',()=>openDialogue('ВНУТРЕННИЙ ГОЛОС','У окна можно наблюдать за улицей, в глубине зала тише. Сегодня ты выбираешь место у окна.',[['Сесть',()=>openDialogue('ВНУТРЕННИЙ ГОЛОС','С улицы доносится звонок трамвая. Кафе постепенно наполняется людьми.',[['Заказать кофе',()=>{state.coffee=true;note('Кафе · утренний кофе','Заказан чёрный кофе.');closeDialogue()}],['Выйти',leaveInterior]])]])],['Выйти на улицу',leaveInterior]])}
- }
- function showPaper(){showModal('<div class="paper"><div class="date">ЭЙЗЕНБРУК · СРЕДА, 14 ОКТЯБРЯ · ВЫПУСК № 184</div><h2>ГОРОДСКОЙ ВЕСТНИК</h2><h3>ТИПОГРАФИЯ ВЕРНЁТСЯ К СТАРОМУ АРХИВУ</h3><p>Городская типография подтвердила, что на следующей неделе начнёт разбирать часть старых печатных материалов, оставшихся после переезда редакции. Представитель предприятия отказался уточнять, какие именно документы вошли в список.</p><p>В администрации сообщили, что речь идёт о плановой инвентаризации. Бывшие сотрудники редакции пока не комментируют новость.</p><div class="classified"><b>ОБЪЯВЛЕНИЕ НА ПОСЛЕДНЕЙ ПОЛОСЕ</b><p>«Пятый экземпляр не уничтожен. Тот, кто знает дату, поймёт».</p><p><i>Без подписи. Без обратного адреса.</i></p></div></div><div class="dialogue-actions" style="margin-top:14px"><button class="action-btn" id="paperSave">Записать в блокнот</button><button class="action-btn" id="paperClose">Закрыть газету</button></div>');
-  $('paperSave').onclick=()=>{note('Объявление · «Пятый экземпляр»','На последней полосе выпуска № 184 опубликовано анонимное объявление: «Пятый экземпляр не уничтожен. Тот, кто знает дату, поймёт».');state.read=true;closeModal();$('objective').textContent='Разобраться, что означает объявление на последней полосе.';toast('Первая зацепка сохранена. История началась.')};
-  $('paperClose').onclick=closeModal;
- }
- function nearbyInteract(){if(state.near)interact(state.near)}
- $('contextBtn').onclick=nearbyInteract;
- document.querySelectorAll('.hotspot').forEach(b=>b.addEventListener('click',()=>{const id=b.dataset.target;state.x=objects[id].x-85;placeHero();interact(id)}));
- $('start').onclick=()=>{$('intro').hidden=true;openDialogue('СЛЕДОВАТЕЛЬ · ВНУТРЕННИЙ ГОЛОС','Эйзенбрук. Среда, четырнадцатое октября. Дождь закончился совсем недавно. Кофе и газета — хороший способ начать день. Если город приготовил что-то новое, он обычно не спешит рассказывать об этом первым.',[['Осмотреться',closeDialogue]])};
- $('dialogueClose').onclick=closeDialogue;
- $('journalBtn').onclick=()=>{$('entries').innerHTML=state.notes.length?state.notes.map(n=>'<div class="notebook-entry"><b>'+escapeHtml(n.title)+'</b><p>'+escapeHtml(n.text)+'</p><small>'+escapeHtml(n.time)+'</small></div>').join(''):'<p>Пока записей нет.</p>';$('journal').hidden=false};
- $('journalClose').onclick=()=>$('journal').hidden=true;
- function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
- const keys=new Set();let joy=0,raf=0,last=0;
- function keydown(e){if(['ArrowLeft','ArrowRight','ArrowUp','ArrowDown',' '].includes(e.key))e.preventDefault();if(e.key.toLowerCase()==='e'){nearbyInteract();return}if(e.key.toLowerCase()==='j'){$('journalBtn').click();return}keys.add(e.key.toLowerCase())}
- function keyup(e){keys.delete(e.key.toLowerCase())}
- window.addEventListener('keydown',keydown);window.addEventListener('keyup',keyup);window.addEventListener('blur',()=>keys.clear());
- function loop(t){if(!last)last=t;const dt=Math.min((t-last)/1000,.04);last=t;
-  if(!$('intro').hidden===false && !$('dialogue').hidden===false){} 
-  const locked=!$('intro').hidden||!$('dialogue').hidden||!$('modal').hidden||!$('interior').hidden||!$('journal').hidden;
-  if(!locked){let v=0;if(keys.has('a')||keys.has('arrowleft'))v-=1;if(keys.has('d')||keys.has('arrowright'))v+=1;v+=joy;if(v>1)v=1;if(v< -1)v=-1;if(v){state.x=Math.max(70,Math.min(2330,state.x+v*260*dt));state.dir=v>0?1:-1;hero.classList.add('walking')}else hero.classList.remove('walking');placeHero()}
-  raf=requestAnimationFrame(loop)
- }
- function resize(){camera()}window.addEventListener('resize',resize);
- const joystick=$('joystick'),stick=$('stick');let pointer=null;
- joystick.addEventListener('pointerdown',e=>{pointer=e.pointerId;joystick.setPointerCapture(pointer);moveStick(e)});
- joystick.addEventListener('pointermove',e=>{if(pointer===e.pointerId)moveStick(e)});
- function moveStick(e){const r=joystick.getBoundingClientRect(),cx=r.left+r.width/2,dx=e.clientX-cx;joy=Math.max(-1,Math.min(1,dx/42));stick.style.transform='translate('+Math.max(-32,Math.min(32,dx))+'px,'+Math.max(-18,Math.min(18,e.clientY-(r.top+r.height/2)))+'px)'}
- function stopStick(e){if(pointer===e.pointerId){pointer=null;joy=0;stick.style.transform='translate(0,0)'}}
- joystick.addEventListener('pointerup',stopStick);joystick.addEventListener('pointercancel',stopStick);
- function tickClock(){state.minute++;const h=8+Math.floor(state.minute/60),m=state.minute%60;$('clock').textContent=String(h).padStart(2,'0')+':'+String(m).padStart(2,'0')}
- setInterval(()=>{if($('intro').hidden&&$('dialogue').hidden&&$('modal').hidden&&$('interior').hidden)tickClock()},18000);
- save();placeHero();requestAnimationFrame(loop);
+const $=id=>document.getElementById(id),world=$('world'),hero=$('hero'),stage=$('stage');
+const S={x:1120,dir:1,near:null,inside:false,dialogue:false,paper:false,coffee:false,minute:12,notes:[]};
+try{S.notes=JSON.parse(localStorage.getItem('sz-autumn-prologue-v1')||'[]')}catch{}
+const O={bookshop:{x:380,label:'Книжный магазин',sub:'Осмотреть витрину'},kiosk:{x:648,label:'Газетный киоск',sub:'Поговорить с продавцом'},car:{x:1300,label:'Audi Q5',sub:'Осмотреть автомобиль'},cafe:{x:1745,label:'Кафе «24 часа»',sub:'Войти в кафе'}};
+function save(){localStorage.setItem('sz-autumn-prologue-v1',JSON.stringify(S.notes));$('count').textContent=S.notes.length}
+function note(title,text){if(S.notes.some(n=>n.title===title))return;S.notes.unshift({title,text,time:$('clock').textContent});save();toast('Запись добавлена в блокнот')}
+function toast(t){$('toast').textContent=t;$('toast').classList.add('show');setTimeout(()=>$('toast').classList.remove('show'),2200)}
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function camera(){let off=Math.max(0,Math.min(2400-stage.clientWidth,S.x-stage.clientWidth*.5));world.style.transform='translateX('+(-off)+'px)'}
+function updateNear(){
+ let id=null,dmin=9999;
+ Object.keys(O).forEach(k=>{let d=Math.abs(S.x-O[k].x);if(d<dmin){dmin=d;id=k}});
+ S.near=dmin<145?id:null;
+ $('contextBtn').classList.toggle('show',!!S.near&&!S.inside&&!S.dialogue);
+ if(S.near){$('contextBtn').childNodes[0].textContent=O[S.near].label;$('contextSub').textContent=O[S.near].sub}
+ document.querySelectorAll('.hotspot').forEach(b=>b.classList.toggle('near',b.dataset.target===S.near));
+}
+function place(){hero.style.left=S.x+'px';hero.style.transform='translateX(-50%) scaleX('+S.dir+')';camera();updateNear()}
+function dialogue(who,words,choices){
+ S.dialogue=true;$('speaker').textContent=who;$('line').textContent=words;
+ let host=$('dialogueActions');host.innerHTML='';
+ choices.forEach(c=>{let b=document.createElement('button');b.className='action-btn';b.textContent=c[0];b.onclick=c[1];host.append(b)});
+ $('dialogue').hidden=false;updateNear();
+}
+function closeDialogue(){S.dialogue=false;$('dialogue').hidden=true;updateNear()}
+function interior(title,words,choices){
+ S.inside=true;$('interiorTitle').textContent=title;$('interiorText').textContent=words;
+ $('interiorKicker').textContent='ЭЙЗЕНБРУК · ОСЕНЬ';
+ let host=$('interiorActions');host.innerHTML='';
+ choices.forEach(c=>{let b=document.createElement('button');b.className='action-btn';b.textContent=c[0];b.onclick=c[1];host.append(b)});
+ $('interior').hidden=false;updateNear();
+}
+function leave(){S.inside=false;$('interior').hidden=true;updateNear()}
+function newspaper(){
+ $('modalContent').innerHTML='<div class="paper"><div class="date">ЭЙЗЕНБРУК · СРЕДА, 14 ОКТЯБРЯ · ВЫПУСК № 184</div><h2>ГОРОДСКОЙ ВЕСТНИК</h2><h3>ТИПОГРАФИЯ ВЕРНЁТСЯ К СТАРОМУ АРХИВУ</h3><p>Городская типография подтвердила, что на следующей неделе начнёт разбирать часть старых печатных материалов, оставшихся после переезда редакции. Представитель предприятия отказался уточнять, какие именно документы вошли в список.</p><p>В администрации сообщили, что речь идёт о плановой инвентаризации. Бывшие сотрудники редакции пока не комментируют новость.</p><div class="classified"><b>ОБЪЯВЛЕНИЕ НА ПОСЛЕДНЕЙ ПОЛОСЕ</b><p>«Пятый экземпляр не уничтожен. Тот, кто знает дату, поймёт».</p><p><i>Без подписи. Без обратного адреса.</i></p></div></div><div class="dialogue-actions" style="margin-top:14px"><button class="action-btn" id="paperSave">Записать в блокнот</button><button class="action-btn" id="paperClose">Закрыть газету</button></div>';
+ $('modal').hidden=false;
+ $('paperSave').onclick=()=>{note('Объявление · «Пятый экземпляр»','На последней полосе выпуска № 184 опубликовано анонимное объявление: «Пятый экземпляр не уничтожен. Тот, кто знает дату, поймёт».');$('modal').hidden=true;$('objective').textContent='Разобраться, что означает объявление на последней полосе.';toast('Первая зацепка сохранена. История началась.')};
+ $('paperClose').onclick=()=>$('modal').hidden=true;
+}
+function buy(){S.paper=true;note('Газета · выпуск № 184','Куплен утренний выпуск «Городского вестника», № 184.');newspaper()}
+function sit(){
+ if(!S.coffee){dialogue('ВНУТРЕННИЙ ГОЛОС','Сначала кофе. Утро должно начинаться в правильном порядке.',[['Заказать кофе',orderCoffee],['Назад',closeDialogue]]);return}
+ dialogue('ВНУТРЕННИЙ ГОЛОС','Кофе горячий. На стекле медленно ползут дождевые капли. Газетный киоск виден через дорогу.',[
+ ['Почитать газету',()=>{if(S.paper)newspaper();else dialogue('ВНУТРЕННИЙ ГОЛОС','Сначала стоит купить свежий выпуск в киоске.',[['Хорошо',closeDialogue]])}],
+ ['Посмотреть на улицу',()=>dialogue('ВНУТРЕННИЙ ГОЛОС','Трамвай уходит за угол. Киоск уже окружили первые покупатели. Город постепенно наполняется голосами.',[['Остаться',closeDialogue]])],
+ ['Выйти',()=>{closeDialogue();leave()}]
+ ]);
+}
+function orderCoffee(){S.coffee=true;note('Кафе · утренний кофе','Заказан чёрный кофе. Бариста помнит привычный заказ героя.');dialogue('БАРИСТА','— Чёрный, как обычно? Сейчас будет. Сегодня утром опять звонили из типографии. Странные у них дела.',[['Сесть у окна',sit],['Поблагодарить',closeDialogue]])}
+function kiosk(){
+ interior('Газетный киоск','Свежий выпуск «Городского вестника». Продавец придерживает стопку газет ладонью, чтобы ветер не перелистнул страницы.',[
+ ['Поговорить с продавцом',()=>dialogue('ПРОДАВЕЦ КИОСКА','— Доброе утро. Сегодня город проснулся раньше обычного. Газету берёте?',[['Купить газету',buy],['Спросить о городе',()=>dialogue('ПРОДАВЕЦ КИОСКА','— Да всё как всегда. Только типография опять прислала странную корректуру. Не моё дело, конечно.',[['Купить выпуск',buy],['Попрощаться',closeDialogue]])],['Попрощаться',closeDialogue]])],
+ ['Осмотреть стопку',()=>dialogue('ВНУТРЕННИЙ ГОЛОС','Свежая бумага ещё пахнет типографской краской. На верхнем экземпляре заметна красная метка возле последней полосы.',[['Купить выпуск',buy],['Назад',closeDialogue]])],
+ ['Выйти на улицу',leave]
+ ]);
+}
+function cafe(){
+ interior('Кафе «24 часа»','Внутри пахнет свежемолотым кофе и тёплым деревом. За окном трамвай скользит по мокрым рельсам. У окна свободен столик.',[
+ ['Заказать чёрный кофе',orderCoffee],['Выбрать столик у окна',sit],['Выйти на улицу',leave]
+ ]);
+}
+function interact(id){
+ if(id==='bookshop')dialogue('ВНУТРЕННИЙ ГОЛОС','За стеклом — новые романы, несколько книг по истории Эйзенбрука и старые городские альбомы. Владелец ещё не открылся.',[['Отойти',closeDialogue]]);
+ if(id==='kiosk')kiosk();
+ if(id==='cafe')cafe();
+ if(id==='car')dialogue('ВНУТРЕННИЙ ГОЛОС','Графитовый Audi Q5 покрыт мелкими каплями. Машина выглядит ухоженной. На пассажирском сиденье лежит сложенная карта Эйзенбрука.',[
+ ['Осмотреть карту',()=>{note('Карта в автомобиле','На пассажирском сиденье лежит карта Эйзенбрука. Видна часть северного берега и старый железный мост.');dialogue('ВНУТРЕННИЙ ГОЛОС','На карте есть карандашная отметка возле старого железного моста. Пока непонятно, кто и когда её поставил.',[['Закрыть',closeDialogue]])}],
+ ['Закрыть',closeDialogue]
+ ]);
+}
+function nearby(){if(S.near)interact(S.near)}
+$('contextBtn').onclick=nearby;
+document.querySelectorAll('.hotspot').forEach(b=>b.onclick=()=>toast('Подойди ближе, чтобы взаимодействовать: '+O[b.dataset.target].label));
+$('start').onclick=()=>{$('intro').hidden=true;dialogue('СЛЕДОВАТЕЛЬ · ВНУТРЕННИЙ ГОЛОС','Эйзенбрук. Среда, четырнадцатое октября. Дождь закончился совсем недавно. Кофе и газета — хороший способ начать день. Если город приготовил что-то новое, он обычно не спешит рассказывать об этом первым.',[['Осмотреться',closeDialogue]])};
+$('journalBtn').onclick=()=>{$('entries').innerHTML=S.notes.length?S.notes.map(n=>'<div class="notebook-entry"><b>'+esc(n.title)+'</b><p>'+esc(n.text)+'</p><small>'+esc(n.time)+'</small></div>').join(''):'<p>Пока записей нет.</p>';$('journal').hidden=false};
+$('journalClose').onclick=()=>$('journal').hidden=true;
+const keys=new Set();let joy=0,last=0;
+window.addEventListener('keydown',e=>{let k=e.key.toLowerCase();if(['arrowleft','arrowright','arrowup','arrowdown',' '].includes(k))e.preventDefault();if(k==='e'){nearby();return}if(k==='j'){$('journalBtn').click();return}keys.add(k)});
+window.addEventListener('keyup',e=>keys.delete(e.key.toLowerCase()));window.addEventListener('blur',()=>keys.clear());
+function frame(t){if(!last)last=t;let dt=Math.min((t-last)/1000,.04);last=t;let locked=!$('intro').hidden||!$('dialogue').hidden||!$('modal').hidden||!$('interior').hidden||!$('journal').hidden;
+ if(!locked){let v=0;if(keys.has('a')||keys.has('arrowleft'))v--;if(keys.has('d')||keys.has('arrowright'))v++;v=Math.max(-1,Math.min(1,v+joy));if(v){S.x=Math.max(70,Math.min(2330,S.x+v*260*dt));S.dir=v>0?1:-1;hero.classList.add('walking')}else hero.classList.remove('walking');place()}
+ requestAnimationFrame(frame)}
+function place(){hero.style.left=S.x+'px';hero.style.transform='translateX(-50%) scaleX('+S.dir+')';camera();updateNear()}
+const joypad=$('joystick'),stick=$('stick');let pointer=null;
+function moveStick(e){let r=joypad.getBoundingClientRect(),dx=e.clientX-(r.left+r.width/2),dy=e.clientY-(r.top+r.height/2);joy=Math.max(-1,Math.min(1,dx/42));stick.style.transform='translate('+Math.max(-32,Math.min(32,dx))+'px,'+Math.max(-18,Math.min(18,dy))+'px)'}
+joypad.addEventListener('pointerdown',e=>{pointer=e.pointerId;joypad.setPointerCapture(pointer);moveStick(e)});
+joypad.addEventListener('pointermove',e=>{if(pointer===e.pointerId)moveStick(e)});
+function stop(e){if(pointer===e.pointerId){pointer=null;joy=0;stick.style.transform='translate(0,0)'}}
+joypad.addEventListener('pointerup',stop);joypad.addEventListener('pointercancel',stop);
+function tick(){S.minute++;$('clock').textContent=String(8+Math.floor(S.minute/60)).padStart(2,'0')+':'+String(S.minute%60).padStart(2,'0')}
+setInterval(()=>{if($('intro').hidden&&$('dialogue').hidden&&$('modal').hidden&&$('interior').hidden)tick()},18000);
+window.addEventListener('resize',camera);save();place();requestAnimationFrame(frame);
 })();
 </script>
 </body>
