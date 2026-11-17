@@ -110,6 +110,22 @@
 @keyframes heroWalk{to{translate:0 -2px}}
 @media(prefers-reduced-motion:reduce){.hero,.hero *,.street-npc,.tram,.cyclist,.loose-paper{animation:none!important;transition:none!important}}
 
+
+/* Pedestrian rig v0.1 — independent identity, route and locomotion states */
+.street-npc{--npc-scale:1;transform-origin:50% 100%;will-change:transform}
+.npc-a{left:1110px;--coat:#34383d;animation:pedestrianA 29s ease-in-out infinite}
+.npc-b{left:1450px;--coat:#55454a;animation:pedestrianB 33s ease-in-out infinite}
+.npc-c{left:1920px;--coat:#4b5054}
+.street-npc:before,.street-npc:after{transition:filter .25s,opacity .25s}
+.street-npc[data-state="idle"]:before{animation:npcLook 4.2s ease-in-out infinite}
+.street-npc[data-state="walking"]:after{animation:npcWalk .34s ease-in-out infinite alternate}
+.street-npc[data-state="walking"] b{animation:npcArm .34s ease-in-out infinite alternate}
+.street-npc[data-state="idle"] b{transform:rotate(-5deg)}
+@keyframes npcLook{0%,100%{translate:0 0}50%{translate:1px -1px}}
+@keyframes npcWalk{to{translate:0 -1.5px;filter:brightness(1.12)}}
+@keyframes npcArm{to{transform:rotate(13deg)}}
+@media(prefers-reduced-motion:reduce){.street-npc[data-state] *{animation:none!important}}
+
 </style>
 </head>
 <body>
@@ -258,7 +274,7 @@
    <div class="tram" aria-hidden="true"><svg viewBox="0 0 430 155"><defs><linearGradient id="tramPaint" x2="0" y2="1"><stop stop-color="#c7b99d"/><stop offset=".55" stop-color="#777363"/><stop offset="1" stop-color="#3a4141"/></linearGradient><linearGradient id="tramGlass" x2="0" y2="1"><stop stop-color="#a9b7b7"/><stop offset="1" stop-color="#27353a"/></linearGradient></defs><path d="M58 23L95 2h76l-12 22M120 23l25-21h76l-8 21" fill="none" stroke="#252a2b" stroke-width="7" stroke-linecap="round"/><path d="M152 2l-22-20m22 20l25-20" stroke="#252a2b" stroke-width="5"/><path d="M17 42Q20 18 49 18h335q27 0 29 28v76q0 14-18 14H34q-17 0-17-17z" fill="url(#tramPaint)" stroke="#15191b" stroke-width="8"/><path d="M42 34h340q14 0 14 16v40H35V48q0-14 7-14z" fill="#2c393d" stroke="#1b2022" stroke-width="5"/><g fill="url(#tramGlass)" stroke="#182125" stroke-width="5"><rect x="48" y="40" width="53" height="43" rx="4"/><rect x="111" y="40" width="53" height="43" rx="4"/><rect x="174" y="40" width="53" height="43" rx="4"/><rect x="237" y="40" width="53" height="43" rx="4"/><rect x="300" y="40" width="53" height="43" rx="4"/></g><path d="M359 31h34q15 0 15 17v42h-49z" fill="#253136" stroke="#171c1e" stroke-width="5"/><rect x="364" y="38" width="36" height="40" rx="4" fill="#9eacaa" stroke="#20282b" stroke-width="4"/><rect x="25" y="93" width="380" height="8" fill="#963e36"/><rect x="25" y="104" width="380" height="6" fill="#d2c2a1"/><rect x="29" y="20" width="75" height="17" rx="2" fill="#171c1d"/><text x="66" y="32" text-anchor="middle" fill="#f1d9a7" font-size="10" font-family="Arial" letter-spacing="2">LINIE 4</text><rect x="300" y="112" width="82" height="17" fill="#171b1c"/><text x="341" y="124" text-anchor="middle" fill="#ead8b5" font-size="8" font-family="Arial" letter-spacing="1">EISENBRÜCK</text><circle cx="90" cy="133" r="17" fill="#111416" stroke="#66645d" stroke-width="6"/><circle cx="325" cy="133" r="17" fill="#111416" stroke="#66645d" stroke-width="6"/><path d="M16 89h-10v-17h10m400 17h8v-17h-8" fill="#d9c89f"/><path d="M387 80l16 7-16 7" fill="#d5b77d"/></svg></div>
    <div class="cyclist" aria-hidden="true"><svg viewBox="0 0 110 64"><circle cx="23" cy="48" r="13" fill="none" stroke="#17191b" stroke-width="4"/><circle cx="84" cy="48" r="13" fill="none" stroke="#17191b" stroke-width="4"/><path d="M23 48L43 24L58 48H23L38 30H66L84 48L70 20" fill="none" stroke="#b7a58b" stroke-width="3"/><circle cx="69" cy="10" r="6" fill="#b99c7d"/><path d="M67 17L55 29L68 34L78 23M55 29L43 24" fill="none" stroke="#353a3c" stroke-width="6" stroke-linecap="round"/></svg></div>
    <div class="loose-paper" aria-hidden="true"></div>
-   <div class="street-npc npc-a" aria-hidden="true"><i></i><b></b></div><div class="street-npc npc-b" aria-hidden="true"><i></i><b></b></div><div class="street-npc npc-c" aria-hidden="true"><i></i><b></b></div><div class="hero" id="hero" data-state="idle" role="img" aria-label="Главный герой — следователь"><span class="shadow"></span><span class="head"></span><span class="hair"></span><span class="neck"></span><span class="coat"></span><span class="lapel"></span><span class="scarf"></span><span class="arm left"></span><span class="arm right"></span><span class="hand"></span><span class="leg left"></span><span class="leg right"></span><span class="shoe left"></span><span class="shoe right"></span></div>
+   <div class="street-npc npc-a" data-person="a" data-state="walking" aria-hidden="true"><i></i><b></b></div><div class="street-npc npc-b" data-person="b" data-state="idle" aria-hidden="true"><i></i><b></b></div><div class="street-npc npc-c" data-person="c" data-state="walking" aria-hidden="true"><i></i><b></b></div><div class="hero" id="hero" data-state="idle" role="img" aria-label="Главный герой — следователь"><span class="shadow"></span><span class="head"></span><span class="hair"></span><span class="neck"></span><span class="coat"></span><span class="lapel"></span><span class="scarf"></span><span class="arm left"></span><span class="arm right"></span><span class="hand"></span><span class="leg left"></span><span class="leg right"></span><span class="shoe left"></span><span class="shoe right"></span></div>
    <button class="hotspot" data-target="bookshop" style="left:380px">Книжный магазин<small>ВИТРИНА</small></button>
    <button class="hotspot" data-target="kiosk" style="left:648px">Газетный киоск<small>ПОГОВОРИТЬ</small></button>
    <button class="hotspot" data-target="tramStop" style="left:980px">Остановка<small>РАСПИСАНИЕ</small></button>
@@ -298,6 +314,22 @@ const streetMoments=[
  'Из приоткрытого окна второго этажа доносится музыка, но ветер быстро уносит мелодию.'
 ];
 let momentIndex=0, momentTimer=null, momentHide=null;
+
+const pedestrianNodes=[...document.querySelectorAll('.street-npc[data-person]')];
+const pedestrianSchedule=[
+ {id:'a',walk:7600,idle:4200,offset:900},
+ {id:'b',walk:5200,idle:6100,offset:3600},
+ {id:'c',walk:8900,idle:5000,offset:1800}
+];
+function runPedestrianSchedule(){
+ pedestrianSchedule.forEach(p=>{
+  const node=pedestrianNodes.find(n=>n.dataset.person===p.id);if(!node)return;
+  let walking=node.dataset.state==='walking';
+  const cycle=()=>{walking=!walking;node.dataset.state=walking?'walking':'idle';node.style.setProperty('--pace',walking?'1':'0');setTimeout(cycle,walking?p.walk:p.idle)};
+  setTimeout(cycle,p.offset);
+ });
+}
+
 function showStreetMoment(){
  const el=$('ambientNote'); if(!el || !$('intro').hidden || S.inside || S.dialogue || !$('modal').hidden || !$('journal').hidden) return;
  el.textContent=streetMoments[momentIndex%streetMoments.length];
@@ -384,7 +416,7 @@ function interact(id){
 function nearby(){if(S.near)interact(S.near)}
 $('contextBtn').onclick=nearby;$('cameraWide').onclick=()=>{S.camera='wide';camera();toast('Общий план')};$('cameraFollow').onclick=()=>{S.camera='follow';camera();toast('Камера следует за героем')};$('cameraClose').onclick=()=>{S.camera='close';camera();toast('Приближённый ракурс')};
 document.querySelectorAll('.hotspot').forEach(b=>b.onclick=()=>toast('Подойди ближе, чтобы взаимодействовать: '+O[b.dataset.target].label));
-$('start').onclick=()=>{$('intro').hidden=true;startStreetLife();dialogue('СЛЕДОВАТЕЛЬ · ВНУТРЕННИЙ ГОЛОС','Эйзенбрук. Среда, четырнадцатое октября. Дождь закончился совсем недавно. Кофе и газета — хороший способ начать день. Если город приготовил что-то новое, он обычно не спешит рассказывать об этом первым.',[['Осмотреться',closeDialogue]])};
+$('start').onclick=()=>{$('intro').hidden=true;runPedestrianSchedule();startStreetLife();dialogue('СЛЕДОВАТЕЛЬ · ВНУТРЕННИЙ ГОЛОС','Эйзенбрук. Среда, четырнадцатое октября. Дождь закончился совсем недавно. Кофе и газета — хороший способ начать день. Если город приготовил что-то новое, он обычно не спешит рассказывать об этом первым.',[['Осмотреться',closeDialogue]])};
 $('journalBtn').onclick=()=>{$('entries').innerHTML=S.notes.length?S.notes.map(n=>'<div class="notebook-entry"><b>'+esc(n.title)+'</b><p>'+esc(n.text)+'</p><small>'+esc(n.time)+'</small></div>').join(''):'<p>Пока записей нет.</p>';$('journal').hidden=false};
 $('journalClose').onclick=()=>$('journal').hidden=true;
 const keys=new Set();let joy=0,last=0;
