@@ -185,6 +185,18 @@
 @keyframes npcCoatStep{to{transform:skewX(2deg);filter:brightness(1.08)}}
 @media(prefers-reduced-motion:reduce){.hero[data-state],.hero[data-state] *, .street-npc[data-state],.street-npc[data-state] *{animation:none!important}}
 
+
+/* Character reactions v0.1 — attention, eye contact and conversational blocking */
+.street-npc:before{transition:transform .32s ease,filter .32s ease}
+.street-npc i{position:absolute;z-index:2;top:7px;left:7px;width:2px;height:2px;border-radius:50%;background:#211d1a;opacity:0;transition:opacity .2s}
+.street-npc[data-attention="true"]:before{transform:translateX(-2px) rotate(-13deg);filter:brightness(1.12)}
+.street-npc[data-attention="true"] i,.street-npc[data-speaking="true"] i{opacity:.9}
+.street-npc[data-speaking="true"]:before{transform:translateX(-3px) rotate(-17deg);filter:brightness(1.18)}
+.hero .head{transition:transform .3s cubic-bezier(.2,.7,.2,1)}
+.hero[data-facing-person="true"] .head{transform:translateY(-1px) rotate(var(--head-turn,0deg))}
+.hero[data-facing-person="true"] .scarf{transform:rotate(-1deg)}
+@media(prefers-reduced-motion:reduce){.street-npc:before,.hero .head{transition:none!important}}
+
 </style>
 </head>
 <body>
@@ -412,18 +424,55 @@ function updateNear(){
  let id=null,dmin=9999;
  Object.keys(O).forEach(k=>{let d=Math.abs(S.x-O[k].x);if(d<dmin){dmin=d;id=k}});
  S.near=dmin<145?id:null;
+ const canNotice=$('intro').hidden&&!S.inside&&!S.dialogue&&$('modal').hidden&&$('journal').hidden;
+ const hr=hero.getBoundingClientRect(),hx=hr.left+hr.width/2;
+ pedestrianNodes.forEach(n=>{
+  const nr=n.getBoundingClientRect(),nx=nr.left+nr.width/2;
+  const close=canNotice&&Math.abs(nx-hx)<190;
+  n.dataset.attention=close?'true':'false';
+ });
  $('contextBtn').classList.toggle('show',!!S.near&&!S.inside&&!S.dialogue);
  if(S.near){$('contextBtn').childNodes[0].textContent=O[S.near].label;$('contextSub').textContent=O[S.near].sub}
  document.querySelectorAll('.hotspot').forEach(b=>b.classList.toggle('near',b.dataset.target===S.near));
 }
 function place(){hero.style.left=S.x+'px';hero.style.setProperty('--facing',String(S.dir));hero.dataset.state=S.moving?'walking':(S.dialogue||S.inside?'interacting':'idle');hero.style.transform='translateX(-50%) scaleX('+S.dir+')';camera();updateNear()}
+let activeConversationNpc=null,dialogueTurnTimer=null;
+function pedestrianForSpeaker(who){
+ if(who==='ПРОХОЖАЯ')return pedestrianNodes.find(n=>n.dataset.person==='a')||null;
+ if(who==='ПАССАЖИР')return pedestrianNodes.find(n=>n.dataset.person==='b')||null;
+ return null;
+}
 function dialogue(who,words,choices){
- S.dialogue=true;$('speaker').textContent=who;$('line').textContent=words;
+ clearTimeout(dialogueTurnTimer);
+ const npc=pedestrianForSpeaker(who);
+ activeConversationNpc=npc;
+ if(npc){
+  const hr=hero.getBoundingClientRect(),nr=npc.getBoundingClientRect();
+  S.dir=(nr.left+nr.width/2)>= (hr.left+hr.width/2)?1:-1;
+  hero.dataset.facingPerson='true';
+  hero.style.setProperty('--head-turn',S.dir===1?'8deg':'-8deg');
+  npc.dataset.attention='true';npc.dataset.speaking='true';
+  place();
+ }else{
+  activeConversationNpc=null;
+  delete hero.dataset.facingPerson;
+  hero.style.setProperty('--head-turn','0deg');
+ }
+ S.dialogue=true;S.moving=false;
  let host=$('dialogueActions');host.innerHTML='';
  choices.forEach(c=>{let b=document.createElement('button');b.className='action-btn';b.textContent=c[0];b.onclick=c[1];host.append(b)});
- $('dialogue').hidden=false;updateNear();
+ $('speaker').textContent=who;$('line').textContent=words;
+ $('dialogue').hidden=true;
+ dialogueTurnTimer=setTimeout(()=>{$('dialogue').hidden=false;updateNear()},npc?340:0);
+ updateNear();
 }
-function closeDialogue(){S.dialogue=false;$('dialogue').hidden=true;updateNear()}
+function closeDialogue(){
+ clearTimeout(dialogueTurnTimer);
+ S.dialogue=false;$('dialogue').hidden=true;
+ if(activeConversationNpc){delete activeConversationNpc.dataset.speaking;delete activeConversationNpc.dataset.attention}
+ activeConversationNpc=null;delete hero.dataset.facingPerson;hero.style.setProperty('--head-turn','0deg');
+ updateNear();
+}
 function interior(title,words,choices){
  S.inside=true;$('interiorTitle').textContent=title;$('interiorText').textContent=words;
  $('interiorKicker').textContent='ЭЙЗЕНБРУК · ОСЕНЬ';
