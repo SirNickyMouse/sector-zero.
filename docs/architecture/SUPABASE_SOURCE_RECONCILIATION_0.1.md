@@ -155,3 +155,18 @@ This is a documentation-only snapshot. It is deliberately outside `supabase/func
 The deployable branch source `supabase/functions/get_investigation_state/index.ts` has now been synchronized to the archived live version 10 and verified byte-for-byte. The key difference was the server-side stage-state read via `game.get_investigation_stage_state` and the `stage_state` response field. This keeps the tracked source aligned with the currently deployed stage engine.
 
 The other two tracked Edge Functions already matched their live snapshots. The branch now has source parity for all three functions it previously tracked.
+
+
+## Migration filename correction — 2026-11-17 follow-up
+
+The three tracked migration SQL files had correct migration names but incorrect timestamp prefixes. They have been renamed on the feature branch to match the exact applied versions reported by Supabase:
+
+| Applied version | Tracked file |
+|---|---|
+| `20261107155657` | `20261107155657_lock_game_data_api_and_rate_limit_puzzles.sql` |
+| `20261107155816` | `20261107155816_disable_public_execute_for_future_game_functions.sql` |
+| `20261107155949` | `20261107155949_rate_limit_puzzle_attempts_per_player.sql` |
+
+The SQL contents were preserved; this was a filename-only correction. The final tracked migration's `game.submit_puzzle_answer_atomic` definition was compared with `pg_get_functiondef` from the live database and matched exactly. No migration was applied to Supabase.
+
+**Important remaining gap:** the other 43 applied migration SQL bodies are still not present in the repository. Supabase's migration history provides their versions and names, but not their original SQL text. These must be recovered from a backup or reconstructed as a clearly labeled current-schema baseline—not fabricated as historical migrations.
