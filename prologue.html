@@ -25,6 +25,16 @@
 .tram svg{display:block;width:100%;height:100%;overflow:visible}
 @keyframes tramPass{from{transform:translateX(0)}to{transform:translateX(2590px)}}
 @media(max-width:700px){.camera-controls button{padding:6px 7px;font-size:8px}.street-npc{bottom:18%}.tram{bottom:24%;width:138px;height:50px}}
+/* Ambient life: passing cyclist, windblown paper, and unobtrusive city notices */
+.cyclist{position:absolute;z-index:5;left:-150px;bottom:19%;width:110px;height:64px;opacity:.92;filter:drop-shadow(0 5px 5px #0009);pointer-events:none;animation:cycleAcross 34s linear infinite;animation-delay:7s}
+.cyclist svg{width:100%;height:100%;display:block}
+@keyframes cycleAcross{0%,8%{transform:translateX(0)}88%,100%{transform:translateX(2700px)}}
+.loose-paper{position:absolute;z-index:4;left:705px;bottom:25%;width:13px;height:18px;background:#cfc4ad;border:1px solid #776c5b;opacity:0;transform:rotate(-8deg);animation:paperSkitter 17s ease-in-out infinite;pointer-events:none}
+@keyframes paperSkitter{0%,18%{opacity:0;transform:translate(0,0) rotate(-8deg)}23%{opacity:.85}35%{transform:translate(55px,-8px) rotate(70deg)}48%{transform:translate(92px,2px) rotate(155deg)}58%,100%{opacity:0;transform:translate(110px,8px) rotate(240deg)}}
+.ambient-note{position:absolute;z-index:11;top:55px;left:50%;transform:translateX(-50%) translateY(-5px);max-width:min(460px,calc(100% - 28px));padding:8px 13px;border:1px solid #8b755755;background:#111316d9;color:#d8cbb7;font:italic 12px/1.4 Georgia,serif;text-align:center;opacity:0;transition:opacity .45s,transform .45s;pointer-events:none;backdrop-filter:blur(4px)}
+.ambient-note.show{opacity:1;transform:translateX(-50%) translateY(0)}
+@media(max-width:700px){.cyclist{width:82px;height:48px;bottom:19%}.loose-paper{bottom:25%;width:10px;height:14px}.ambient-note{top:105px;font-size:11px;max-width:calc(100% - 24px)}}
+
 </style>
 </head>
 <body>
@@ -79,7 +89,10 @@
     <!-- parked graphite Audi-like SUV silhouette -->
     <path d="M1080 690l45-65q20-25 65-30l150-3q48 0 75 38l42 60 25 20v48h-425v-48z" fill="#353b40" stroke="#111416" stroke-width="9"/><path d="M1195 604l30-18h105q35 0 55 28l22 42h-250z" fill="#151b20" stroke="#111416" stroke-width="7"/><path d="M1325 590v67" stroke="#50585d" stroke-width="5"/><circle cx="1165" cy="750" r="29" fill="#090b0d" stroke="#55595b" stroke-width="8"/><circle cx="1430" cy="750" r="29" fill="#090b0d" stroke="#55595b" stroke-width="8"/>
    </svg>
-   <div class="tram" aria-hidden="true"><svg viewBox="0 0 430 155"><defs><linearGradient id="tramPaint" x2="0" y2="1"><stop stop-color="#c7b99d"/><stop offset=".55" stop-color="#777363"/><stop offset="1" stop-color="#3a4141"/></linearGradient><linearGradient id="tramGlass" x2="0" y2="1"><stop stop-color="#a9b7b7"/><stop offset="1" stop-color="#27353a"/></linearGradient></defs><path d="M58 23L95 2h76l-12 22M120 23l25-21h76l-8 21" fill="none" stroke="#252a2b" stroke-width="7" stroke-linecap="round"/><path d="M152 2l-22-20m22 20l25-20" stroke="#252a2b" stroke-width="5"/><path d="M17 42Q20 18 49 18h335q27 0 29 28v76q0 14-18 14H34q-17 0-17-17z" fill="url(#tramPaint)" stroke="#15191b" stroke-width="8"/><path d="M42 34h340q14 0 14 16v40H35V48q0-14 7-14z" fill="#2c393d" stroke="#1b2022" stroke-width="5"/><g fill="url(#tramGlass)" stroke="#182125" stroke-width="5"><rect x="48" y="40" width="53" height="43" rx="4"/><rect x="111" y="40" width="53" height="43" rx="4"/><rect x="174" y="40" width="53" height="43" rx="4"/><rect x="237" y="40" width="53" height="43" rx="4"/><rect x="300" y="40" width="53" height="43" rx="4"/></g><path d="M359 31h34q15 0 15 17v42h-49z" fill="#253136" stroke="#171c1e" stroke-width="5"/><rect x="364" y="38" width="36" height="40" rx="4" fill="#9eacaa" stroke="#20282b" stroke-width="4"/><rect x="25" y="93" width="380" height="8" fill="#963e36"/><rect x="25" y="104" width="380" height="6" fill="#d2c2a1"/><rect x="29" y="20" width="75" height="17" rx="2" fill="#171c1d"/><text x="66" y="32" text-anchor="middle" fill="#f1d9a7" font-size="10" font-family="Arial" letter-spacing="2">LINIE 4</text><rect x="300" y="112" width="82" height="17" fill="#171b1c"/><text x="341" y="124" text-anchor="middle" fill="#ead8b5" font-size="8" font-family="Arial" letter-spacing="1">EISENBRÜCK</text><circle cx="90" cy="133" r="17" fill="#111416" stroke="#66645d" stroke-width="6"/><circle cx="325" cy="133" r="17" fill="#111416" stroke="#66645d" stroke-width="6"/><path d="M16 89h-10v-17h10m400 17h8v-17h-8" fill="#d9c89f"/><path d="M387 80l16 7-16 7" fill="#d5b77d"/></svg></div><div class="street-npc npc-a" aria-hidden="true"><i></i><b></b></div><div class="street-npc npc-b" aria-hidden="true"><i></i><b></b></div><div class="street-npc npc-c" aria-hidden="true"><i></i><b></b></div><div class="hero" id="hero" aria-label="Главный герой"><span class="head"></span><span class="hair"></span><span class="coat"></span><span class="scarf"></span><span class="leg left"></span><span class="leg right"></span></div>
+   <div class="tram" aria-hidden="true"><svg viewBox="0 0 430 155"><defs><linearGradient id="tramPaint" x2="0" y2="1"><stop stop-color="#c7b99d"/><stop offset=".55" stop-color="#777363"/><stop offset="1" stop-color="#3a4141"/></linearGradient><linearGradient id="tramGlass" x2="0" y2="1"><stop stop-color="#a9b7b7"/><stop offset="1" stop-color="#27353a"/></linearGradient></defs><path d="M58 23L95 2h76l-12 22M120 23l25-21h76l-8 21" fill="none" stroke="#252a2b" stroke-width="7" stroke-linecap="round"/><path d="M152 2l-22-20m22 20l25-20" stroke="#252a2b" stroke-width="5"/><path d="M17 42Q20 18 49 18h335q27 0 29 28v76q0 14-18 14H34q-17 0-17-17z" fill="url(#tramPaint)" stroke="#15191b" stroke-width="8"/><path d="M42 34h340q14 0 14 16v40H35V48q0-14 7-14z" fill="#2c393d" stroke="#1b2022" stroke-width="5"/><g fill="url(#tramGlass)" stroke="#182125" stroke-width="5"><rect x="48" y="40" width="53" height="43" rx="4"/><rect x="111" y="40" width="53" height="43" rx="4"/><rect x="174" y="40" width="53" height="43" rx="4"/><rect x="237" y="40" width="53" height="43" rx="4"/><rect x="300" y="40" width="53" height="43" rx="4"/></g><path d="M359 31h34q15 0 15 17v42h-49z" fill="#253136" stroke="#171c1e" stroke-width="5"/><rect x="364" y="38" width="36" height="40" rx="4" fill="#9eacaa" stroke="#20282b" stroke-width="4"/><rect x="25" y="93" width="380" height="8" fill="#963e36"/><rect x="25" y="104" width="380" height="6" fill="#d2c2a1"/><rect x="29" y="20" width="75" height="17" rx="2" fill="#171c1d"/><text x="66" y="32" text-anchor="middle" fill="#f1d9a7" font-size="10" font-family="Arial" letter-spacing="2">LINIE 4</text><rect x="300" y="112" width="82" height="17" fill="#171b1c"/><text x="341" y="124" text-anchor="middle" fill="#ead8b5" font-size="8" font-family="Arial" letter-spacing="1">EISENBRÜCK</text><circle cx="90" cy="133" r="17" fill="#111416" stroke="#66645d" stroke-width="6"/><circle cx="325" cy="133" r="17" fill="#111416" stroke="#66645d" stroke-width="6"/><path d="M16 89h-10v-17h10m400 17h8v-17h-8" fill="#d9c89f"/><path d="M387 80l16 7-16 7" fill="#d5b77d"/></svg></div>
+   <div class="cyclist" aria-hidden="true"><svg viewBox="0 0 110 64"><circle cx="23" cy="48" r="13" fill="none" stroke="#17191b" stroke-width="4"/><circle cx="84" cy="48" r="13" fill="none" stroke="#17191b" stroke-width="4"/><path d="M23 48L43 24L58 48H23L38 30H66L84 48L70 20" fill="none" stroke="#b7a58b" stroke-width="3"/><circle cx="69" cy="10" r="6" fill="#b99c7d"/><path d="M67 17L55 29L68 34L78 23M55 29L43 24" fill="none" stroke="#353a3c" stroke-width="6" stroke-linecap="round"/></svg></div>
+   <div class="loose-paper" aria-hidden="true"></div>
+   <div class="street-npc npc-a" aria-hidden="true"><i></i><b></b></div><div class="street-npc npc-b" aria-hidden="true"><i></i><b></b></div><div class="street-npc npc-c" aria-hidden="true"><i></i><b></b></div><div class="hero" id="hero" aria-label="Главный герой"><span class="head"></span><span class="hair"></span><span class="coat"></span><span class="scarf"></span><span class="leg left"></span><span class="leg right"></span></div>
    <button class="hotspot" data-target="bookshop" style="left:380px">Книжный магазин<small>ВИТРИНА</small></button>
    <button class="hotspot" data-target="kiosk" style="left:648px">Газетный киоск<small>ПОГОВОРИТЬ</small></button>
    <button class="hotspot" data-target="tramStop" style="left:980px">Остановка<small>РАСПИСАНИЕ</small></button>
@@ -96,6 +109,7 @@
  <div class="bottom-ui"><div class="hint" id="hint">WASD / стрелки — движение · E — взаимодействие</div><button class="context" id="contextBtn">Осмотреть<small id="contextSub">рядом</small></button></div>
  <div class="joystick" id="joystick" aria-label="Виртуальный джойстик"><div class="stick" id="stick"></div></div>
  <div class="toast" id="toast"></div>
+ <div class="ambient-note" id="ambientNote" aria-live="polite"></div>
  <div class="dialogue" id="dialogue" hidden><div class="speaker" id="speaker">СЛЕДОВАТЕЛЬ · ВНУТРЕННИЙ ГОЛОС</div><div class="line" id="line"></div><div class="dialogue-actions" id="dialogueActions"><button class="action-btn" id="dialogueClose">Продолжить</button></div></div>
  <div class="modal" id="modal" hidden><div class="card" id="modalContent"></div></div>
  <div class="interior" id="interior" hidden><div class="card"><div class="speaker" id="interiorKicker">ЭЙЗЕНБРУК</div><h2 id="interiorTitle"></h2><p id="interiorText"></p><div class="scene-actions" id="interiorActions"></div></div></div>
@@ -109,6 +123,29 @@ const $=id=>document.getElementById(id),world=$('world'),hero=$('hero'),stage=$(
 const S={x:1120,dir:1,near:null,inside:false,dialogue:false,paper:false,coffee:false,minute:12,notes:[],camera:"wide"};
 try{S.notes=JSON.parse(localStorage.getItem('sz-autumn-prologue-v1')||'[]')}catch{}
 const O={bookshop:{x:380,label:'Книжный магазин',sub:'Осмотреть витрину'},kiosk:{x:648,label:'Газетный киоск',sub:'Поговорить с продавцом'},passerbyA:{x:820,label:'Прохожая',sub:'Перекинуться парой слов'},tramStop:{x:980,label:'Трамвайная остановка',sub:'Посмотреть расписание'},car:{x:1300,label:'Audi Q5',sub:'Осмотреть автомобиль'},passerbyB:{x:1570,label:'Пассажир',sub:'Поговорить'},cafe:{x:1745,label:'Кафе «24 часа»',sub:'Войти в кафе'}};
+const streetMoments=[
+ 'Ветер переворачивает уголок газеты у киоска. Продавец придерживает стопку ладонью.',
+ 'Велосипедист ловко объезжает лужу и скрывается за припаркованной машиной.',
+ 'Из кафе доносится короткий звон колокольчика: кто-то только что вошёл.',
+ 'Двое прохожих здороваются на другой стороне улицы и расходятся каждый по своим делам.',
+ 'Трамвайная остановка постепенно заполняется людьми. Кто-то сверяется с расписанием.',
+ 'Из приоткрытого окна второго этажа доносится музыка, но ветер быстро уносит мелодию.'
+];
+let momentIndex=0, momentTimer=null, momentHide=null;
+function showStreetMoment(){
+ const el=$('ambientNote'); if(!el || !$('intro').hidden || S.inside || S.dialogue || !$('modal').hidden || !$('journal').hidden) return;
+ el.textContent=streetMoments[momentIndex%streetMoments.length];
+ momentIndex++;
+ el.classList.add('show');
+ clearTimeout(momentHide);
+ momentHide=setTimeout(()=>el.classList.remove('show'),4300);
+}
+function startStreetLife(){
+ if(momentTimer)return;
+ momentTimer=setInterval(showStreetMoment,21000);
+ setTimeout(showStreetMoment,6500);
+}
+
 function save(){localStorage.setItem('sz-autumn-prologue-v1',JSON.stringify(S.notes));$('count').textContent=S.notes.length}
 function note(title,text){if(S.notes.some(n=>n.title===title))return;S.notes.unshift({title,text,time:$('clock').textContent});save();toast('Запись добавлена в блокнот')}
 function toast(t){$('toast').textContent=t;$('toast').classList.add('show');setTimeout(()=>$('toast').classList.remove('show'),2200)}
@@ -181,7 +218,7 @@ function interact(id){
 function nearby(){if(S.near)interact(S.near)}
 $('contextBtn').onclick=nearby;$('cameraWide').onclick=()=>{S.camera='wide';camera();toast('Общий план')};$('cameraFollow').onclick=()=>{S.camera='follow';camera();toast('Камера следует за героем')};$('cameraClose').onclick=()=>{S.camera='close';camera();toast('Приближённый ракурс')};
 document.querySelectorAll('.hotspot').forEach(b=>b.onclick=()=>toast('Подойди ближе, чтобы взаимодействовать: '+O[b.dataset.target].label));
-$('start').onclick=()=>{$('intro').hidden=true;dialogue('СЛЕДОВАТЕЛЬ · ВНУТРЕННИЙ ГОЛОС','Эйзенбрук. Среда, четырнадцатое октября. Дождь закончился совсем недавно. Кофе и газета — хороший способ начать день. Если город приготовил что-то новое, он обычно не спешит рассказывать об этом первым.',[['Осмотреться',closeDialogue]])};
+$('start').onclick=()=>{$('intro').hidden=true;startStreetLife();dialogue('СЛЕДОВАТЕЛЬ · ВНУТРЕННИЙ ГОЛОС','Эйзенбрук. Среда, четырнадцатое октября. Дождь закончился совсем недавно. Кофе и газета — хороший способ начать день. Если город приготовил что-то новое, он обычно не спешит рассказывать об этом первым.',[['Осмотреться',closeDialogue]])};
 $('journalBtn').onclick=()=>{$('entries').innerHTML=S.notes.length?S.notes.map(n=>'<div class="notebook-entry"><b>'+esc(n.title)+'</b><p>'+esc(n.text)+'</p><small>'+esc(n.time)+'</small></div>').join(''):'<p>Пока записей нет.</p>';$('journal').hidden=false};
 $('journalClose').onclick=()=>$('journal').hidden=true;
 const keys=new Set();let joy=0,last=0;
