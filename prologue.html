@@ -126,6 +126,34 @@
 @keyframes npcArm{to{transform:rotate(13deg)}}
 @media(prefers-reduced-motion:reduce){.street-npc[data-state] *{animation:none!important}}
 
+
+/* Character art pass v0.3 — facial and garment details, sprite replacement hooks */
+.hero{width:64px;height:136px;bottom:16.5%;--skin:#a98b76;--hair:#242326;--coat-base:#20262c;--scarf-base:#756557}
+.hero .head{background:radial-gradient(ellipse at 38% 36%,#d0b49c 0,#b0917c 48%,#786255 100%);border-color:#292522}
+.hero .head:before{content:"";position:absolute;top:10px;left:4px;width:3px;height:2px;border-radius:50%;background:#292522;box-shadow:9px 0 #292522}
+.hero .head:after{content:"";position:absolute;top:15px;left:7px;width:5px;height:2px;border-bottom:1px solid #5c4035;border-radius:50%}
+.hero .brow{position:absolute;top:7px;left:3px;width:5px;height:1px;background:#554239;box-shadow:9px 0 #554239;transform:rotate(-5deg)}
+.hero .stubble{position:absolute;left:2px;bottom:1px;width:14px;height:6px;border-radius:0 0 7px 7px;background:radial-gradient(circle,#51443d 0 1px,transparent 1.2px) 0 0/3px 3px;opacity:.7}
+.hero .hair{background:linear-gradient(120deg,#49464a,#1c1c20 65%,#111317);clip-path:polygon(0 38%,10% 5%,29% 18%,45% 0,62% 14%,83% 2%,100% 29%,88% 74%,73% 59%,57% 100%,38% 68%,20% 88%,12% 59%)}
+.hero .collar{position:absolute;z-index:4;top:27px;left:17px;width:25px;height:15px;background:linear-gradient(135deg,#b2a18e,#4b4b4a 55%,#20252b);clip-path:polygon(0 0,50% 36%,100% 0,75% 100%,50% 70%,24% 100%)}
+.hero .coat{background:linear-gradient(90deg,#101419 0%,#293139 28%,#3b4145 48%,#262d33 68%,#101418 100%);clip-path:polygon(24% 0,76% 0,100% 100%,57% 89%,48% 100%,0 100%)}
+.hero .coat-seam{position:absolute;z-index:4;top:49px;left:30px;width:1px;height:39px;background:#aeb0aa30;transform:rotate(4deg)}
+.hero .coat-buttons{position:absolute;z-index:5;top:61px;left:27px;width:2px;height:2px;border-radius:50%;background:#a69a83;box-shadow:0 9px #a69a83,0 18px #a69a83}
+.hero .scarf{background:linear-gradient(90deg,#4b4039,#9a8876 48%,#54483f);box-shadow:1px 0 #d2b99b44}
+.hero .scarf-fringe{position:absolute;z-index:5;top:69px;left:30px;width:8px;height:5px;background:repeating-linear-gradient(90deg,#756557 0 1px,#b19d89 1px 2px);clip-path:polygon(0 0,100% 0,90% 100%,70% 70%,50% 100%,30% 70%,10% 100%)}
+.hero .arm{background:linear-gradient(90deg,#11161b,#42474b 65%,#151a1e)}
+.hero .leg{background:linear-gradient(90deg,#0c1014,#252a30 50%,#101419)}
+.hero .shoe{background:linear-gradient(#47433e,#151719);box-shadow:inset 0 1px #8b8174}
+.hero[data-state="interacting"] .head{transform:translateY(-1px) rotate(-3deg)}
+/* Individual pedestrian silhouettes; the future sprite atlas can replace these layers */
+.npc-a{--coat:#34383d;--detail:#a33f38}
+.npc-a:before{background:linear-gradient(#4a3530 0 24%,#b38d77 25% 100%)}
+.npc-a:after{width:20px;left:0;background:linear-gradient(90deg,#252a30,#596068 55%,#252a30);clip-path:polygon(18% 0,82% 0,100% 100%,0 100%)}
+.npc-b:before{background:linear-gradient(#29272a 0 30%,#b59b82 31% 100%)}
+.npc-b:after{height:39px;top:13px;background:linear-gradient(90deg,#4a3940 0 65%,#9b7650 66%)}
+.npc-c:before{background:linear-gradient(#7a766e 0 28%,#b99d7e 29% 100%)}
+.npc-c:after{height:38px;background:linear-gradient(90deg,#343c45,#59616a 50%,#343c45)}
+
 </style>
 </head>
 <body>
@@ -274,7 +302,7 @@
    <div class="tram" aria-hidden="true"><svg viewBox="0 0 430 155"><defs><linearGradient id="tramPaint" x2="0" y2="1"><stop stop-color="#c7b99d"/><stop offset=".55" stop-color="#777363"/><stop offset="1" stop-color="#3a4141"/></linearGradient><linearGradient id="tramGlass" x2="0" y2="1"><stop stop-color="#a9b7b7"/><stop offset="1" stop-color="#27353a"/></linearGradient></defs><path d="M58 23L95 2h76l-12 22M120 23l25-21h76l-8 21" fill="none" stroke="#252a2b" stroke-width="7" stroke-linecap="round"/><path d="M152 2l-22-20m22 20l25-20" stroke="#252a2b" stroke-width="5"/><path d="M17 42Q20 18 49 18h335q27 0 29 28v76q0 14-18 14H34q-17 0-17-17z" fill="url(#tramPaint)" stroke="#15191b" stroke-width="8"/><path d="M42 34h340q14 0 14 16v40H35V48q0-14 7-14z" fill="#2c393d" stroke="#1b2022" stroke-width="5"/><g fill="url(#tramGlass)" stroke="#182125" stroke-width="5"><rect x="48" y="40" width="53" height="43" rx="4"/><rect x="111" y="40" width="53" height="43" rx="4"/><rect x="174" y="40" width="53" height="43" rx="4"/><rect x="237" y="40" width="53" height="43" rx="4"/><rect x="300" y="40" width="53" height="43" rx="4"/></g><path d="M359 31h34q15 0 15 17v42h-49z" fill="#253136" stroke="#171c1e" stroke-width="5"/><rect x="364" y="38" width="36" height="40" rx="4" fill="#9eacaa" stroke="#20282b" stroke-width="4"/><rect x="25" y="93" width="380" height="8" fill="#963e36"/><rect x="25" y="104" width="380" height="6" fill="#d2c2a1"/><rect x="29" y="20" width="75" height="17" rx="2" fill="#171c1d"/><text x="66" y="32" text-anchor="middle" fill="#f1d9a7" font-size="10" font-family="Arial" letter-spacing="2">LINIE 4</text><rect x="300" y="112" width="82" height="17" fill="#171b1c"/><text x="341" y="124" text-anchor="middle" fill="#ead8b5" font-size="8" font-family="Arial" letter-spacing="1">EISENBRÜCK</text><circle cx="90" cy="133" r="17" fill="#111416" stroke="#66645d" stroke-width="6"/><circle cx="325" cy="133" r="17" fill="#111416" stroke="#66645d" stroke-width="6"/><path d="M16 89h-10v-17h10m400 17h8v-17h-8" fill="#d9c89f"/><path d="M387 80l16 7-16 7" fill="#d5b77d"/></svg></div>
    <div class="cyclist" aria-hidden="true"><svg viewBox="0 0 110 64"><circle cx="23" cy="48" r="13" fill="none" stroke="#17191b" stroke-width="4"/><circle cx="84" cy="48" r="13" fill="none" stroke="#17191b" stroke-width="4"/><path d="M23 48L43 24L58 48H23L38 30H66L84 48L70 20" fill="none" stroke="#b7a58b" stroke-width="3"/><circle cx="69" cy="10" r="6" fill="#b99c7d"/><path d="M67 17L55 29L68 34L78 23M55 29L43 24" fill="none" stroke="#353a3c" stroke-width="6" stroke-linecap="round"/></svg></div>
    <div class="loose-paper" aria-hidden="true"></div>
-   <div class="street-npc npc-a" data-person="a" data-state="walking" aria-hidden="true"><i></i><b></b></div><div class="street-npc npc-b" data-person="b" data-state="idle" aria-hidden="true"><i></i><b></b></div><div class="street-npc npc-c" data-person="c" data-state="walking" aria-hidden="true"><i></i><b></b></div><div class="hero" id="hero" data-state="idle" role="img" aria-label="Главный герой — следователь"><span class="shadow"></span><span class="head"></span><span class="hair"></span><span class="neck"></span><span class="coat"></span><span class="lapel"></span><span class="scarf"></span><span class="arm left"></span><span class="arm right"></span><span class="hand"></span><span class="leg left"></span><span class="leg right"></span><span class="shoe left"></span><span class="shoe right"></span></div>
+   <div class="street-npc npc-a" data-person="a" data-state="walking" aria-hidden="true"><i></i><b></b></div><div class="street-npc npc-b" data-person="b" data-state="idle" aria-hidden="true"><i></i><b></b></div><div class="street-npc npc-c" data-person="c" data-state="walking" aria-hidden="true"><i></i><b></b></div><div class="hero" id="hero" data-state="idle" role="img" aria-label="Главный герой — следователь"><span class="shadow"></span><span class="head"><i class="brow"></i><i class="stubble"></i></span><span class="hair"></span><span class="neck"></span><span class="collar"></span><span class="coat"></span><span class="lapel"></span><span class="coat-seam"></span><span class="coat-buttons"></span><span class="scarf"></span><span class="scarf-fringe"></span><span class="arm left"></span><span class="arm right"></span><span class="hand"></span><span class="leg left"></span><span class="leg right"></span><span class="shoe left"></span><span class="shoe right"></span></div>
    <button class="hotspot" data-target="bookshop" style="left:380px">Книжный магазин<small>ВИТРИНА</small></button>
    <button class="hotspot" data-target="kiosk" style="left:648px">Газетный киоск<small>ПОГОВОРИТЬ</small></button>
    <button class="hotspot" data-target="tramStop" style="left:980px">Остановка<small>РАСПИСАНИЕ</small></button>
