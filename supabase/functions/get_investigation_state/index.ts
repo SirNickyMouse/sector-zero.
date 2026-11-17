@@ -224,6 +224,15 @@ const handler = withSupabase({ auth: "user" }, async (req, ctx) => {
     return fail("state_read_failed", 500, "Не удалось загрузить форму итогового заключения.");
   }
 
+  const { data: stageState, error: stageStateError } = await db
+    .schema("game")
+    .rpc("get_investigation_stage_state", { p_investigation_id: investigationId });
+
+  if (stageStateError) {
+    console.error("get_investigation_state: stage state lookup failed", stageStateError.code);
+    return fail("state_read_failed", 500, "Не удалось загрузить этапы расследования.");
+  }
+
   const safeReports = (reports.data ?? []).map(report => ({
     ...report,
     // Evaluation summaries are returned only after an actual evaluation.
@@ -286,6 +295,11 @@ const handler = withSupabase({ auth: "user" }, async (req, ctx) => {
       revisions: (reportRevisions.data ?? []).filter(revision => revision.report_id === report.id),
     })),
     recent_events: events.data ?? [],
+    stage_state: stageState
+      ? ((stageState.stages ?? []).length === 0
+          ? { ...stageState, final_unlocked: true }
+          : stageState)
+      : { stages: [], current_stage: null, final_unlocked: true, required_stage_count: 0, completed_required_stage_count: 0 },
     summary: summary.data ?? null,
     limits: {
       notes: 300,
