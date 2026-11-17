@@ -50,6 +50,31 @@
 .world[data-period="night"] .ambient-note{background:#090e18e8;border-color:#7788a055}
 .time-label{color:var(--gold);font-size:9px;letter-spacing:1.5px;margin-left:2px}
 @media(max-width:700px){.time-label{display:none}}
+
+/* Graphic-novel art pass — ink, paper, depth and cinematic framing */
+.world>svg[aria-label="Осенняя улица Эйзенбрука после дождя"]{filter:contrast(1.13) saturate(.78) sepia(.08);transform:scale(1.002);transform-origin:center;transition:filter 5s ease}
+.world::after{content:"";position:absolute;inset:0;z-index:8;pointer-events:none;opacity:.34;mix-blend-mode:soft-light;background-image:radial-gradient(ellipse at 18% 18%,#e8d4b344 0,transparent 42%),radial-gradient(ellipse at 78% 58%,#c8b59a22 0,transparent 46%),repeating-linear-gradient(0deg,#e8dfcc0a 0 1px,transparent 1px 4px),repeating-linear-gradient(90deg,#17120d08 0 1px,transparent 1px 5px);box-shadow:inset 0 0 150px #05060999}
+.world::before{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(180deg,#10151b66 0%,transparent 23%,transparent 68%,#07090d66 100%);mix-blend-mode:multiply}
+.hero .head{background:radial-gradient(circle at 35% 30%,#d0b49a,#8c7463 78%);box-shadow:inset -3px -2px 0 #5b4a40}
+.hero .hair{background:linear-gradient(135deg,#383638,#17191c 70%);box-shadow:0 2px 0 #0a0b0c}
+.hero .coat{background:linear-gradient(90deg,#151a1f,#394148 42%,#20252a 78%,#111518);box-shadow:inset 2px 0 #77808733,inset -3px 0 #080a0c}
+.hero .scarf{background:linear-gradient(90deg,#5b4036,#9b7055 55%,#4a332d);box-shadow:1px 0 #d0a47a55}
+.street-npc:before{box-shadow:inset -3px -2px 0 #59473c}
+.street-npc:after{box-shadow:inset 2px 0 #ffffff18,inset -3px 0 #0005}
+.hotspot{border-color:#d4b88a66;background:linear-gradient(135deg,#0d1012dc,#26221de0);box-shadow:0 4px 18px #0007,inset 0 1px #fff1}
+.scene-title strong{font-size:19px;letter-spacing:3px;text-shadow:0 2px 2px #000,0 0 22px #000}
+.dialogue{background:linear-gradient(115deg,#090b0df7,#211d19f5);border-color:#a88b625c;box-shadow:0 18px 60px #000c,inset 0 1px #ffffff12}
+.dialogue:before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(#c5a273,#6c3933)}
+.card{background:linear-gradient(145deg,#25221e,#0c0e11);border-color:#9a805e;box-shadow:0 22px 80px #000d,inset 0 1px #fff1}
+.intro{background:linear-gradient(180deg,#080a0dd9,#08090d88),radial-gradient(ellipse at 50% 75%,#876443,#171b20 68%);overflow:hidden}
+.intro:before,.intro:after{content:"";position:absolute;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,#b9956955,transparent)}
+.intro:before{top:24px}.intro:after{bottom:24px}
+.intro>div{position:relative;z-index:1;max-width:700px}
+.intro h1{font-weight:500;letter-spacing:.18em;color:#eee5d6;text-shadow:0 3px 0 #46372b,0 12px 35px #000}
+.intro .kicker{letter-spacing:5px}
+.stage:after{content:"";position:absolute;inset:0;z-index:9;pointer-events:none;border:1px solid #c5a77a22;box-shadow:inset 0 0 0 7px #07090a22}
+@media(max-width:700px){.world::after{opacity:.28}.stage:after{box-shadow:inset 0 0 0 4px #07090a22}.scene-title strong{font-size:13px}}
+
 </style>
 </head>
 <body>
@@ -91,6 +116,26 @@
     <g stroke="#29221b" stroke-width="18" fill="none"><path d="M1030 590v-230m0 90l-85-95m85 65l95-100M2220 590V330m0 100l-90-90m90 60l95-110"/></g>
     <g fill="#8b633f" opacity=".9"><circle cx="980" cy="350" r="82"/><circle cx="1060" cy="315" r="90"/><circle cx="1125" cy="370" r="70"/><circle cx="2160" cy="320" r="75"/><circle cx="2240" cy="275" r="90"/><circle cx="2310" cy="350" r="70"/></g>
     <g fill="#b18a56" opacity=".65"><circle cx="1000" cy="320" r="48"/><circle cx="1080" cy="365" r="44"/><circle cx="2210" cy="300" r="50"/><circle cx="2290" cy="340" r="42"/></g>
+
+     <!-- Hand-drawn architectural accents: cornices, stone joints and rain-darkened awnings -->
+     <g fill="none" stroke="#c2b29b" stroke-opacity=".22" stroke-width="3">
+      <path d="M0 155h420M440 91h390M850 186h330M1200 111h420M1640 166h350M2010 76h390"/>
+      <path d="M15 178h390M455 112h360M865 204h300M1220 132h380M1660 184h310M2030 98h360"/>
+      <path d="M18 505h390M455 505h350M870 515h290M1220 515h380M1660 520h310M2030 510h350"/>
+     </g>
+     <g fill="none" stroke="#17191b" stroke-width="8" opacity=".7">
+      <path d="M28 320h365M462 285h345M872 365h285M1220 315h380M1660 360h310M2030 285h350"/>
+      <path d="M32 475h360M465 455h340M875 475h280M1225 465h370M1665 470h300M2035 455h340"/>
+     </g>
+     <g fill="#76543b" opacity=".32">
+      <path d="M118 505h520l-20 15H140zM680 465h300l-14 16H696zM1510 440h470l-15 17h-440z"/>
+     </g>
+     <g fill="#a36e3e" opacity=".75">
+      <path d="M180 760q13-13 25 0q-13 12-25 0zM510 815q12-15 25-1q-13 13-25 1zM875 735q15-12 24 3q-15 10-24-3zM1580 790q14-14 27 0q-14 13-27 0zM2110 745q13-12 24 1q-13 12-24-1z"/>
+     </g>
+     <g fill="none" stroke="#d7b88c" stroke-width="7" opacity=".12">
+      <path d="M250 675l-25 90m45-88l-18 65M760 690l-22 110m42-105l-17 75M1710 665l-28 120m48-112l-19 83M2240 680l-20 95"/>
+     </g>
     <!-- pavement and wet street -->
     <path d="M0 610h2400v290H0z" fill="url(#road)"/><path d="M0 625h2400" stroke="#aaa39a" stroke-opacity=".35" stroke-width="5"/>
     <g fill="none" stroke="#c5a47b" stroke-width="10" opacity=".18"><path d="M90 730h330l-40 75H60zM690 680h270l-25 100H670zM1500 705h450l-55 110h-420zM2040 670h260l-40 100h-250z"/></g>
