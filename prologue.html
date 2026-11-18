@@ -218,6 +218,21 @@
 @keyframes npcGesture{to{transform:rotate(8deg) translateY(-1px)}}
 @media(prefers-reduced-motion:reduce){.hero .brow,.hero .arm,.hero .hand,.street-npc[data-mood] *{transition:none!important;animation:none!important}}
 
+
+/* Conversation staging v0.3 — pause routes, face the speaker, farewell */
+.street-npc[data-speaking="true"]{animation-play-state:paused!important;filter:drop-shadow(0 7px 7px #000b) brightness(1.06)}
+.street-npc[data-facing="left"]:before{transform:translateX(-3px) rotate(-22deg);transform-origin:55% 80%}
+.street-npc[data-facing="right"]:before{transform:translateX(3px) rotate(22deg);transform-origin:45% 80%}
+.street-npc[data-facing="left"]:after{transform:skewX(-3deg);transform-origin:50% 0}
+.street-npc[data-facing="right"]:after{transform:skewX(3deg);transform-origin:50% 0}
+.street-npc[data-speaking="true"] b{animation:npcGesture .8s ease-in-out infinite alternate;transform-origin:top center}
+.street-npc[data-farewell="true"]:before{animation:npcFarewell .62s ease-in-out}
+.street-npc[data-greeting="true"]:before{animation:npcFarewell .72s ease-in-out}
+.hero[data-greeting="true"] .head{animation:heroGreeting .72s ease-in-out}
+@keyframes npcFarewell{0%,100%{translate:0 0;rotate:0deg}35%{translate:0 -2px;rotate:-8deg}70%{translate:0 0;rotate:5deg}}
+@keyframes heroGreeting{0%,100%{translate:0 0}40%{translate:0 -2px}75%{translate:0 1px}}
+@media(prefers-reduced-motion:reduce){.street-npc[data-farewell="true"]:before,.street-npc[data-greeting="true"]:before,.hero[data-greeting="true"] .head{animation:none!important}}
+
 </style>
 </head>
 <body>
@@ -457,15 +472,19 @@ function updateNear(){
  document.querySelectorAll('.hotspot').forEach(b=>b.classList.toggle('near',b.dataset.target===S.near));
 }
 function place(){hero.style.left=S.x+'px';hero.style.setProperty('--facing',String(S.dir));hero.dataset.state=S.moving?'walking':(S.dialogue||S.inside?'interacting':'idle');hero.style.transform='translateX(-50%) scaleX('+S.dir+')';camera();updateNear()}
-let activeConversationNpc=null,dialogueTurnTimer=null;
+let activeConversationNpc=null,dialogueTurnTimer=null,npcFarewellTimer=null;
 function pedestrianForSpeaker(who){
  if(who==='ПРОХОЖАЯ')return pedestrianNodes.find(n=>n.dataset.person==='a')||null;
  if(who==='ПАССАЖИР')return pedestrianNodes.find(n=>n.dataset.person==='b')||null;
  return null;
 }
 function dialogue(who,words,choices){
- clearTimeout(dialogueTurnTimer);
+ clearTimeout(dialogueTurnTimer);clearTimeout(npcFarewellTimer);
  const npc=pedestrianForSpeaker(who);
+ if(activeConversationNpc&&activeConversationNpc!==npc){
+  activeConversationNpc.style.animationPlayState='';
+  ['speaking','attention','mood','facing','farewell'].forEach(k=>delete activeConversationNpc.dataset[k]);
+ }
  activeConversationNpc=npc;
  const mood=/спросить|почему|не знаете|местный|кажется|помните/i.test(words)?'curious':
   /поблагодар|пожалуйст|простите|доброе утро|попрощ/i.test(words)?'polite':
@@ -473,10 +492,13 @@ function dialogue(who,words,choices){
  hero.dataset.conversationMood=mood;
  if(npc){
   const hr=hero.getBoundingClientRect(),nr=npc.getBoundingClientRect();
-  S.dir=(nr.left+nr.width/2)>= (hr.left+hr.width/2)?1:-1;
+  S.dir=(nr.left+nr.width/2)>=(hr.left+hr.width/2)?1:-1;
   hero.dataset.facingPerson='true';
   hero.style.setProperty('--head-turn',S.dir===1?'8deg':'-8deg');
-  npc.dataset.attention='true';npc.dataset.speaking='true';npc.dataset.mood=mood==='polite'?'polite':'curious';
+  npc.dataset.attention='true';npc.dataset.speaking='true';
+  npc.dataset.facing=S.dir===1?'left':'right';
+  npc.dataset.mood=mood==='polite'?'polite':'curious';
+  npc.style.animationPlayState='paused';
   place();
  }else{
   activeConversationNpc=null;
@@ -494,7 +516,16 @@ function dialogue(who,words,choices){
 function closeDialogue(){
  clearTimeout(dialogueTurnTimer);
  S.dialogue=false;$('dialogue').hidden=true;
- if(activeConversationNpc){delete activeConversationNpc.dataset.speaking;delete activeConversationNpc.dataset.attention;delete activeConversationNpc.dataset.mood}
+ const departing=activeConversationNpc;
+ if(departing){
+  delete departing.dataset.speaking;
+  departing.dataset.farewell='true';
+  departing.dataset.mood='polite';
+  npcFarewellTimer=setTimeout(()=>{
+   ['attention','mood','facing','farewell'].forEach(k=>delete departing.dataset[k]);
+   departing.style.animationPlayState='';
+  },650);
+ }
  activeConversationNpc=null;delete hero.dataset.facingPerson;delete hero.dataset.conversationMood;hero.style.setProperty('--head-turn','0deg');
  updateNear();
 }
