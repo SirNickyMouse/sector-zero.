@@ -197,6 +197,27 @@
 .hero[data-facing-person="true"] .scarf{transform:rotate(-1deg)}
 @media(prefers-reduced-motion:reduce){.street-npc:before,.hero .head{transition:none!important}}
 
+
+/* Character expression and gesture pass v0.2 */
+.hero .brow{transition:transform .25s ease,top .25s ease}
+.hero .arm{transition:transform .28s ease}
+.hero .hand{transition:transform .28s ease}
+.hero[data-conversation-mood="attentive"] .brow{transform:translateY(-1px) rotate(-8deg)}
+.hero[data-conversation-mood="attentive"] .arm.right{transform:rotate(-15deg)}
+.hero[data-conversation-mood="curious"] .brow{transform:translateY(-1px) rotate(10deg)}
+.hero[data-conversation-mood="curious"] .head{transform:translateY(-2px) rotate(var(--head-turn,0deg))}
+.hero[data-conversation-mood="curious"] .arm.left{transform:rotate(11deg)}
+.hero[data-conversation-mood="explaining"] .arm.right{transform:rotate(-38deg)}
+.hero[data-conversation-mood="explaining"] .hand{transform:translate(3px,-4px)}
+.hero[data-conversation-mood="polite"] .head{transform:translateY(1px) rotate(var(--head-turn,0deg))}
+.hero[data-conversation-mood="polite"] .arm.right{transform:rotate(-18deg)}
+.street-npc[data-mood="curious"]:before{transform:translateY(-1px) rotate(-16deg);filter:brightness(1.16)}
+.street-npc[data-mood="curious"] i{transform:scale(1.35)}
+.street-npc[data-mood="speaking"] b{animation:npcGesture .55s ease-in-out infinite alternate;transform-origin:top center}
+.street-npc[data-mood="polite"]:before{transform:translateY(1px) rotate(-8deg)}
+@keyframes npcGesture{to{transform:rotate(8deg) translateY(-1px)}}
+@media(prefers-reduced-motion:reduce){.hero .brow,.hero .arm,.hero .hand,.street-npc[data-mood] *{transition:none!important;animation:none!important}}
+
 </style>
 </head>
 <body>
@@ -429,7 +450,7 @@ function updateNear(){
  pedestrianNodes.forEach(n=>{
   const nr=n.getBoundingClientRect(),nx=nr.left+nr.width/2;
   const close=canNotice&&Math.abs(nx-hx)<190;
-  n.dataset.attention=close?'true':'false';
+  n.dataset.attention=(close||n===activeConversationNpc)?'true':'false';
  });
  $('contextBtn').classList.toggle('show',!!S.near&&!S.inside&&!S.dialogue);
  if(S.near){$('contextBtn').childNodes[0].textContent=O[S.near].label;$('contextSub').textContent=O[S.near].sub}
@@ -446,12 +467,16 @@ function dialogue(who,words,choices){
  clearTimeout(dialogueTurnTimer);
  const npc=pedestrianForSpeaker(who);
  activeConversationNpc=npc;
+ const mood=/спросить|почему|не знаете|местный|кажется|помните/i.test(words)?'curious':
+  /поблагодар|пожалуйст|простите|доброе утро|попрощ/i.test(words)?'polite':
+  /объясн|расскаж|дело в том|смотрите/i.test(words)?'explaining':'attentive';
+ hero.dataset.conversationMood=mood;
  if(npc){
   const hr=hero.getBoundingClientRect(),nr=npc.getBoundingClientRect();
   S.dir=(nr.left+nr.width/2)>= (hr.left+hr.width/2)?1:-1;
   hero.dataset.facingPerson='true';
   hero.style.setProperty('--head-turn',S.dir===1?'8deg':'-8deg');
-  npc.dataset.attention='true';npc.dataset.speaking='true';
+  npc.dataset.attention='true';npc.dataset.speaking='true';npc.dataset.mood=mood==='polite'?'polite':'curious';
   place();
  }else{
   activeConversationNpc=null;
@@ -463,14 +488,14 @@ function dialogue(who,words,choices){
  choices.forEach(c=>{let b=document.createElement('button');b.className='action-btn';b.textContent=c[0];b.onclick=c[1];host.append(b)});
  $('speaker').textContent=who;$('line').textContent=words;
  $('dialogue').hidden=true;
- dialogueTurnTimer=setTimeout(()=>{$('dialogue').hidden=false;updateNear()},npc?340:0);
+ dialogueTurnTimer=setTimeout(()=>{$('dialogue').hidden=false;updateNear()},npc?420:0);
  updateNear();
 }
 function closeDialogue(){
  clearTimeout(dialogueTurnTimer);
  S.dialogue=false;$('dialogue').hidden=true;
- if(activeConversationNpc){delete activeConversationNpc.dataset.speaking;delete activeConversationNpc.dataset.attention}
- activeConversationNpc=null;delete hero.dataset.facingPerson;hero.style.setProperty('--head-turn','0deg');
+ if(activeConversationNpc){delete activeConversationNpc.dataset.speaking;delete activeConversationNpc.dataset.attention;delete activeConversationNpc.dataset.mood}
+ activeConversationNpc=null;delete hero.dataset.facingPerson;delete hero.dataset.conversationMood;hero.style.setProperty('--head-turn','0deg');
  updateNear();
 }
 function interior(title,words,choices){
