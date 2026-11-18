@@ -233,6 +233,29 @@
 @keyframes heroGreeting{0%,100%{translate:0 0}40%{translate:0 -2px}75%{translate:0 1px}}
 @media(prefers-reduced-motion:reduce){.street-npc[data-farewell="true"]:before,.street-npc[data-greeting="true"]:before,.hero[data-greeting="true"] .head{animation:none!important}}
 
+
+/* Character acting pass v0.4 — quiet weight shifts and lived-in motion */
+.hero[data-state="idle"] .head{animation:heroIdleLook 6.4s ease-in-out 1.8s infinite}
+.hero[data-state="idle"] .arm.left{animation:heroIdleHand 7.2s ease-in-out 2.6s infinite}
+.hero[data-state="idle"] .arm.right{animation:heroIdleHand 8.1s ease-in-out 3.4s infinite reverse}
+.hero[data-state="walking"] .coat{animation:coatWalk .44s ease-in-out infinite alternate}
+.hero[data-state="walking"] .scarf{animation:scarfWalk .38s ease-in-out infinite alternate}
+.hero[data-state="interacting"] .arm.left{animation:heroListen 3.8s ease-in-out infinite}
+.hero[data-state="interacting"] .coat{animation:coatSettle .9s ease-out both}
+.street-npc[data-state="idle"]:before{animation:npcLook 5.8s ease-in-out 1.2s infinite}
+.street-npc[data-state="idle"] b{animation:npcIdleHand 6.8s ease-in-out 2s infinite}
+.street-npc[data-state="walking"]:after{animation:npcWalk .42s ease-in-out infinite alternate}
+.street-npc[data-state="walking"] b{animation:npcArm .42s ease-in-out infinite alternate}
+.street-npc[data-speaking="true"] b{animation:npcGesture .9s ease-in-out infinite alternate}
+@keyframes heroIdleLook{0%,72%,100%{translate:0 0;rotate:0deg}78%{translate:1px -1px;rotate:3deg}84%{translate:0 0;rotate:-1deg}}
+@keyframes heroIdleHand{0%,78%,100%{rotate:0deg}84%{rotate:2deg}90%{rotate:0deg}}
+@keyframes coatWalk{to{translate:0 1px;rotate:.35deg}}
+@keyframes scarfWalk{from{translate:0 0;rotate:-3deg}to{translate:1px 2px;rotate:1deg}}
+@keyframes heroListen{0%,100%{rotate:0deg}50%{rotate:1.5deg}}
+@keyframes coatSettle{0%{translate:0 -2px}100%{translate:0 0}}
+@keyframes npcIdleHand{0%,80%,100%{rotate:0deg}86%{rotate:4deg}92%{rotate:-2deg}}
+@media(prefers-reduced-motion:reduce){.hero[data-state] .head,.hero[data-state] .arm,.hero[data-state] .coat,.hero[data-state] .scarf,.street-npc[data-state] b,.street-npc[data-state]:before,.street-npc[data-state]:after{animation:none!important}}
+
 </style>
 </head>
 <body>
