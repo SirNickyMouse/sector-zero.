@@ -464,7 +464,16 @@ function updateNear(){
  const hr=hero.getBoundingClientRect(),hx=hr.left+hr.width/2;
  pedestrianNodes.forEach(n=>{
   const nr=n.getBoundingClientRect(),nx=nr.left+nr.width/2;
-  const close=canNotice&&Math.abs(nx-hx)<190;
+  const distance=Math.abs(nx-hx);
+  const close=canNotice&&distance<190;
+  const greetingRange=canNotice&&distance<108;
+  const wasGreeting=n.dataset.wasGreeting==='true';
+  if(greetingRange&&!wasGreeting&&!n.dataset.greetedRecently){
+   n.dataset.greeting='true';hero.dataset.greeting='true';n.dataset.greetedRecently='true';
+   setTimeout(()=>{delete n.dataset.greeting;delete hero.dataset.greeting;},760);
+   setTimeout(()=>delete n.dataset.greetedRecently,3600);
+  }
+  n.dataset.wasGreeting=greetingRange?'true':'false';
   n.dataset.attention=(close||n===activeConversationNpc)?'true':'false';
  });
  $('contextBtn').classList.toggle('show',!!S.near&&!S.inside&&!S.dialogue);
@@ -495,6 +504,7 @@ function dialogue(who,words,choices){
   S.dir=(nr.left+nr.width/2)>=(hr.left+hr.width/2)?1:-1;
   hero.dataset.facingPerson='true';
   hero.style.setProperty('--head-turn',S.dir===1?'8deg':'-8deg');
+  delete npc.dataset.farewell;
   npc.dataset.attention='true';npc.dataset.speaking='true';
   npc.dataset.facing=S.dir===1?'left':'right';
   npc.dataset.mood=mood==='polite'?'polite':'curious';
