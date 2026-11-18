@@ -1,0 +1,745 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#111316">
+<title>СЕКТОР НОЛЬ — Утро в Эйзенбруке</title>
+<style>
+:root{color-scheme:dark;--ink:#e9e4d9;--muted:#aaa49a;--gold:#c8a06a;--red:#98463e;--panel:#111316;--line:#665747}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:#080a0d;color:var(--ink);font:15px/1.45 Inter,system-ui,Arial,sans-serif}button{font:inherit;cursor:pointer;color:inherit}.game{width:100%;min-height:100svh;display:flex;flex-direction:column;background:radial-gradient(ellipse at 50% 0,#252526,#090a0c 70%)}.topbar{height:58px;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:8px 18px;border-bottom:1px solid #ffffff1a;background:#090a0ddd;z-index:20}.brand{font:700 13px Georgia,serif;letter-spacing:3px}.brand small{display:block;font:9px Arial,sans-serif;letter-spacing:2px;color:var(--gold);margin-top:3px}.hud{display:flex;gap:14px;align-items:center;color:var(--muted);font-size:11px;letter-spacing:1px}.quiet-btn,.action-btn{border:1px solid #79654d;background:#171717e8;padding:9px 13px;border-radius:2px;font-size:11px;letter-spacing:1px;text-transform:uppercase}.quiet-btn:hover,.action-btn:hover{border-color:var(--gold);background:#29231d}.stage{position:relative;flex:1;min-height:560px;overflow:hidden;background:#17191d;isolation:isolate}.viewport{position:absolute;inset:0;overflow:hidden}.world{position:absolute;left:0;top:0;width:2400px;height:100%;min-height:560px;transform:translateX(0);will-change:transform}.world svg{position:absolute;inset:0;width:2400px;height:100%;min-height:560px}.mist{position:absolute;inset:0;pointer-events:none;background:linear-gradient(90deg,#090b10a8,transparent 15%,transparent 85%,#090b10a8),linear-gradient(0deg,#07090dcc,transparent 36%,#15191e55);z-index:2}.rain{position:absolute;inset:0;z-index:3;pointer-events:none;opacity:.14;background-image:repeating-linear-gradient(105deg,transparent 0 24px,#e3e4e6 25px,#e3e4e6 26px,transparent 27px 57px);animation:rain .7s linear infinite}@keyframes rain{to{background-position:-18px 26px}}.vignette{position:absolute;inset:0;z-index:4;pointer-events:none;box-shadow:inset 0 0 100px #0009}.hero{position:absolute;z-index:6;left:0;bottom:18%;width:42px;height:106px;transform:translateX(-50%);filter:drop-shadow(0 8px 8px #0009);transition:filter .15s}.hero .head{position:absolute;top:0;left:13px;width:18px;height:21px;border-radius:48% 48% 44% 44%;background:#b49a82;border:2px solid #292624}.hero .hair{position:absolute;top:-2px;left:11px;width:22px;height:11px;border-radius:60% 60% 15% 15%;background:#26272a}.hero .coat{position:absolute;top:19px;left:6px;width:31px;height:55px;background:linear-gradient(90deg,#20252a,#394047 48%,#171a1d);clip-path:polygon(22% 0,78% 0,100% 100%,0 100%);border-bottom:2px solid #0a0b0c}.hero .scarf{position:absolute;top:19px;left:20px;width:5px;height:43px;background:#775b48;transform:rotate(-4deg)}.hero .leg{position:absolute;top:70px;width:10px;height:34px;background:#17191d;border-radius:2px}.hero .leg.left{left:9px}.hero .leg.right{left:24px}.hero.walking .leg.left{animation:step .22s infinite alternate}.hero.walking .leg.right{animation:step .22s infinite alternate-reverse}@keyframes step{to{transform:rotate(17deg) translateY(-2px)}}.hotspot{position:absolute;z-index:7;bottom:22%;transform:translateX(-50%);border:1px solid #d2ad7855;background:#101114a8;padding:8px 11px;text-align:center;min-width:116px;font:13px Georgia,serif;letter-spacing:.5px;text-shadow:0 2px 8px #000;backdrop-filter:blur(3px)}.hotspot small{display:block;font:9px Arial,sans-serif;color:var(--gold);letter-spacing:1.5px;margin-top:4px}.hotspot:hover,.hotspot.near{background:#382c20e8;border-color:var(--gold);box-shadow:0 0 24px #c79a5b30}.hotspot:disabled{opacity:.5}.scene-title{position:absolute;z-index:10;top:20px;left:22px;text-shadow:0 2px 14px #000}.scene-title strong{display:block;font:18px Georgia,serif;letter-spacing:2px}.scene-title span{display:block;color:#d0ad7b;font-size:10px;letter-spacing:2px;margin-top:5px}.objective{position:absolute;z-index:10;top:18px;right:20px;max-width:245px;text-align:right;color:#c8c0b5;font-size:11px;text-shadow:0 2px 8px #000}.objective b{display:block;color:var(--gold);font-size:9px;letter-spacing:2px;margin-bottom:4px}.bottom-ui{position:absolute;z-index:12;left:16px;right:16px;bottom:14px;display:flex;align-items:end;justify-content:space-between;gap:12px;pointer-events:none}.bottom-ui>*{pointer-events:auto}.hint{color:#c7c0b5;font-size:10px;letter-spacing:1px;text-shadow:0 2px 8px #000;max-width:45%}.context{display:none;border:1px solid var(--gold);background:#171512ed;padding:11px 17px;min-width:175px;text-align:center;font:13px Georgia,serif}.context.show{display:block}.context small{display:block;color:var(--gold);font:9px Arial,sans-serif;letter-spacing:1.5px;margin-top:3px}.joystick{position:absolute;z-index:15;left:18px;bottom:20px;width:116px;height:116px;border:1px solid #d7c09a66;border-radius:50%;background:#0b0c0d88;display:none;touch-action:none;backdrop-filter:blur(4px)}.joystick:before{content:"";position:absolute;inset:28px;border:1px solid #d7c09a33;border-radius:50%}.stick{position:absolute;left:37px;top:37px;width:40px;height:40px;border-radius:50%;background:linear-gradient(145deg,#c3a174,#71583d);border:2px solid #ead0a4;box-shadow:0 3px 12px #0009;pointer-events:none}.dialogue{position:absolute;z-index:30;left:50%;bottom:24px;transform:translateX(-50%);width:min(760px,calc(100% - 28px));background:linear-gradient(120deg,#0b0c0ef5,#1a1917f2);border:1px solid #76644e;padding:17px 20px;box-shadow:0 16px 50px #000b}.dialogue[hidden],.modal[hidden],.interior[hidden],.intro[hidden]{display:none}.speaker{font-size:9px;letter-spacing:2px;color:var(--gold);text-transform:uppercase}.line{font:17px/1.5 Georgia,serif;margin:8px 0 14px;color:#e5dfd5}.dialogue-actions{display:flex;gap:8px;flex-wrap:wrap}.modal{position:absolute;z-index:40;inset:0;background:#050607d9;display:grid;place-items:center;padding:18px;backdrop-filter:blur(5px)}.card{width:min(720px,100%);max-height:90%;overflow:auto;background:linear-gradient(145deg,#201e1b,#0d0e10);border:1px solid #79674f;padding:22px;box-shadow:0 20px 70px #000}.card h2{font:26px Georgia,serif;margin:5px 0 12px}.card p{color:#c7c0b5;line-height:1.7}.paper{background:#d8d0c1;color:#27221c;padding:22px;font-family:Georgia,serif;box-shadow:0 12px 35px #0009}.paper h2{font:900 28px Georgia,serif;text-align:center;color:#211c17;letter-spacing:3px;border-bottom:3px double #574d3e;padding-bottom:12px}.paper .date{text-align:center;font:10px Arial,sans-serif;letter-spacing:2px;color:#574d3e}.paper h3{font:700 19px Georgia,serif;color:#211c17}.paper p{color:#332d25}.paper .classified{border-top:1px solid #746752;border-bottom:1px solid #746752;padding:12px 0;margin-top:15px;font-size:15px}.interior{position:absolute;z-index:25;inset:0;background:radial-gradient(ellipse at 50% 30%,#54402b,#171413 62%,#08090b);display:grid;place-items:center;padding:20px}.interior .card{background:#111214ed}.interior .scene-actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:16px}.notebook-entry{border-left:3px solid var(--red);padding:10px 13px;background:#ffffff09;margin:10px 0}.intro{position:absolute;z-index:50;inset:0;background:linear-gradient(#08090bd9,#08090d88),radial-gradient(ellipse at 50% 75%,#6c543b,#111418 68%);display:grid;place-items:center;text-align:center;padding:24px}.intro h1{font:900 clamp(36px,7vw,76px)/1 Georgia,serif;letter-spacing:.13em;margin:18px 0;text-shadow:0 8px 28px #000}.intro .kicker{color:var(--gold);font-size:10px;letter-spacing:4px}.intro p{max-width:520px;color:#c8c0b5;font:italic 17px/1.6 Georgia,serif}.intro .start{margin-top:18px;border:1px solid var(--gold);background:#211a13;padding:14px 25px;letter-spacing:2px;text-transform:uppercase}.toast{position:absolute;z-index:35;top:76px;left:50%;transform:translateX(-50%);padding:9px 15px;background:#141512ed;border:1px solid #8b7557;color:#e8ddcb;font-size:12px;max-width:90%;text-align:center;display:none}.toast.show{display:block}.camera-note{position:absolute;z-index:10;left:50%;top:20px;transform:translateX(-50%);font-size:9px;letter-spacing:2px;color:#c7bba7;text-shadow:0 2px 8px #000;opacity:.8}
+@media(max-width:700px){.topbar{height:52px;padding:6px 10px}.brand{font-size:11px}.hud{gap:7px;font-size:9px}.hud .date{display:none}.stage{min-height:calc(100svh - 52px)}.world{height:100%}.scene-title{top:12px;left:12px}.scene-title strong{font-size:14px}.objective{top:65px;left:12px;right:auto;text-align:left;max-width:230px;font-size:10px}.bottom-ui{left:10px;right:10px;bottom:12px}.hint{max-width:50%;font-size:9px}.context{min-width:145px;padding:10px}.joystick{display:block}.dialogue{bottom:12px;padding:13px}.line{font-size:15px}.card{padding:15px}.paper{padding:15px}.paper h2{font-size:23px}.intro p{font-size:15px}}
+@media(min-width:701px){.joystick{display:none}}
+/* Living street and camera modes */
+.world{transition:transform .45s cubic-bezier(.2,.7,.2,1);transform-origin:0 0}
+.camera-controls{display:flex;gap:5px;align-items:center}
+.camera-controls button{border:1px solid #79654d;background:#171717e8;padding:7px 9px;color:#c9c0b4;font-size:9px;letter-spacing:1px}
+.camera-controls button.active{border-color:var(--gold);color:#f0d4a6;background:#34291d}
+.street-npc{position:absolute;z-index:5;bottom:18%;width:18px;height:62px;transform-origin:50% 100%;filter:drop-shadow(0 5px 5px #0009);pointer-events:none}
+.street-npc:before{content:"";position:absolute;top:0;left:5px;width:11px;height:13px;border-radius:50%;background:#b79b83;border:1px solid #252321}
+.street-npc:after{content:"";position:absolute;top:13px;left:1px;width:18px;height:34px;background:var(--coat,#34383b);clip-path:polygon(20% 0,80% 0,100% 100%,0 100%)}.street-npc b{position:absolute;top:16px;left:13px;width:5px;height:23px;background:var(--detail,#8b7357);transform:rotate(-18deg)}.npc-a:before{background:#a9846d}.npc-a:after{clip-path:polygon(15% 0,85% 0,100% 100%,0 100%);border-radius:4px 4px 0 0}.npc-b:before{background:#b59b82}.npc-b:after{background:linear-gradient(90deg,#4a3940 0 65%,#9b7650 66%)}.npc-c:before{background:#b99d7e}.npc-c:after{background:#46505a}.npc-a{--detail:#a33f38}.npc-b{--detail:#b6a27d}.npc-c{left:1920px;--coat:#4b5054;animation:pedestrianC 22s ease-in-out infinite}
+@keyframes pedestrianA{0%,12%{transform:translateX(0) scale(.9)}28%,43%{transform:translateX(-165px) scale(.9)}48%{transform:translateX(-165px) scaleX(-1) scale(.9)}85%{transform:translateX(110px) scaleX(-1) scale(.9)}100%{transform:translateX(0) scale(.9)}}
+@keyframes pedestrianB{0%,18%{transform:translateX(0) scale(.82)}34%,48%{transform:translateX(45px) scale(.82)}55%{transform:translateX(45px) scaleX(-1) scale(.82)}88%{transform:translateX(-145px) scaleX(-1) scale(.82)}100%{transform:translateX(0) scale(.82)}}
+@keyframes pedestrianC{0%,12%{transform:translateX(0) scale(.95)}60%{transform:translateX(145px) scale(.95)}65%{transform:translateX(145px) scaleX(-1) scale(.95)}100%{transform:translateX(0) scale(.95)}}
+.tram{position:absolute;z-index:4;left:-190px;bottom:24%;width:160px;height:58px;animation:tramPass 38s linear infinite;filter:drop-shadow(0 5px 5px #0009);pointer-events:none;will-change:transform}
+.tram svg{display:block;width:100%;height:100%;overflow:visible}
+@keyframes tramPass{from{transform:translateX(0)}to{transform:translateX(2590px)}}
+@media(max-width:700px){.camera-controls button{padding:6px 7px;font-size:8px}.street-npc{bottom:18%}.tram{bottom:24%;width:138px;height:50px}}
+/* Ambient life: passing cyclist, windblown paper, and unobtrusive city notices */
+.cyclist{position:absolute;z-index:5;left:-150px;bottom:19%;width:110px;height:64px;opacity:.92;filter:drop-shadow(0 5px 5px #0009);pointer-events:none;animation:cycleAcross 34s linear infinite;animation-delay:7s}
+.cyclist svg{width:100%;height:100%;display:block}
+@keyframes cycleAcross{0%,8%{transform:translateX(0)}88%,100%{transform:translateX(2700px)}}
+.loose-paper{position:absolute;z-index:4;left:705px;bottom:25%;width:13px;height:18px;background:#cfc4ad;border:1px solid #776c5b;opacity:0;transform:rotate(-8deg);animation:paperSkitter 17s ease-in-out infinite;pointer-events:none}
+@keyframes paperSkitter{0%,18%{opacity:0;transform:translate(0,0) rotate(-8deg)}23%{opacity:.85}35%{transform:translate(55px,-8px) rotate(70deg)}48%{transform:translate(92px,2px) rotate(155deg)}58%,100%{opacity:0;transform:translate(110px,8px) rotate(240deg)}}
+.ambient-note{position:absolute;z-index:11;top:55px;left:50%;transform:translateX(-50%) translateY(-5px);max-width:min(460px,calc(100% - 28px));padding:8px 13px;border:1px solid #8b755755;background:#111316d9;color:#d8cbb7;font:italic 12px/1.4 Georgia,serif;text-align:center;opacity:0;transition:opacity .45s,transform .45s;pointer-events:none;backdrop-filter:blur(4px)}
+.ambient-note.show{opacity:1;transform:translateX(-50%) translateY(0)}
+@media(max-width:700px){.cyclist{width:82px;height:48px;bottom:19%}.loose-paper{bottom:25%;width:10px;height:14px}.ambient-note{top:105px;font-size:11px;max-width:calc(100% - 24px)}}
+
+
+/* Eisenbruck day rhythm */
+.day-shade{position:absolute;inset:0;z-index:3;pointer-events:none;opacity:0;transition:background 5s ease,opacity 5s ease}
+.world[data-period="morning"] .day-shade{opacity:.12;background:linear-gradient(115deg,#d6a66b55,#d5c6a522 55%,#536b7a33)}
+.world[data-period="day"] .day-shade{opacity:0}
+.world[data-period="evening"] .day-shade{opacity:.34;background:linear-gradient(115deg,#c47b4a88,#8d604b55 55%,#27374766)}
+.world[data-period="night"] .day-shade{opacity:.62;background:linear-gradient(115deg,#101a2cbb,#17233799 55%,#080f1cdd)}
+.world[data-period="evening"] svg[aria-label="Осенняя улица Эйзенбрука после дождя"],
+.world[data-period="night"] svg[aria-label="Осенняя улица Эйзенбрука после дождя"]{filter:brightness(.78) saturate(.78);transition:filter 5s ease}
+.world[data-period="morning"] svg[aria-label="Осенняя улица Эйзенбрука после дождя"]{filter:sepia(.12) brightness(1.04);transition:filter 5s ease}
+.world[data-period="day"] svg[aria-label="Осенняя улица Эйзенбрука после дождя"]{filter:none;transition:filter 5s ease}
+.world[data-period="night"] .street-npc{filter:brightness(.78) drop-shadow(0 5px 5px #0009)}
+.world[data-period="night"] .ambient-note{background:#090e18e8;border-color:#7788a055}
+.time-label{color:var(--gold);font-size:9px;letter-spacing:1.5px;margin-left:2px}
+@media(max-width:700px){.time-label{display:none}}
+
+/* Graphic-novel art pass — ink, paper, depth and cinematic framing */
+.world>svg[aria-label="Осенняя улица Эйзенбрука после дождя"]{filter:contrast(1.13) saturate(.78) sepia(.08);transform:scale(1.002);transform-origin:center;transition:filter 5s ease}
+.world::after{content:"";position:absolute;inset:0;z-index:8;pointer-events:none;opacity:.34;mix-blend-mode:soft-light;background-image:radial-gradient(ellipse at 18% 18%,#e8d4b344 0,transparent 42%),radial-gradient(ellipse at 78% 58%,#c8b59a22 0,transparent 46%),repeating-linear-gradient(0deg,#e8dfcc0a 0 1px,transparent 1px 4px),repeating-linear-gradient(90deg,#17120d08 0 1px,transparent 1px 5px);box-shadow:inset 0 0 150px #05060999}
+.world::before{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(180deg,#10151b66 0%,transparent 23%,transparent 68%,#07090d66 100%);mix-blend-mode:multiply}
+.hero .head{background:radial-gradient(circle at 35% 30%,#d0b49a,#8c7463 78%);box-shadow:inset -3px -2px 0 #5b4a40}
+.hero .hair{background:linear-gradient(135deg,#383638,#17191c 70%);box-shadow:0 2px 0 #0a0b0c}
+.hero .coat{background:linear-gradient(90deg,#151a1f,#394148 42%,#20252a 78%,#111518);box-shadow:inset 2px 0 #77808733,inset -3px 0 #080a0c}
+.hero .scarf{background:linear-gradient(90deg,#5b4036,#9b7055 55%,#4a332d);box-shadow:1px 0 #d0a47a55}
+.street-npc:before{box-shadow:inset -3px -2px 0 #59473c}
+.street-npc:after{box-shadow:inset 2px 0 #ffffff18,inset -3px 0 #0005}
+.hotspot{border-color:#d4b88a66;background:linear-gradient(135deg,#0d1012dc,#26221de0);box-shadow:0 4px 18px #0007,inset 0 1px #fff1}
+.scene-title strong{font-size:19px;letter-spacing:3px;text-shadow:0 2px 2px #000,0 0 22px #000}
+.dialogue{background:linear-gradient(115deg,#090b0df7,#211d19f5);border-color:#a88b625c;box-shadow:0 18px 60px #000c,inset 0 1px #ffffff12}
+.dialogue:before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(#c5a273,#6c3933)}
+.card{background:linear-gradient(145deg,#25221e,#0c0e11);border-color:#9a805e;box-shadow:0 22px 80px #000d,inset 0 1px #fff1}
+.intro{background:linear-gradient(180deg,#080a0dd9,#08090d88),radial-gradient(ellipse at 50% 75%,#876443,#171b20 68%);overflow:hidden}
+.intro:before,.intro:after{content:"";position:absolute;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,#b9956955,transparent)}
+.intro:before{top:24px}.intro:after{bottom:24px}
+.intro>div{position:relative;z-index:1;max-width:700px}
+.intro h1{font-weight:500;letter-spacing:.18em;color:#eee5d6;text-shadow:0 3px 0 #46372b,0 12px 35px #000}
+.intro .kicker{letter-spacing:5px}
+.stage:after{content:"";position:absolute;inset:0;z-index:9;pointer-events:none;border:1px solid #c5a77a22;box-shadow:inset 0 0 0 7px #07090a22}
+@media(max-width:700px){.world::after{opacity:.28}.stage:after{box-shadow:inset 0 0 0 4px #07090a22}.scene-title strong{font-size:13px}}
+
+
+/* Character rig v0.2 — layered CSS puppet; art-ready without changing movement APIs */
+.hero{width:58px;height:132px;bottom:16.5%;transform-origin:50% 100%;filter:drop-shadow(0 10px 8px #000b);isolation:isolate}
+.hero .shadow{position:absolute;z-index:-1;left:2px;bottom:-5px;width:54px;height:12px;border-radius:50%;background:#050607a8;filter:blur(4px)}
+.hero .head{z-index:4;top:3px;left:19px;width:21px;height:25px;border:1px solid #342b27;border-radius:46% 46% 42% 42%;background:linear-gradient(110deg,#d1b39a,#987b68 72%,#6f5b50);box-shadow:inset -4px -2px 0 #59483f}
+.hero .head:after{content:"";position:absolute;left:4px;top:12px;width:12px;height:5px;border-bottom:1px solid #514038;border-radius:50%;opacity:.8}
+.hero .hair{z-index:5;top:0;left:17px;width:25px;height:12px;border-radius:65% 45% 18% 22%;background:linear-gradient(135deg,#494448,#17191d 72%);clip-path:polygon(0 38%,13% 0,44% 17%,65% 0,100% 24%,88% 75%,70% 61%,52% 100%,33% 65%,15% 90%)}
+.hero .neck{position:absolute;z-index:3;top:23px;left:25px;width:10px;height:9px;background:#806757}
+.hero .coat{z-index:2;top:28px;left:10px;width:39px;height:66px;clip-path:polygon(24% 0,76% 0,100% 100%,57% 88%,48% 100%,0 100%);background:linear-gradient(90deg,#101419,#343b42 38%,#252b31 68%,#101418);border:0;box-shadow:inset 2px 0 #8d969322,inset -3px 0 #050709}
+.hero .coat:before{content:"";position:absolute;left:17px;top:3px;width:2px;height:57px;background:#0b0e11;box-shadow:3px 0 #a4a09a22}
+.hero .lapel{position:absolute;z-index:4;top:29px;left:25px;width:13px;height:27px;background:linear-gradient(135deg,#59616a,#20262c);clip-path:polygon(0 0,100% 0,54% 100%,28% 57%);opacity:.9}
+.hero .scarf{z-index:5;top:26px;left:31px;width:7px;height:48px;background:linear-gradient(90deg,#55483f,#a18b78 52%,#493c35);transform:rotate(-5deg);box-shadow:1px 0 #d2b99b44}
+.hero .arm{position:absolute;z-index:3;top:36px;width:10px;height:48px;border-radius:5px;background:linear-gradient(90deg,#171c21,#41464a);transform-origin:50% 5px}
+.hero .arm.left{left:7px;transform:rotate(5deg)}
+.hero .arm.right{right:5px;transform:rotate(-7deg)}
+.hero .hand{position:absolute;z-index:4;top:78px;right:4px;width:8px;height:9px;border-radius:40%;background:#9a806d}
+.hero .leg{z-index:1;top:86px;width:13px;height:38px;background:linear-gradient(90deg,#101317,#292d31);border-radius:2px 2px 3px 3px;transform-origin:50% 4px}
+.hero .leg.left{left:17px}.hero .leg.right{left:32px}
+.hero .shoe{position:absolute;z-index:2;top:119px;width:17px;height:7px;border-radius:3px 5px 2px 2px;background:linear-gradient(#393a39,#111315);border-bottom:2px solid #08090a}
+.hero .shoe.left{left:12px}.hero .shoe.right{left:29px}
+.hero[data-state="idle"]{animation:heroBreath 3.8s ease-in-out infinite}
+.hero[data-state="idle"] .scarf{animation:scarfDrift 4.5s ease-in-out infinite}
+.hero[data-state="walking"] .arm.left{animation:armSwing .28s ease-in-out infinite alternate}
+.hero[data-state="walking"] .arm.right{animation:armSwing .28s ease-in-out infinite alternate-reverse}
+.hero[data-state="walking"] .leg.left{animation:step .22s infinite alternate}
+.hero[data-state="walking"] .leg.right{animation:step .22s infinite alternate-reverse}
+.hero[data-state="interacting"] .head{transform:translateY(-1px) rotate(-3deg)}
+.hero[data-state="interacting"] .scarf{transform:rotate(-2deg)}
+@keyframes heroBreath{0%,100%{transform:translateX(-50%) scaleX(var(--facing,1)) translateY(0)}50%{transform:translateX(-50%) scaleX(var(--facing,1)) translateY(-1.5px)}}
+@keyframes scarfDrift{0%,100%{translate:0 0}50%{translate:1px 1px}}
+@keyframes armSwing{to{transform:rotate(17deg)}}
+.hero.walking{animation:heroWalk .22s ease-in-out infinite alternate}
+@keyframes heroWalk{to{translate:0 -2px}}
+@media(prefers-reduced-motion:reduce){.hero,.hero *,.street-npc,.tram,.cyclist,.loose-paper{animation:none!important;transition:none!important}}
+
+
+/* Pedestrian rig v0.1 — independent identity, route and locomotion states */
+.street-npc{--npc-scale:1;transform-origin:50% 100%;will-change:transform}
+.npc-a{left:1110px;--coat:#34383d;animation:pedestrianA 29s ease-in-out infinite}
+.npc-b{left:1450px;--coat:#55454a;animation:pedestrianB 33s ease-in-out infinite}
+.npc-c{left:1920px;--coat:#4b5054}
+.street-npc:before,.street-npc:after{transition:filter .25s,opacity .25s}
+.street-npc[data-state="idle"]:before{animation:npcLook 4.2s ease-in-out infinite}
+.street-npc[data-state="walking"]:after{animation:npcWalk .34s ease-in-out infinite alternate}
+.street-npc[data-state="walking"] b{animation:npcArm .34s ease-in-out infinite alternate}
+.street-npc[data-state="idle"] b{transform:rotate(-5deg)}
+@keyframes npcLook{0%,100%{translate:0 0}50%{translate:1px -1px}}
+@keyframes npcWalk{to{translate:0 -1.5px;filter:brightness(1.12)}}
+@keyframes npcArm{to{transform:rotate(13deg)}}
+@media(prefers-reduced-motion:reduce){.street-npc[data-state] *{animation:none!important}}
+
+
+/* Character art pass v0.3 — facial and garment details, sprite replacement hooks */
+.hero{width:64px;height:136px;bottom:16.5%;--skin:#a98b76;--hair:#242326;--coat-base:#20262c;--scarf-base:#756557}
+.hero .head{background:radial-gradient(ellipse at 38% 36%,#d0b49c 0,#b0917c 48%,#786255 100%);border-color:#292522}
+.hero .head:before{content:"";position:absolute;top:10px;left:4px;width:3px;height:2px;border-radius:50%;background:#292522;box-shadow:9px 0 #292522}
+.hero .head:after{content:"";position:absolute;top:15px;left:7px;width:5px;height:2px;border-bottom:1px solid #5c4035;border-radius:50%}
+.hero .brow{position:absolute;top:7px;left:3px;width:5px;height:1px;background:#554239;box-shadow:9px 0 #554239;transform:rotate(-5deg)}
+.hero .stubble{position:absolute;left:2px;bottom:1px;width:14px;height:6px;border-radius:0 0 7px 7px;background:radial-gradient(circle,#51443d 0 1px,transparent 1.2px) 0 0/3px 3px;opacity:.7}
+.hero .hair{background:linear-gradient(120deg,#49464a,#1c1c20 65%,#111317);clip-path:polygon(0 38%,10% 5%,29% 18%,45% 0,62% 14%,83% 2%,100% 29%,88% 74%,73% 59%,57% 100%,38% 68%,20% 88%,12% 59%)}
+.hero .collar{position:absolute;z-index:4;top:27px;left:17px;width:25px;height:15px;background:linear-gradient(135deg,#b2a18e,#4b4b4a 55%,#20252b);clip-path:polygon(0 0,50% 36%,100% 0,75% 100%,50% 70%,24% 100%)}
+.hero .coat{background:linear-gradient(90deg,#101419 0%,#293139 28%,#3b4145 48%,#262d33 68%,#101418 100%);clip-path:polygon(24% 0,76% 0,100% 100%,57% 89%,48% 100%,0 100%)}
+.hero .coat-seam{position:absolute;z-index:4;top:49px;left:30px;width:1px;height:39px;background:#aeb0aa30;transform:rotate(4deg)}
+.hero .coat-buttons{position:absolute;z-index:5;top:61px;left:27px;width:2px;height:2px;border-radius:50%;background:#a69a83;box-shadow:0 9px #a69a83,0 18px #a69a83}
+.hero .scarf{background:linear-gradient(90deg,#4b4039,#9a8876 48%,#54483f);box-shadow:1px 0 #d2b99b44}
+.hero .scarf-fringe{position:absolute;z-index:5;top:69px;left:30px;width:8px;height:5px;background:repeating-linear-gradient(90deg,#756557 0 1px,#b19d89 1px 2px);clip-path:polygon(0 0,100% 0,90% 100%,70% 70%,50% 100%,30% 70%,10% 100%)}
+.hero .arm{background:linear-gradient(90deg,#11161b,#42474b 65%,#151a1e)}
+.hero .leg{background:linear-gradient(90deg,#0c1014,#252a30 50%,#101419)}
+.hero .shoe{background:linear-gradient(#47433e,#151719);box-shadow:inset 0 1px #8b8174}
+.hero[data-state="interacting"] .head{transform:translateY(-1px) rotate(-3deg)}
+/* Individual pedestrian silhouettes; the future sprite atlas can replace these layers */
+.npc-a{--coat:#34383d;--detail:#a33f38}
+.npc-a:before{background:linear-gradient(#4a3530 0 24%,#b38d77 25% 100%)}
+.npc-a:after{width:20px;left:0;background:linear-gradient(90deg,#252a30,#596068 55%,#252a30);clip-path:polygon(18% 0,82% 0,100% 100%,0 100%)}
+.npc-b:before{background:linear-gradient(#29272a 0 30%,#b59b82 31% 100%)}
+.npc-b:after{height:39px;top:13px;background:linear-gradient(90deg,#4a3940 0 65%,#9b7650 66%)}
+.npc-c:before{background:linear-gradient(#7a766e 0 28%,#b99d7e 29% 100%)}
+.npc-c:after{height:38px;background:linear-gradient(90deg,#343c45,#59616a 50%,#343c45)}
+
+
+/* Motion pass v0.4 — grounded gait, coat follow-through and readable pedestrian pauses */
+.hero[data-state="walking"] .leg.left{animation:heroStrideLeft .42s ease-in-out infinite}
+.hero[data-state="walking"] .leg.right{animation:heroStrideRight .42s ease-in-out infinite}
+.hero[data-state="walking"] .shoe.left{animation:shoeStrideLeft .42s ease-in-out infinite}
+.hero[data-state="walking"] .shoe.right{animation:shoeStrideRight .42s ease-in-out infinite}
+.hero[data-state="walking"] .arm.left{animation:heroArmLeft .42s ease-in-out infinite}
+.hero[data-state="walking"] .arm.right{animation:heroArmRight .42s ease-in-out infinite}
+.hero[data-state="walking"] .coat{animation:coatSway .84s ease-in-out infinite}
+.hero[data-state="walking"] .scarf{animation:scarfStep .55s ease-in-out infinite}
+.hero[data-state="interacting"] .arm.right{transform:rotate(-18deg)}
+.hero[data-state="interacting"] .head{transform:translateY(-1px) rotate(-4deg)}
+@keyframes heroStrideLeft{0%,100%{transform:rotate(15deg)}50%{transform:rotate(-19deg)}}
+@keyframes heroStrideRight{0%,100%{transform:rotate(-19deg)}50%{transform:rotate(15deg)}}
+@keyframes shoeStrideLeft{0%,100%{translate:5px 0;rotate:12deg}50%{translate:-4px -2px;rotate:-10deg}}
+@keyframes shoeStrideRight{0%,100%{translate:-4px -2px;rotate:-10deg}50%{translate:5px 0;rotate:12deg}}
+@keyframes heroArmLeft{0%,100%{transform:rotate(-17deg)}50%{transform:rotate(18deg)}}
+@keyframes heroArmRight{0%,100%{transform:rotate(18deg)}50%{transform:rotate(-17deg)}}
+@keyframes coatSway{0%,100%{translate:0 0}50%{translate:0 1px}}
+@keyframes scarfStep{0%,100%{transform:rotate(-4deg) translateX(0)}50%{transform:rotate(2deg) translateX(2px)}}
+/* A pedestrian really pauses instead of sliding through the scene while "idle". */
+.street-npc[data-state="idle"]{animation-play-state:paused}
+.street-npc[data-state="walking"]{animation-play-state:running}
+.street-npc[data-state="idle"]:before{transform:rotate(-3deg);filter:brightness(.96)}
+.street-npc[data-state="walking"]:before{animation:npcHeadBob .48s ease-in-out infinite alternate}
+.street-npc[data-state="walking"]:after{animation:npcCoatStep .48s ease-in-out infinite alternate}
+.street-npc[data-state="walking"] b{animation:npcArm .48s ease-in-out infinite alternate}
+@keyframes npcHeadBob{to{translate:0 -1px}}
+@keyframes npcCoatStep{to{transform:skewX(2deg);filter:brightness(1.08)}}
+@media(prefers-reduced-motion:reduce){.hero[data-state],.hero[data-state] *, .street-npc[data-state],.street-npc[data-state] *{animation:none!important}}
+
+
+/* Character reactions v0.1 — attention, eye contact and conversational blocking */
+.street-npc:before{transition:transform .32s ease,filter .32s ease}
+.street-npc i{position:absolute;z-index:2;top:7px;left:7px;width:2px;height:2px;border-radius:50%;background:#211d1a;opacity:0;transition:opacity .2s}
+.street-npc[data-attention="true"]:before{transform:translateX(-2px) rotate(-13deg);filter:brightness(1.12)}
+.street-npc[data-attention="true"] i,.street-npc[data-speaking="true"] i{opacity:.9}
+.street-npc[data-speaking="true"]:before{transform:translateX(-3px) rotate(-17deg);filter:brightness(1.18)}
+.hero .head{transition:transform .3s cubic-bezier(.2,.7,.2,1)}
+.hero[data-facing-person="true"] .head{transform:translateY(-1px) rotate(var(--head-turn,0deg))}
+.hero[data-facing-person="true"] .scarf{transform:rotate(-1deg)}
+@media(prefers-reduced-motion:reduce){.street-npc:before,.hero .head{transition:none!important}}
+
+
+/* Character expression and gesture pass v0.2 */
+.hero .brow{transition:transform .25s ease,top .25s ease}
+.hero .arm{transition:transform .28s ease}
+.hero .hand{transition:transform .28s ease}
+.hero[data-conversation-mood="attentive"] .brow{transform:translateY(-1px) rotate(-8deg)}
+.hero[data-conversation-mood="attentive"] .arm.right{transform:rotate(-15deg)}
+.hero[data-conversation-mood="curious"] .brow{transform:translateY(-1px) rotate(10deg)}
+.hero[data-conversation-mood="curious"] .head{transform:translateY(-2px) rotate(var(--head-turn,0deg))}
+.hero[data-conversation-mood="curious"] .arm.left{transform:rotate(11deg)}
+.hero[data-conversation-mood="explaining"] .arm.right{transform:rotate(-38deg)}
+.hero[data-conversation-mood="explaining"] .hand{transform:translate(3px,-4px)}
+.hero[data-conversation-mood="polite"] .head{transform:translateY(1px) rotate(var(--head-turn,0deg))}
+.hero[data-conversation-mood="polite"] .arm.right{transform:rotate(-18deg)}
+.street-npc[data-mood="curious"]:before{transform:translateY(-1px) rotate(-16deg);filter:brightness(1.16)}
+.street-npc[data-mood="curious"] i{transform:scale(1.35)}
+.street-npc[data-mood="speaking"] b{animation:npcGesture .55s ease-in-out infinite alternate;transform-origin:top center}
+.street-npc[data-mood="polite"]:before{transform:translateY(1px) rotate(-8deg)}
+@keyframes npcGesture{to{transform:rotate(8deg) translateY(-1px)}}
+@media(prefers-reduced-motion:reduce){.hero .brow,.hero .arm,.hero .hand,.street-npc[data-mood] *{transition:none!important;animation:none!important}}
+
+
+/* Conversation staging v0.3 — pause routes, face the speaker, farewell */
+.street-npc[data-speaking="true"]{animation-play-state:paused!important;filter:drop-shadow(0 7px 7px #000b) brightness(1.06)}
+.street-npc[data-facing="left"]:before{transform:translateX(-3px) rotate(-22deg);transform-origin:55% 80%}
+.street-npc[data-facing="right"]:before{transform:translateX(3px) rotate(22deg);transform-origin:45% 80%}
+.street-npc[data-facing="left"]:after{transform:skewX(-3deg);transform-origin:50% 0}
+.street-npc[data-facing="right"]:after{transform:skewX(3deg);transform-origin:50% 0}
+.street-npc[data-speaking="true"] b{animation:npcGesture .8s ease-in-out infinite alternate;transform-origin:top center}
+.street-npc[data-farewell="true"]:before{animation:npcFarewell .62s ease-in-out}
+.street-npc[data-greeting="true"]:before{animation:npcFarewell .72s ease-in-out}
+.hero[data-greeting="true"] .head{animation:heroGreeting .72s ease-in-out}
+@keyframes npcFarewell{0%,100%{translate:0 0;rotate:0deg}35%{translate:0 -2px;rotate:-8deg}70%{translate:0 0;rotate:5deg}}
+@keyframes heroGreeting{0%,100%{translate:0 0}40%{translate:0 -2px}75%{translate:0 1px}}
+@media(prefers-reduced-motion:reduce){.street-npc[data-farewell="true"]:before,.street-npc[data-greeting="true"]:before,.hero[data-greeting="true"] .head{animation:none!important}}
+
+
+/* Character acting pass v0.4 — quiet weight shifts and lived-in motion */
+.hero[data-state="idle"] .head{animation:heroIdleLook 6.4s ease-in-out 1.8s infinite}
+.hero[data-state="idle"] .arm.left{animation:heroIdleHand 7.2s ease-in-out 2.6s infinite}
+.hero[data-state="idle"] .arm.right{animation:heroIdleHand 8.1s ease-in-out 3.4s infinite reverse}
+.hero[data-state="walking"] .coat{animation:coatWalk .44s ease-in-out infinite alternate}
+.hero[data-state="walking"] .scarf{animation:scarfWalk .38s ease-in-out infinite alternate}
+.hero[data-state="interacting"] .arm.left{animation:heroListen 3.8s ease-in-out infinite}
+.hero[data-state="interacting"] .coat{animation:coatSettle .9s ease-out both}
+.street-npc[data-state="idle"]:before{animation:npcLook 5.8s ease-in-out 1.2s infinite}
+.street-npc[data-state="idle"] b{animation:npcIdleHand 6.8s ease-in-out 2s infinite}
+.street-npc[data-state="walking"]:after{animation:npcWalk .42s ease-in-out infinite alternate}
+.street-npc[data-state="walking"] b{animation:npcArm .42s ease-in-out infinite alternate}
+.street-npc[data-speaking="true"] b{animation:npcGesture .9s ease-in-out infinite alternate}
+@keyframes heroIdleLook{0%,72%,100%{translate:0 0;rotate:0deg}78%{translate:1px -1px;rotate:3deg}84%{translate:0 0;rotate:-1deg}}
+@keyframes heroIdleHand{0%,78%,100%{rotate:0deg}84%{rotate:2deg}90%{rotate:0deg}}
+@keyframes coatWalk{to{translate:0 1px;rotate:.35deg}}
+@keyframes scarfWalk{from{translate:0 0;rotate:-3deg}to{translate:1px 2px;rotate:1deg}}
+@keyframes heroListen{0%,100%{rotate:0deg}50%{rotate:1.5deg}}
+@keyframes coatSettle{0%{translate:0 -2px}100%{translate:0 0}}
+@keyframes npcIdleHand{0%,80%,100%{rotate:0deg}86%{rotate:4deg}92%{rotate:-2deg}}
+@media(prefers-reduced-motion:reduce){.hero[data-state] .head,.hero[data-state] .arm,.hero[data-state] .coat,.hero[data-state] .scarf,.street-npc[data-state] b,.street-npc[data-state]:before,.street-npc[data-state]:after{animation:none!important}}
+
+
+/* Illustration renderer bridge v0.5
+   Art assets can replace the procedural rigs without changing movement,
+   hitboxes, dialogue targeting, camera logic, or interaction state. */
+.hero .art-layer{
+ position:absolute;z-index:4;left:50%;bottom:0;width:88px;height:132px;
+ transform:translateX(-50%);background-image:var(--hero-art,none);
+ background-repeat:no-repeat;background-position:center bottom;background-size:contain;
+ opacity:0;pointer-events:none;transition:opacity .24s ease;
+}
+.hero[data-renderer="illustrated"]>.art-layer{opacity:1}
+.hero[data-renderer="illustrated"]>:not(.shadow):not(.art-layer){opacity:0!important}
+.street-npc .art-layer{
+ position:absolute;z-index:3;left:50%;bottom:0;width:62px;height:88px;
+ transform:translateX(-50%);background-image:var(--npc-art,none);
+ background-repeat:no-repeat;background-position:center bottom;background-size:contain;
+ opacity:0;pointer-events:none;transition:opacity .24s ease;
+}
+.street-npc[data-renderer="illustrated"] .art-layer{opacity:1}
+.street-npc[data-renderer="illustrated"]::before,
+.street-npc[data-renderer="illustrated"]::after,
+.street-npc[data-renderer="illustrated"]>i,
+.street-npc[data-renderer="illustrated"]>b{opacity:0!important}
+.npc-a{--npc-art:var(--passerby-a-art,none)}
+.npc-b{--npc-art:var(--passerby-b-art,none)}
+.npc-c{--npc-art:var(--passerby-c-art,none)}
+@media(prefers-reduced-motion:reduce){
+ .hero .art-layer,.street-npc .art-layer{transition:none}
+}
+
+
+/* Illustrated environment finish v0.6 — ink contours, paper grain and wet-street brushwork */
+.world>.environment-ink{z-index:1;opacity:.88;mix-blend-mode:soft-light;pointer-events:none}
+@media(max-width:700px){.world>.environment-ink{opacity:.72}}
+@media(prefers-reduced-motion:reduce){.world>.environment-ink{transition:none}}
+
+</style>
+</head>
+<body>
+<div class="game">
+<header class="topbar"><div class="brand">СЕКТОР НОЛЬ<small>ИНТЕРАКТИВНАЯ ДЕТЕКТИВНАЯ НОВЕЛЛА</small></div><div class="hud"><span class="date">СРЕДА · 14 ОКТЯБРЯ</span><span id="clock">08:12</span><span class="time-label" id="periodLabel">УТРО</span><div class="camera-controls" aria-label="Ракурс камеры"><button id="cameraWide" class="active">ОБЩИЙ</button><button id="cameraFollow">СЛЕДОМ</button><button id="cameraClose">БЛИЖЕ</button></div><button class="quiet-btn" id="journalBtn">Блокнот <span id="count">0</span></button></div></header>
+<main class="stage" id="stage">
+ <div class="viewport" id="viewport">
+  <div class="world" id="world">
+   <svg viewBox="0 0 2400 900" preserveAspectRatio="none" role="img" aria-label="Осенняя улица Эйзенбрука после дождя">
+    <defs>
+     <linearGradient id="sky" x2="0" y2="1"><stop stop-color="#343b43"/><stop offset=".58" stop-color="#85817b"/><stop offset="1" stop-color="#3c3d3d"/></linearGradient>
+     <linearGradient id="road" x2="0" y2="1"><stop stop-color="#555052"/><stop offset=".35" stop-color="#24262a"/><stop offset="1" stop-color="#0b0d10"/></linearGradient>
+     <linearGradient id="stone" x2="1"><stop stop-color="#292a2b"/><stop offset=".5" stop-color="#59524b"/><stop offset="1" stop-color="#29292b"/></linearGradient>
+     <linearGradient id="glass" x2="0" y2="1"><stop stop-color="#e0b77d" stop-opacity=".75"/><stop offset="1" stop-color="#795b40" stop-opacity=".25"/></linearGradient>
+     <filter id="blur"><feGaussianBlur stdDeviation="18"/></filter>
+    </defs>
+    <rect width="2400" height="900" fill="url(#sky)"/>
+    <ellipse cx="1450" cy="180" rx="600" ry="150" fill="#e0d9ca" opacity=".15" filter="url(#blur)"/>
+    <!-- Old European facades -->
+    <g stroke="#151719" stroke-width="12">
+     <path d="M0 150h420v455H0z" fill="url(#stone)"/><path d="M440 85h390v520H440z" fill="#49433e"/><path d="M850 180h330v425H850z" fill="#363638"/><path d="M1200 105h420v500h-420z" fill="url(#stone)"/><path d="M1640 160h350v445h-350z" fill="#403b38"/><path d="M2010 70h390v535h-390z" fill="#343537"/>
+    </g>
+    <g fill="#17191b" stroke="#17191b" stroke-width="8">
+     <path d="M35 205h75v110H35zM155 205h75v110h-75zM275 205h75v110h-75zM35 365h75v110H35zM155 365h75v110h-75zM275 365h75v110h-75z"/>
+     <path d="M485 155h80v125h-80zM625 155h80v125h-80zM485 330h80v125h-80zM625 330h80v125h-80z"/>
+     <path d="M900 235h75v110h-75zM1040 235h75v110h-75zM1240 175h85v125h-85zM1380 175h85v125h-85zM1510 175h75v125h-75z"/>
+     <path d="M1680 225h75v110h-75zM1810 225h75v110h-75zM2050 145h85v125h-85zM2190 145h85v125h-85zM2050 325h85v125h-85zM2190 325h85v125h-85z"/>
+    </g>
+    <g fill="url(#glass)" opacity=".85"><path d="M52 220h42v80H52zM172 220h42v80h-42zM292 220h42v80h-42zM502 170h46v95h-46zM642 170h46v95h-46zM917 250h42v78h-42zM1057 250h42v78h-42zM1260 190h48v95h-48zM1400 190h48v95h-48zM1530 190h42v95h-42zM1697 240h42v78h-42zM1827 240h42v78h-42zM2070 160h48v95h-48zM2210 160h48v95h-48z"/></g>
+    <g fill="none" stroke="#8c8172" stroke-width="5" opacity=".7"><path d="M0 330h420M440 300h390M850 390h330M1200 330h420M1640 375h350M2010 300h390"/><path d="M20 490h380M460 490h350M1220 500h380M2030 490h350"/></g>
+    <!-- Illustrated street architecture: balconies, masonry, shopfront depth and street furniture -->
+    <g stroke-linejoin="round">
+     <!-- rooflines and chimneys -->
+     <g fill="#292a2b" stroke="#17191b" stroke-width="8">
+      <path d="M0 150L48 112H370L420 150Z"/><path d="M440 85L485 45H785L830 85Z"/>
+      <path d="M850 180L900 143H1135L1180 180Z"/><path d="M1200 105L1250 62H1570L1620 105Z"/>
+      <path d="M1640 160L1685 122H1945L1990 160Z"/><path d="M2010 70L2050 28H2360L2400 70Z"/>
+      <path d="M82 112h38V62h-38zM740 45h32V8h-32zM1510 62h38V16h-38zM2270 28h36v-46h-36z"/>
+     </g>
+     <!-- stone pilasters and window reveals -->
+     <g fill="none" stroke="#b6a48d" stroke-opacity=".24" stroke-width="5">
+      <path d="M18 160v440M402 160v440M458 95v510M812 95v510M870 190v415M1160 190v415M1220 115v490M1600 115v490M1660 170v435M1970 170v435M2030 80v525M2380 80v525"/>
+      <path d="M18 340h385M458 300h355M870 390h285M1220 320h380M1660 370h310M2030 300h350"/>
+     </g>
+     <!-- window frames and inner reflections -->
+     <g fill="none" stroke="#171a1c" stroke-width="8">
+      <path d="M52 220v80m21-80v80M172 220v80m21-80v80M292 220v80m21-80v80"/>
+      <path d="M502 170v95m23-95v95M642 170v95m23-95v95M917 250v78m21-78v78M1057 250v78m21-78v78"/>
+      <path d="M1260 190v95m24-95v95M1400 190v95m24-95v95M1530 190v95m21-95v95"/>
+      <path d="M1697 240v78m21-78v78M1827 240v78m21-78v78M2070 160v95m24-95v95M2210 160v95m24-95v95"/>
+     </g>
+     <g fill="none" stroke="#c9b99f" stroke-opacity=".25" stroke-width="3">
+      <path d="M42 310h95m25 0h95m25 0h95M490 275h105m25 0h105M905 338h95m25 0h95"/>
+      <path d="M1245 295h110m25 0h110m25 0h100M1680 328h95m25 0h95M2050 270h115m25 0h115"/>
+     </g>
+     <!-- iron balconies -->
+     <g fill="#1a1c1e" stroke="#0b0d0f" stroke-width="5">
+      <path d="M470 305h145v12H470zM470 317v32m24-32v32m24-32v32m24-32v32m24-32v32m24-32v32m24-32v32"/>
+      <path d="M1215 325h190v12h-190zM1215 337v34m28-34v34m28-34v34m28-34v34m28-34v34m28-34v34m28-34v34"/>
+      <path d="M2025 285h170v12h-170zM2025 297v32m28-32v32m28-32v32m28-32v32m28-32v32m28-32v32"/>
+     </g>
+     <g fill="none" stroke="#a99579" stroke-opacity=".34" stroke-width="4">
+      <path d="M470 305q72-12 145 0M1215 325q90-14 190 0M2025 285q82-12 170 0"/>
+      <path d="M35 505h75m45 0h75m45 0h75M485 455h80m60 0h80M1680 470h75m55 0h75"/>
+     </g>
+     <!-- shop awnings, recessed doors and hanging signs -->
+     <path d="M145 505h470l-18 36H164z" fill="#5a4035" stroke="#171719" stroke-width="7"/>
+     <path d="M165 506h55l-4 34h-54zM228 506h55l-2 34h-55zM291 506h55l0 34h-55zM354 506h55l2 34h-55zM417 506h55l4 34h-55zM480 506h55l6 34h-55zM543 506h55l8 34h-55z" fill="#a98a65" opacity=".55"/>
+     <path d="M700 465h260l-14 31H714z" fill="#49362d" stroke="#171719" stroke-width="6"/>
+     <path d="M1535 440h420l-18 36h-385z" fill="#3d3330" stroke="#171719" stroke-width="6"/>
+     <g fill="#17191b" stroke="#0b0c0e" stroke-width="5">
+      <path d="M108 515h-24v-92h24zM100 423q-18-18 0-34q18 16 0 34z"/>
+      <path d="M1485 470h-18v-70h18zM1476 398q-14-14 0-28q14 14 0 28z"/>
+     </g>
+     <g fill="#d6b77f" opacity=".7">
+      <path d="M89 390h23v18H89zM1466 370h22v18h-22z"/>
+     </g>
+     <!-- street-level doors and stone steps -->
+     <g fill="#171a1c" stroke="#0a0c0e" stroke-width="8">
+      <path d="M35 500q0-42 38-42t38 42v104H35z"/>
+      <path d="M1010 505q0-42 38-42t38 42v104h-76z"/>
+      <path d="M1990 500q0-45 42-45t42 45v110h-84z"/>
+     </g>
+     <g fill="none" stroke="#9c8b76" stroke-opacity=".38" stroke-width="4">
+      <path d="M25 608h100M1000 612h96M1980 615h105M35 618h80M1010 622h76M1990 625h90"/>
+      <path d="M75 475v122m1000-122v122m1000-125v128"/>
+     </g>
+     <!-- drainpipes, utility cables and old street signs -->
+     <g fill="none" stroke="#17191b" stroke-width="10">
+      <path d="M410 145v470m420-525v510m345-25v510m445-450v470m390-550v540"/>
+      <path d="M0 135q300 20 560-22t560 16t650-5t630 12" stroke-width="3"/>
+      <path d="M0 175q340 18 650-16t650 15t600-8t500 9" stroke-width="2" opacity=".7"/>
+     </g>
+     <g fill="#34302b" stroke="#17191b" stroke-width="5">
+      <path d="M930 430h95v25h-95zM1900 415h100v25h-100z"/>
+     </g>
+     <g fill="#d4c1a1" font-family="Georgia" font-size="13" letter-spacing="2">
+      <text x="978" y="447" text-anchor="middle">ALTSTADT</text>
+      <text x="1950" y="432" text-anchor="middle">RATHAUS</text>
+     </g>
+    </g>
+    <!-- ground floor shops -->
+    <path d="M120 500h520v115H120z" fill="#211f1e" stroke="#0b0c0e" stroke-width="14"/><path d="M145 520h470v75H145z" fill="url(#glass)" opacity=".7"/><text x="380" y="485" fill="#d6b17a" font-family="Georgia" font-size="26" text-anchor="middle" letter-spacing="7">BUCHHANDLUNG</text>
+    <path d="M680 465h300v160H680z" fill="#29231e" stroke="#0b0c0e" stroke-width="13"/><path d="M700 485h260v115H700z" fill="#b48b5c" opacity=".3"/><text x="830" y="450" fill="#d9b77e" font-family="Georgia" font-size="23" text-anchor="middle" letter-spacing="5">PRESSE</text>
+    <!-- Cafe -->
+    <path d="M1510 440h470v190h-470z" fill="#211e1c" stroke="#090a0b" stroke-width="15"/><path d="M1535 470h420v125h-420z" fill="url(#glass)" opacity=".85"/><path d="M1500 420h490v40h-490z" fill="#171719"/><text x="1745" y="448" fill="#e2c28f" font-family="Georgia" font-size="24" text-anchor="middle" letter-spacing="8">CAFÉ 24</text><path d="M1740 470v125M1535 595h420" stroke="#1b1917" stroke-width="13"/>
+    <!-- kiosk -->
+    <path d="M570 525h155v130H570z" fill="#49392c" stroke="#101113" stroke-width="12"/><path d="M555 515h185l-15-35H570z" fill="#302821" stroke="#101113" stroke-width="9"/><rect x="588" y="548" width="120" height="78" fill="#d5cdbd" opacity=".3"/><text x="648" y="540" fill="#e0c28f" font-family="Georgia" font-size="15" text-anchor="middle" letter-spacing="3">ГАЗЕТЫ</text>
+    <!-- trees -->
+    <g stroke="#29221b" stroke-width="18" fill="none"><path d="M1030 590v-230m0 90l-85-95m85 65l95-100M2220 590V330m0 100l-90-90m90 60l95-110"/></g>
+    <g fill="#8b633f" opacity=".9"><circle cx="980" cy="350" r="82"/><circle cx="1060" cy="315" r="90"/><circle cx="1125" cy="370" r="70"/><circle cx="2160" cy="320" r="75"/><circle cx="2240" cy="275" r="90"/><circle cx="2310" cy="350" r="70"/></g>
+    <g fill="#b18a56" opacity=".65"><circle cx="1000" cy="320" r="48"/><circle cx="1080" cy="365" r="44"/><circle cx="2210" cy="300" r="50"/><circle cx="2290" cy="340" r="42"/></g>
+
+     <!-- Hand-drawn architectural accents: cornices, stone joints and rain-darkened awnings -->
+     <g fill="none" stroke="#c2b29b" stroke-opacity=".22" stroke-width="3">
+      <path d="M0 155h420M440 91h390M850 186h330M1200 111h420M1640 166h350M2010 76h390"/>
+      <path d="M15 178h390M455 112h360M865 204h300M1220 132h380M1660 184h310M2030 98h360"/>
+      <path d="M18 505h390M455 505h350M870 515h290M1220 515h380M1660 520h310M2030 510h350"/>
+     </g>
+     <g fill="none" stroke="#17191b" stroke-width="8" opacity=".7">
+      <path d="M28 320h365M462 285h345M872 365h285M1220 315h380M1660 360h310M2030 285h350"/>
+      <path d="M32 475h360M465 455h340M875 475h280M1225 465h370M1665 470h300M2035 455h340"/>
+     </g>
+     <g fill="#76543b" opacity=".32">
+      <path d="M118 505h520l-20 15H140zM680 465h300l-14 16H696zM1510 440h470l-15 17h-440z"/>
+     </g>
+     <g fill="#a36e3e" opacity=".75">
+      <path d="M180 760q13-13 25 0q-13 12-25 0zM510 815q12-15 25-1q-13 13-25 1zM875 735q15-12 24 3q-15 10-24-3zM1580 790q14-14 27 0q-14 13-27 0zM2110 745q13-12 24 1q-13 12-24-1z"/>
+     </g>
+     <g fill="none" stroke="#d7b88c" stroke-width="7" opacity=".12">
+      <path d="M250 675l-25 90m45-88l-18 65M760 690l-22 110m42-105l-17 75M1710 665l-28 120m48-112l-19 83M2240 680l-20 95"/>
+     </g>
+    <!-- pavement and wet street -->
+    <path d="M0 610h2400v290H0z" fill="url(#road)"/><path d="M0 625h2400" stroke="#aaa39a" stroke-opacity=".35" stroke-width="5"/>
+    <g fill="none" stroke="#c5a47b" stroke-width="10" opacity=".18"><path d="M90 730h330l-40 75H60zM690 680h270l-25 100H670zM1500 705h450l-55 110h-420zM2040 670h260l-40 100h-250z"/></g>
+    <g stroke="#9b9b99" stroke-opacity=".18" stroke-width="3"><path d="M0 690l2400-40M0 780l2400-65M0 850l2400-90"/></g>
+    <!-- tram tracks -->
+    <path d="M0 840q1200-90 2400 0M0 875q1200-90 2400 0" fill="none" stroke="#9b9185" stroke-opacity=".35" stroke-width="5"/>
+    <!-- lamps -->
+    <g stroke="#101214" stroke-width="12" fill="none"><path d="M420 250v400m0-360q0-45 55-45h45M1340 210v430m0-380q0-45 55-45h45M1980 240v390"/></g>
+    <g fill="#e5bd83"><path d="M510 200h45l-6 18h-35zM1430 160h45l-6 18h-35zM1960 220h45l-6 18h-35z"/></g>
+    <g fill="#e4bb7b" opacity=".16" filter="url(#blur)"><ellipse cx="530" cy="250" rx="95" ry="90"/><ellipse cx="1450" cy="210" rx="95" ry="90"/><ellipse cx="1980" cy="280" rx="90" ry="90"/></g>
+    <!-- parked graphite Audi-like SUV silhouette -->
+    <path d="M1080 690l45-65q20-25 65-30l150-3q48 0 75 38l42 60 25 20v48h-425v-48z" fill="#353b40" stroke="#111416" stroke-width="9"/><path d="M1195 604l30-18h105q35 0 55 28l22 42h-250z" fill="#151b20" stroke="#111416" stroke-width="7"/><path d="M1325 590v67" stroke="#50585d" stroke-width="5"/><circle cx="1165" cy="750" r="29" fill="#090b0d" stroke="#55595b" stroke-width="8"/><circle cx="1430" cy="750" r="29" fill="#090b0d" stroke="#55595b" stroke-width="8"/>
+   </svg>
+   <svg class="environment-ink" viewBox="0 0 2400 900" preserveAspectRatio="none" aria-hidden="true">
+    <defs>
+     <linearGradient id="inkAtmosphere" x2="0" y2="1"><stop stop-color="#e1d6c2" stop-opacity=".11"/><stop offset=".52" stop-color="#c2b39c" stop-opacity=".025"/><stop offset="1" stop-color="#090b10" stop-opacity=".2"/></linearGradient>
+     <linearGradient id="wetGlint" x2="0" y2="1"><stop stop-color="#d6c4a5" stop-opacity=".38"/><stop offset="1" stop-color="#d6c4a5" stop-opacity="0"/></linearGradient>
+     <pattern id="paperGrain" width="96" height="96" patternUnits="userSpaceOnUse">
+      <path d="M4 12l18-2m31 14l9-1m18 24l12-2M14 71l20-2m29 15l13-1" stroke="#e4d8c4" stroke-opacity=".16" stroke-width="1"/>
+      <circle cx="29" cy="38" r="1.2" fill="#f0e4d1" fill-opacity=".2"/><circle cx="79" cy="8" r=".9" fill="#080a0d" fill-opacity=".22"/><circle cx="66" cy="63" r="1" fill="#f0e4d1" fill-opacity=".16"/>
+     </pattern>
+     <filter id="softInkBlur"><feGaussianBlur stdDeviation="8"/></filter>
+    </defs>
+    <rect width="2400" height="900" fill="url(#inkAtmosphere)"/>
+    <!-- Fine architectural contour lines: irregular, broken ink rather than uniform outlines -->
+    <g fill="none" stroke="#d0c1aa" stroke-linecap="round" opacity=".2">
+     <g stroke-width="2">
+      <path d="M13 164q48-5 92-2t93 0m-176 12q180 5 383 0M452 100q75-6 147-2t212 1M863 197q95-5 181-1m-180 13q130 3 267-1M1212 123q160-7 305-2m-295 15q190 3 378-2M1652 178q110-5 214-1m-208 14q150 2 300-2M2020 89q160-6 310-1"/>
+      <path d="M26 348q88-3 170 0m38-1q75 4 145-1M465 315q92-4 174 0m42 0q66 3 124-1M875 405q70-3 132 0m36 0h92M1230 344q100-3 190 0m24 0h145M1670 392q94-4 180 0m25 0h90M2040 320q110-4 205 0m25 0h90"/>
+     </g>
+     <g stroke-width="1.3" opacity=".65">
+      <path d="M20 185l40-2m16 0l31 1m44-2l54 1m280-79l34 1m23 0l48-1m350 97l35-1m27 1l42 0m327-75l40 1m21 0l62-1m357 57l35 1m21 0l49-1"/>
+      <path d="M40 526l52-1m22 0l37 1m24-2l64 0m470-30l48 1m31-1l41 0m810 13l48 1m25-1l52 0"/>
+     </g>
+    </g>
+    <!-- Water-darkened masonry, fine cracks and rain trails -->
+    <g fill="none" stroke="#17191b" stroke-linecap="round" opacity=".32">
+     <g stroke-width="3">
+      <path d="M68 190l-5 34 4 22-7 28m305-96l-3 27 5 17-4 31M520 130l-3 24 4 19-6 28m236-55l-4 29 3 18M930 218l-4 27 4 21-6 24M1115 220l-5 20 4 23-3 25M1300 150l-3 30 5 18-5 28M1555 150l-5 28 4 21-5 24M1740 205l-3 22 4 20-6 25M2290 120l-4 24 4 18-6 26"/>
+     </g>
+     <g stroke-width="1.4" opacity=".8">
+      <path d="M120 350l-2 25m-1 9l-2 22M560 295l-2 32m-1 12l-3 24M1000 390l-3 28m-2 13l-2 20M1450 330l-3 25m-2 11l-2 19M1860 380l-3 30m-1 12l-2 18M2180 300l-3 25m-2 12l-2 18"/>
+     </g>
+    </g>
+    <!-- Window reflections and warm pools of interior light -->
+    <g fill="none" stroke="#e8c99a" stroke-linecap="round" opacity=".25">
+     <path d="M57 226l2 45m9-44l1 26m113-25l1 54m18-53l1 31M508 177l1 63m12-61l1 38M648 177l1 58m16-58l1 29M925 256l1 48m15-48l1 31M1268 197l1 60m15-59l1 43M1408 198l1 55m16-55l1 36M1703 246l1 48m17-47l1 28M2077 167l1 60m16-60l1 36M2217 168l1 58m16-57l1 31"/>
+     </g>
+    <g fill="url(#wetGlint)" opacity=".24">
+     <path d="M150 614h460l-55 22H190zM710 610h230l-35 18H735zM1550 600h380l-50 24h-310z"/>
+    </g>
+    <!-- Street reflections: broken brush strokes following the perspective -->
+    <g fill="none" stroke-linecap="round">
+     <g stroke="#d5b78c" opacity=".2" stroke-width="5">
+      <path d="M140 670q95-7 184 1m-130 13q62-5 118 0M720 655q88-5 168 2m-120 13q52-4 100 0M1530 666q130-7 260 1m-190 16q94-5 160 1M2070 650q82-5 155 1m-112 16q52-3 95 1"/>
+     </g>
+     <g stroke="#a9b8bc" opacity=".16" stroke-width="3">
+      <path d="M40 710q160-8 310 0m-215 26q110-4 195 1M500 745q110-7 235 0m-165 22q85-4 150 0M1040 705q130-7 250 0m-180 27q90-4 170 0M1690 740q140-8 290 0m-220 24q100-4 190 1M2140 710q90-5 175 1"/>
+     </g>
+     <g stroke="#0a0d10" opacity=".28" stroke-width="2">
+      <path d="M0 805q310-18 570-3m150-13q210-15 430-2m180-6q250-16 490 0m120-4q220-12 460 1"/>
+     </g>
+    </g>
+    <!-- Windblown leaves, scattered and deliberately irregular -->
+    <g fill="#9b6339" stroke="#3a2b22" stroke-width="1.4" opacity=".72">
+     <path d="M190 782q8-12 18-2q-5 9-18 2zM460 846q9-13 19-2q-6 10-19 2zM835 778q7-12 17-1q-7 10-17 1zM1180 865q9-12 18-1q-6 10-18 1zM1595 812q8-13 18-2q-6 11-18 2zM1880 858q8-12 18-1q-7 10-18 1zM2250 790q8-13 18-2q-6 11-18 2z"/>
+     <path d="M207 783l-8 9m278 51l-8 8m379-72l-8 8m364 81l-8 8m385-55l-8 9m286 36l-8 8m379-67l-8 8" fill="none" stroke="#d0a06b" stroke-width="1"/>
+    </g>
+    <!-- A soft atmospheric veil behind the street furniture -->
+    <path d="M0 560q370-35 720 0t720-3t960 0v90H0z" fill="#b7b1a6" opacity=".045" filter="url(#softInkBlur)"/>
+    <rect width="2400" height="900" fill="url(#paperGrain)" opacity=".45"/>
+   </svg>
+   <div class="tram" aria-hidden="true"><svg viewBox="0 0 430 155"><defs><linearGradient id="tramPaint" x2="0" y2="1"><stop stop-color="#c7b99d"/><stop offset=".55" stop-color="#777363"/><stop offset="1" stop-color="#3a4141"/></linearGradient><linearGradient id="tramGlass" x2="0" y2="1"><stop stop-color="#a9b7b7"/><stop offset="1" stop-color="#27353a"/></linearGradient></defs><path d="M58 23L95 2h76l-12 22M120 23l25-21h76l-8 21" fill="none" stroke="#252a2b" stroke-width="7" stroke-linecap="round"/><path d="M152 2l-22-20m22 20l25-20" stroke="#252a2b" stroke-width="5"/><path d="M17 42Q20 18 49 18h335q27 0 29 28v76q0 14-18 14H34q-17 0-17-17z" fill="url(#tramPaint)" stroke="#15191b" stroke-width="8"/><path d="M42 34h340q14 0 14 16v40H35V48q0-14 7-14z" fill="#2c393d" stroke="#1b2022" stroke-width="5"/><g fill="url(#tramGlass)" stroke="#182125" stroke-width="5"><rect x="48" y="40" width="53" height="43" rx="4"/><rect x="111" y="40" width="53" height="43" rx="4"/><rect x="174" y="40" width="53" height="43" rx="4"/><rect x="237" y="40" width="53" height="43" rx="4"/><rect x="300" y="40" width="53" height="43" rx="4"/></g><path d="M359 31h34q15 0 15 17v42h-49z" fill="#253136" stroke="#171c1e" stroke-width="5"/><rect x="364" y="38" width="36" height="40" rx="4" fill="#9eacaa" stroke="#20282b" stroke-width="4"/><rect x="25" y="93" width="380" height="8" fill="#963e36"/><rect x="25" y="104" width="380" height="6" fill="#d2c2a1"/><rect x="29" y="20" width="75" height="17" rx="2" fill="#171c1d"/><text x="66" y="32" text-anchor="middle" fill="#f1d9a7" font-size="10" font-family="Arial" letter-spacing="2">LINIE 4</text><rect x="300" y="112" width="82" height="17" fill="#171b1c"/><text x="341" y="124" text-anchor="middle" fill="#ead8b5" font-size="8" font-family="Arial" letter-spacing="1">EISENBRÜCK</text><circle cx="90" cy="133" r="17" fill="#111416" stroke="#66645d" stroke-width="6"/><circle cx="325" cy="133" r="17" fill="#111416" stroke="#66645d" stroke-width="6"/><path d="M16 89h-10v-17h10m400 17h8v-17h-8" fill="#d9c89f"/><path d="M387 80l16 7-16 7" fill="#d5b77d"/></svg></div>
+   <div class="cyclist" aria-hidden="true"><svg viewBox="0 0 110 64"><circle cx="23" cy="48" r="13" fill="none" stroke="#17191b" stroke-width="4"/><circle cx="84" cy="48" r="13" fill="none" stroke="#17191b" stroke-width="4"/><path d="M23 48L43 24L58 48H23L38 30H66L84 48L70 20" fill="none" stroke="#b7a58b" stroke-width="3"/><circle cx="69" cy="10" r="6" fill="#b99c7d"/><path d="M67 17L55 29L68 34L78 23M55 29L43 24" fill="none" stroke="#353a3c" stroke-width="6" stroke-linecap="round"/></svg></div>
+   <div class="loose-paper" aria-hidden="true"></div>
+   <div class="street-npc npc-a" data-person="a" data-state="walking" data-renderer="rig" data-art-key="passerby-a" aria-hidden="true"><span class="art-layer"></span><i></i><b></b></div><div class="street-npc npc-b" data-person="b" data-state="idle" data-renderer="rig" data-art-key="passerby-b" aria-hidden="true"><span class="art-layer"></span><i></i><b></b></div><div class="street-npc npc-c" data-person="c" data-state="walking" data-renderer="rig" data-art-key="passerby-c" aria-hidden="true"><span class="art-layer"></span><i></i><b></b></div><div class="hero" id="hero" data-state="idle" data-renderer="rig" data-art-key="protagonist" role="img" aria-label="Главный герой — следователь"><span class="shadow"></span><span class="art-layer" aria-hidden="true"></span><span class="head"><i class="brow"></i><i class="stubble"></i></span><span class="hair"></span><span class="neck"></span><span class="collar"></span><span class="coat"></span><span class="lapel"></span><span class="coat-seam"></span><span class="coat-buttons"></span><span class="scarf"></span><span class="scarf-fringe"></span><span class="arm left"></span><span class="arm right"></span><span class="hand"></span><span class="leg left"></span><span class="leg right"></span><span class="shoe left"></span><span class="shoe right"></span></div>
+   <button class="hotspot" data-target="bookshop" style="left:380px">Книжный магазин<small>ВИТРИНА</small></button>
+   <button class="hotspot" data-target="kiosk" style="left:648px">Газетный киоск<small>ПОГОВОРИТЬ</small></button>
+   <button class="hotspot" data-target="tramStop" style="left:980px">Остановка<small>РАСПИСАНИЕ</small></button>
+   <button class="hotspot" data-target="car" style="left:1300px">Audi Q5<small>ОСМОТРЕТЬ</small></button>
+   <button class="hotspot" data-target="passerbyA" style="left:820px">Прохожая<small>ПОГОВОРИТЬ</small></button>
+   <button class="hotspot" data-target="passerbyB" style="left:1570px">Пассажир<small>ПОГОВОРИТЬ</small></button>
+   <button class="hotspot" data-target="cafe" style="left:1745px">Кафе «24 часа»<small>ЗАЙТИ</small></button>
+   <div class="day-shade" aria-hidden="true"></div><div class="mist"></div><div class="rain"></div><div class="vignette"></div>
+  </div>
+ </div>
+ <div class="scene-title"><strong>УТРО В ЭЙЗЕНБРУКЕ</strong><span id="scenePeriod">ЦЕНТРАЛЬНЫЙ РАЙОН · УТРО</span></div>
+ <div class="objective"><b>СЕЙЧАС</b><span id="objective">Оглядеться и начать утро привычным образом.</span></div>
+ <div class="camera-note">КАМЕРА СЛЕДУЕТ ЗА ГЕРОЕМ</div>
+ <div class="bottom-ui"><div class="hint" id="hint">WASD / стрелки — движение · E — взаимодействие</div><button class="context" id="contextBtn">Осмотреть<small id="contextSub">рядом</small></button></div>
+ <div class="joystick" id="joystick" aria-label="Виртуальный джойстик"><div class="stick" id="stick"></div></div>
+ <div class="toast" id="toast"></div>
+ <div class="ambient-note" id="ambientNote" aria-live="polite"></div>
+ <div class="dialogue" id="dialogue" hidden><div class="speaker" id="speaker">СЛЕДОВАТЕЛЬ · ВНУТРЕННИЙ ГОЛОС</div><div class="line" id="line"></div><div class="dialogue-actions" id="dialogueActions"><button class="action-btn" id="dialogueClose">Продолжить</button></div></div>
+ <div class="modal" id="modal" hidden><div class="card" id="modalContent"></div></div>
+ <div class="interior" id="interior" hidden><div class="card"><div class="speaker" id="interiorKicker">ЭЙЗЕНБРУК</div><h2 id="interiorTitle"></h2><p id="interiorText"></p><div class="scene-actions" id="interiorActions"></div></div></div>
+ <div class="intro" id="intro"><div><div class="kicker">ЭЙЗЕНБРУК · СРЕДА · 14 ОКТЯБРЯ · 08:12</div><h1>СЕКТОР НОЛЬ</h1><p>Город просыпается после ночного дождя. Трамвай уже прошёл по центральной улице, в кафе зажигают свет, а газетчик раскладывает свежий выпуск.</p><p>Утро, которое ничем не обещало отличаться от остальных.</p><button class="start" id="start">Начать прогулку</button></div></div>
+ <div class="modal" id="journal" hidden><div class="card"><div class="speaker">ЛИЧНЫЕ ЗАПИСИ</div><h2>Блокнот следователя</h2><div id="entries"></div><button class="action-btn" id="journalClose">Закрыть</button></div></div>
+</main>
+</div>
+<script>
+(()=>{
+const $=id=>document.getElementById(id),world=$('world'),hero=$('hero'),stage=$('stage');
+const S={x:1120,dir:1,near:null,inside:false,dialogue:false,paper:false,coffee:false,minute:492,notes:[],camera:"wide",moving:false};
+try{S.notes=JSON.parse(localStorage.getItem('sz-autumn-prologue-v1')||'[]')}catch{}
+const O={bookshop:{x:380,label:'Книжный магазин',sub:'Осмотреть витрину'},kiosk:{x:648,label:'Газетный киоск',sub:'Поговорить с продавцом'},passerbyA:{x:820,label:'Прохожая',sub:'Перекинуться парой слов'},tramStop:{x:980,label:'Трамвайная остановка',sub:'Посмотреть расписание'},car:{x:1300,label:'Audi Q5',sub:'Осмотреть автомобиль'},passerbyB:{x:1570,label:'Пассажир',sub:'Поговорить'},cafe:{x:1745,label:'Кафе «24 часа»',sub:'Войти в кафе'}};
+const streetMoments=[
+ 'Ветер переворачивает уголок газеты у киоска. Продавец придерживает стопку ладонью.',
+ 'Велосипедист ловко объезжает лужу и скрывается за припаркованной машиной.',
+ 'Из кафе доносится короткий звон колокольчика: кто-то только что вошёл.',
+ 'Двое прохожих здороваются на другой стороне улицы и расходятся каждый по своим делам.',
+ 'Трамвайная остановка постепенно заполняется людьми. Кто-то сверяется с расписанием.',
+ 'Из приоткрытого окна второго этажа доносится музыка, но ветер быстро уносит мелодию.'
+];
+let momentIndex=0, momentTimer=null, momentHide=null;
+
+const pedestrianNodes=[...document.querySelectorAll('.street-npc[data-person]')];
+const pedestrianSchedule=[
+ {id:'a',walk:7600,idle:4200,offset:900},
+ {id:'b',walk:5200,idle:6100,offset:3600},
+ {id:'c',walk:8900,idle:5000,offset:1800}
+];
+function runPedestrianSchedule(){
+ pedestrianSchedule.forEach(p=>{
+  const node=pedestrianNodes.find(n=>n.dataset.person===p.id);if(!node)return;
+  let walking=node.dataset.state==='walking';
+  const cycle=()=>{walking=!walking;node.dataset.state=walking?'walking':'idle';node.style.setProperty('--pace',walking?'1':'0');setTimeout(cycle,walking?p.walk:p.idle)};
+  setTimeout(cycle,p.offset);
+ });
+}
+
+function showStreetMoment(){
+ const el=$('ambientNote'); if(!el || !$('intro').hidden || S.inside || S.dialogue || !$('modal').hidden || !$('journal').hidden) return;
+ el.textContent=streetMoments[momentIndex%streetMoments.length];
+ momentIndex++;
+ el.classList.add('show');
+ clearTimeout(momentHide);
+ momentHide=setTimeout(()=>el.classList.remove('show'),4300);
+}
+function startStreetLife(){
+ if(momentTimer)return;
+ momentTimer=setInterval(showStreetMoment,21000);
+ setTimeout(showStreetMoment,6500);
+}
+
+function save(){localStorage.setItem('sz-autumn-prologue-v1',JSON.stringify(S.notes));$('count').textContent=S.notes.length}
+function note(title,text){if(S.notes.some(n=>n.title===title))return;S.notes.unshift({title,text,time:$('clock').textContent});save();toast('Запись добавлена в блокнот')}
+function toast(t){$('toast').textContent=t;$('toast').classList.add('show');setTimeout(()=>$('toast').classList.remove('show'),2200)}
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function camera(){const w=stage.clientWidth,zoom=S.camera==="close"?1.22:S.camera==="follow"?1.08:1;const center=S.camera==="wide"?S.x-w*.5:S.x-w*.43;const off=Math.max(0,Math.min(2400-w,center));world.style.transform="translateX("+(-off)+"px) scale("+zoom+")";["Wide","Follow","Close"].forEach(k=>{const b=$("camera"+k);if(b)b.classList.toggle("active",S.camera===k.toLowerCase())})}
+function updateNear(){
+ let id=null,dmin=9999;
+ Object.keys(O).forEach(k=>{let d=Math.abs(S.x-O[k].x);if(d<dmin){dmin=d;id=k}});
+ S.near=dmin<145?id:null;
+ const canNotice=$('intro').hidden&&!S.inside&&!S.dialogue&&$('modal').hidden&&$('journal').hidden;
+ const hr=hero.getBoundingClientRect(),hx=hr.left+hr.width/2;
+ pedestrianNodes.forEach(n=>{
+  const nr=n.getBoundingClientRect(),nx=nr.left+nr.width/2;
+  const distance=Math.abs(nx-hx);
+  const close=canNotice&&distance<190;
+  const greetingRange=canNotice&&distance<108;
+  const wasGreeting=n.dataset.wasGreeting==='true';
+  if(greetingRange&&!wasGreeting&&!n.dataset.greetedRecently){
+   n.dataset.greeting='true';hero.dataset.greeting='true';n.dataset.greetedRecently='true';
+   setTimeout(()=>{delete n.dataset.greeting;delete hero.dataset.greeting;},760);
+   setTimeout(()=>delete n.dataset.greetedRecently,3600);
+  }
+  n.dataset.wasGreeting=greetingRange?'true':'false';
+  n.dataset.attention=(close||n===activeConversationNpc)?'true':'false';
+ });
+ $('contextBtn').classList.toggle('show',!!S.near&&!S.inside&&!S.dialogue);
+ if(S.near){$('contextBtn').childNodes[0].textContent=O[S.near].label;$('contextSub').textContent=O[S.near].sub}
+ document.querySelectorAll('.hotspot').forEach(b=>b.classList.toggle('near',b.dataset.target===S.near));
+}
+function place(){hero.style.left=S.x+'px';hero.style.setProperty('--facing',String(S.dir));hero.dataset.state=S.moving?'walking':(S.dialogue||S.inside?'interacting':'idle');hero.style.transform='translateX(-50%) scaleX('+S.dir+')';camera();updateNear()}
+let activeConversationNpc=null,dialogueTurnTimer=null,npcFarewellTimer=null;
+function pedestrianForSpeaker(who){
+ if(who==='ПРОХОЖАЯ')return pedestrianNodes.find(n=>n.dataset.person==='a')||null;
+ if(who==='ПАССАЖИР')return pedestrianNodes.find(n=>n.dataset.person==='b')||null;
+ return null;
+}
+function dialogue(who,words,choices){
+ clearTimeout(dialogueTurnTimer);clearTimeout(npcFarewellTimer);
+ const npc=pedestrianForSpeaker(who);
+ if(activeConversationNpc&&activeConversationNpc!==npc){
+  activeConversationNpc.style.animationPlayState='';
+  ['speaking','attention','mood','facing','farewell'].forEach(k=>delete activeConversationNpc.dataset[k]);
+ }
+ activeConversationNpc=npc;
+ const mood=/спросить|почему|не знаете|местный|кажется|помните/i.test(words)?'curious':
+  /поблагодар|пожалуйст|простите|доброе утро|попрощ/i.test(words)?'polite':
+  /объясн|расскаж|дело в том|смотрите/i.test(words)?'explaining':'attentive';
+ hero.dataset.conversationMood=mood;
+ if(npc){
+  const hr=hero.getBoundingClientRect(),nr=npc.getBoundingClientRect();
+  S.dir=(nr.left+nr.width/2)>=(hr.left+hr.width/2)?1:-1;
+  hero.dataset.facingPerson='true';
+  hero.style.setProperty('--head-turn',S.dir===1?'8deg':'-8deg');
+  delete npc.dataset.farewell;
+  npc.dataset.attention='true';npc.dataset.speaking='true';
+  npc.dataset.facing=S.dir===1?'left':'right';
+  npc.dataset.mood=mood==='polite'?'polite':'curious';
+  npc.style.animationPlayState='paused';
+  place();
+ }else{
+  activeConversationNpc=null;
+  delete hero.dataset.facingPerson;
+  hero.style.setProperty('--head-turn','0deg');
+ }
+ S.dialogue=true;S.moving=false;
+ let host=$('dialogueActions');host.innerHTML='';
+ choices.forEach(c=>{let b=document.createElement('button');b.className='action-btn';b.textContent=c[0];b.onclick=c[1];host.append(b)});
+ $('speaker').textContent=who;$('line').textContent=words;
+ $('dialogue').hidden=true;
+ dialogueTurnTimer=setTimeout(()=>{$('dialogue').hidden=false;updateNear()},npc?420:0);
+ updateNear();
+}
+function closeDialogue(){
+ clearTimeout(dialogueTurnTimer);
+ S.dialogue=false;$('dialogue').hidden=true;
+ const departing=activeConversationNpc;
+ if(departing){
+  delete departing.dataset.speaking;
+  departing.dataset.farewell='true';
+  departing.dataset.mood='polite';
+  npcFarewellTimer=setTimeout(()=>{
+   ['attention','mood','facing','farewell'].forEach(k=>delete departing.dataset[k]);
+   departing.style.animationPlayState='';
+  },650);
+ }
+ activeConversationNpc=null;delete hero.dataset.facingPerson;delete hero.dataset.conversationMood;hero.style.setProperty('--head-turn','0deg');
+ updateNear();
+}
+function interior(title,words,choices){
+ S.inside=true;$('interiorTitle').textContent=title;$('interiorText').textContent=words;
+ $('interiorKicker').textContent='ЭЙЗЕНБРУК · ОСЕНЬ';
+ let host=$('interiorActions');host.innerHTML='';
+ choices.forEach(c=>{let b=document.createElement('button');b.className='action-btn';b.textContent=c[0];b.onclick=c[1];host.append(b)});
+ $('interior').hidden=false;updateNear();
+}
+function leave(){S.inside=false;$('interior').hidden=true;updateNear()}
+function newspaper(){
+ $('modalContent').innerHTML='<div class="paper"><div class="date">ЭЙЗЕНБРУК · СРЕДА, 14 ОКТЯБРЯ · ВЫПУСК № 184</div><h2>ГОРОДСКОЙ ВЕСТНИК</h2><h3>ТИПОГРАФИЯ ВЕРНЁТСЯ К СТАРОМУ АРХИВУ</h3><p>Городская типография подтвердила, что на следующей неделе начнёт разбирать часть старых печатных материалов, оставшихся после переезда редакции. Представитель предприятия отказался уточнять, какие именно документы вошли в список.</p><p>В администрации сообщили, что речь идёт о плановой инвентаризации. Бывшие сотрудники редакции пока не комментируют новость.</p><div class="classified"><b>ОБЪЯВЛЕНИЕ НА ПОСЛЕДНЕЙ ПОЛОСЕ</b><p>«Пятый экземпляр не уничтожен. Тот, кто знает дату, поймёт».</p><p><i>Без подписи. Без обратного адреса.</i></p></div></div><div class="dialogue-actions" style="margin-top:14px"><button class="action-btn" id="paperSave">Записать в блокнот</button><button class="action-btn" id="paperClose">Закрыть газету</button></div>';
+ $('modal').hidden=false;
+ $('paperSave').onclick=()=>{note('Объявление · «Пятый экземпляр»','На последней полосе выпуска № 184 опубликовано анонимное объявление: «Пятый экземпляр не уничтожен. Тот, кто знает дату, поймёт».');$('modal').hidden=true;$('objective').textContent='Разобраться, что означает объявление на последней полосе.';toast('Первая зацепка сохранена. История началась.')};
+ $('paperClose').onclick=()=>$('modal').hidden=true;
+}
+function buy(){S.paper=true;note('Газета · выпуск № 184','Куплен утренний выпуск «Городского вестника», № 184.');newspaper()}
+function sit(){
+ if(!S.coffee){dialogue('ВНУТРЕННИЙ ГОЛОС','Сначала кофе. Утро должно начинаться в правильном порядке.',[['Заказать кофе',orderCoffee],['Назад',closeDialogue]]);return}
+ dialogue('ВНУТРЕННИЙ ГОЛОС','Кофе горячий. На стекле медленно ползут дождевые капли. Газетный киоск виден через дорогу.',[
+ ['Почитать газету',()=>{if(S.paper)newspaper();else dialogue('ВНУТРЕННИЙ ГОЛОС','Сначала стоит купить свежий выпуск в киоске.',[['Хорошо',closeDialogue]])}],
+ ['Посмотреть на улицу',()=>dialogue('ВНУТРЕННИЙ ГОЛОС','Трамвай уходит за угол. Киоск уже окружили первые покупатели. Город постепенно наполняется голосами.',[['Остаться',closeDialogue]])],
+ ['Выйти',()=>{closeDialogue();leave()}]
+ ]);
+}
+function orderCoffee(){S.coffee=true;note('Кафе · утренний кофе','Заказан чёрный кофе. Бариста помнит привычный заказ героя.');dialogue('БАРИСТА','— Чёрный, как обычно? Сейчас будет. Сегодня утром опять звонили из типографии. Странные у них дела.',[['Сесть у окна',sit],['Поблагодарить',closeDialogue]])}
+function kiosk(){
+ interior('Газетный киоск','Свежий выпуск «Городского вестника». Продавец придерживает стопку газет ладонью, чтобы ветер не перелистнул страницы.',[
+ ['Поговорить с продавцом',()=>dialogue('ПРОДАВЕЦ КИОСКА','— Доброе утро. Сегодня город проснулся раньше обычного. Газету берёте?',[['Купить газету',buy],['Спросить о городе',()=>dialogue('ПРОДАВЕЦ КИОСКА','— Да всё как всегда. Только типография опять прислала странную корректуру. Не моё дело, конечно.',[['Купить выпуск',buy],['Попрощаться',closeDialogue]])],['Попрощаться',closeDialogue]])],
+ ['Осмотреть стопку',()=>dialogue('ВНУТРЕННИЙ ГОЛОС','Свежая бумага ещё пахнет типографской краской. На верхнем экземпляре заметна красная метка возле последней полосы.',[['Купить выпуск',buy],['Назад',closeDialogue]])],
+ ['Выйти на улицу',leave]
+ ]);
+}
+function cafe(){
+ interior('Кафе «24 часа»','Внутри пахнет свежемолотым кофе и тёплым деревом. За окном трамвай скользит по мокрым рельсам. У окна свободен столик.',[
+ ['Заказать чёрный кофе',orderCoffee],['Выбрать столик у окна',sit],['Выйти на улицу',leave]
+ ]);
+}
+function interact(id){
+ if(id==='bookshop')dialogue('ВНУТРЕННИЙ ГОЛОС','За стеклом — новые романы, несколько книг по истории Эйзенбрука и старые городские альбомы. Владелец ещё не открылся.',[['Отойти',closeDialogue]]);
+ if(id==='kiosk')kiosk();
+ if(id==='cafe')cafe();
+ if(id==='tramStop')dialogue('ТРАМВАЙНАЯ ОСТАНОВКА','На стекле под слоем старых объявлений висит расписание. Линия № 4 соединяет Центральный район с портом и старым железным мостом. Следующий вагон будет через шесть минут.',[['Запомнить маршрут',()=>{note('Трамвай · линия № 4','Линия № 4 проходит через Центральный район, старый железный мост и порт. Следующий трамвай — через шесть минут.');closeDialogue()}],['Отойти',closeDialogue]]);
+ if(id==='passerbyA')dialogue('ПРОХОЖАЯ','— Простите, вы не знаете, почему трамваи сегодня идут с задержкой? Я уже второй пропускаю. Кажется, у моста что-то ремонтируют.',[['Спросить о мосте',()=>dialogue('ПРОХОЖАЯ','— Старый железный мост. Там с утра стояла служебная машина. Может, обычная проверка.',[['Поблагодарить',closeDialogue]])],['Попрощаться',closeDialogue]]);
+ if(id==='passerbyB')dialogue('ПАССАЖИР','— Хорошее утро для прогулки. Хотя в такую погоду лучше бы на трамвае. Вы местный?',[['Да, можно сказать',()=>dialogue('ПАССАЖИР','— Тогда наверняка помните, каким был этот район до ремонта. Город меняется быстрее, чем кажется.',[['Согласиться',closeDialogue]])],['Не совсем',closeDialogue]]);
+ if(id==='car')dialogue('ВНУТРЕННИЙ ГОЛОС','Графитовый Audi Q5 покрыт мелкими каплями. Машина выглядит ухоженной. На пассажирском сиденье лежит сложенная карта Эйзенбрука.',[
+ ['Осмотреть карту',()=>{note('Карта в автомобиле','На пассажирском сиденье лежит карта Эйзенбрука. Видна часть северного берега и старый железный мост.');dialogue('ВНУТРЕННИЙ ГОЛОС','На карте есть карандашная отметка возле старого железного моста. Пока непонятно, кто и когда её поставил.',[['Закрыть',closeDialogue]])}],
+ ['Закрыть',closeDialogue]
+ ]);
+}
+function nearby(){if(S.near)interact(S.near)}
+$('contextBtn').onclick=nearby;$('cameraWide').onclick=()=>{S.camera='wide';camera();toast('Общий план')};$('cameraFollow').onclick=()=>{S.camera='follow';camera();toast('Камера следует за героем')};$('cameraClose').onclick=()=>{S.camera='close';camera();toast('Приближённый ракурс')};
+document.querySelectorAll('.hotspot').forEach(b=>b.onclick=()=>toast('Подойди ближе, чтобы взаимодействовать: '+O[b.dataset.target].label));
+$('start').onclick=()=>{$('intro').hidden=true;runPedestrianSchedule();startStreetLife();dialogue('СЛЕДОВАТЕЛЬ · ВНУТРЕННИЙ ГОЛОС','Эйзенбрук. Среда, четырнадцатое октября. Дождь закончился совсем недавно. Кофе и газета — хороший способ начать день. Если город приготовил что-то новое, он обычно не спешит рассказывать об этом первым.',[['Осмотреться',closeDialogue]])};
+$('journalBtn').onclick=()=>{$('entries').innerHTML=S.notes.length?S.notes.map(n=>'<div class="notebook-entry"><b>'+esc(n.title)+'</b><p>'+esc(n.text)+'</p><small>'+esc(n.time)+'</small></div>').join(''):'<p>Пока записей нет.</p>';$('journal').hidden=false};
+$('journalClose').onclick=()=>$('journal').hidden=true;
+const keys=new Set();let joy=0,last=0;
+window.addEventListener('keydown',e=>{let k=e.key.toLowerCase();if(['arrowleft','arrowright','arrowup','arrowdown',' '].includes(k))e.preventDefault();if(k==='e'){nearby();return}if(k==='j'){$('journalBtn').click();return}keys.add(k)});
+window.addEventListener('keyup',e=>keys.delete(e.key.toLowerCase()));window.addEventListener('blur',()=>keys.clear());
+function frame(t){if(!last)last=t;let dt=Math.min((t-last)/1000,.04);last=t;let locked=!$('intro').hidden||!$('dialogue').hidden||!$('modal').hidden||!$('interior').hidden||!$('journal').hidden;
+ if(!locked){let v=0;if(keys.has('a')||keys.has('arrowleft'))v--;if(keys.has('d')||keys.has('arrowright'))v++;v=Math.max(-1,Math.min(1,v+joy));S.moving=!!v;if(v){S.x=Math.max(70,Math.min(2330,S.x+v*260*dt));S.dir=v>0?1:-1}place()}else{S.moving=false;place()}
+ requestAnimationFrame(frame)}
+function place(){hero.style.left=S.x+'px';hero.style.setProperty('--facing',String(S.dir));hero.dataset.state=S.moving?'walking':(S.dialogue||S.inside?'interacting':'idle');hero.style.transform='translateX(-50%) scaleX('+S.dir+')';camera();updateNear()}
+const joypad=$('joystick'),stick=$('stick');let pointer=null;
+function moveStick(e){let r=joypad.getBoundingClientRect(),dx=e.clientX-(r.left+r.width/2),dy=e.clientY-(r.top+r.height/2);joy=Math.max(-1,Math.min(1,dx/42));stick.style.transform='translate('+Math.max(-32,Math.min(32,dx))+'px,'+Math.max(-18,Math.min(18,dy))+'px)'}
+joypad.addEventListener('pointerdown',e=>{pointer=e.pointerId;joypad.setPointerCapture(pointer);moveStick(e)});
+joypad.addEventListener('pointermove',e=>{if(pointer===e.pointerId)moveStick(e)});
+function stop(e){if(pointer===e.pointerId){pointer=null;joy=0;stick.style.transform='translate(0,0)'}}
+joypad.addEventListener('pointerup',stop);joypad.addEventListener('pointercancel',stop);
+function updateWorldTime(){
+ const minutes=S.minute%(24*60),hour=Math.floor(minutes/60),minute=minutes%60;
+ $('clock').textContent=String(hour).padStart(2,'0')+':'+String(minute).padStart(2,'0');
+ let period='day',label='ДЕНЬ';
+ if(hour>=5&&hour<11){period='morning';label='УТРО'}
+ else if(hour>=17&&hour<21){period='evening';label='ВЕЧЕР'}
+ else if(hour>=21||hour<5){period='night';label='НОЧЬ'}
+ world.dataset.period=period;
+ $('periodLabel').textContent=label;
+ const subtitle=$('scenePeriod');
+ if(subtitle)subtitle.textContent='ЦЕНТРАЛЬНЫЙ РАЙОН · '+label;
+}
+function tick(){S.minute=(S.minute+1)%(24*60);updateWorldTime()}
+setInterval(()=>{if($('intro').hidden)tick()},3000);
+window.addEventListener('resize',camera);updateWorldTime();save();place();requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>
