@@ -268,7 +268,7 @@
 }
 .hero[data-renderer="illustrated"]>.art-layer{opacity:1}
 .hero .art-layer{background-image:none;overflow:visible}
-.hero .hero-illustration{position:relative;inset:auto;display:block;width:104px;height:156px;min-width:0;min-height:0;max-width:none;max-height:none;overflow:visible;filter:drop-shadow(0 2px 2px #070a0d88)}
+.hero .hero-illustration{position:relative;inset:auto;display:block;width:88px;height:132px;min-width:0;min-height:0;max-width:none;max-height:none;overflow:visible;filter:drop-shadow(0 1px 1px #070a0d66)}
 .hero .hero-art-head{transform-box:fill-box;transform-origin:50% 85%;transition:transform .28s ease}
 .hero[data-state="interacting"] .hero-art-head{transform:rotate(-4deg) translateY(-1px)}
 .hero[data-state="walking"] .hero-art-arms{animation:heroInkArmSwing .28s ease-in-out infinite alternate}
@@ -684,94 +684,115 @@
    <div class="tram" aria-hidden="true"><svg viewBox="0 0 430 155"><defs><linearGradient id="tramPaint" x2="0" y2="1"><stop stop-color="#c7b99d"/><stop offset=".55" stop-color="#777363"/><stop offset="1" stop-color="#3a4141"/></linearGradient><linearGradient id="tramGlass" x2="0" y2="1"><stop stop-color="#a9b7b7"/><stop offset="1" stop-color="#27353a"/></linearGradient></defs><path d="M58 23L95 2h76l-12 22M120 23l25-21h76l-8 21" fill="none" stroke="#252a2b" stroke-width="7" stroke-linecap="round"/><path d="M152 2l-22-20m22 20l25-20" stroke="#252a2b" stroke-width="5"/><path d="M17 42Q20 18 49 18h335q27 0 29 28v76q0 14-18 14H34q-17 0-17-17z" fill="url(#tramPaint)" stroke="#15191b" stroke-width="8"/><path d="M42 34h340q14 0 14 16v40H35V48q0-14 7-14z" fill="#2c393d" stroke="#1b2022" stroke-width="5"/><g fill="url(#tramGlass)" stroke="#182125" stroke-width="5"><rect x="48" y="40" width="53" height="43" rx="4"/><rect x="111" y="40" width="53" height="43" rx="4"/><rect x="174" y="40" width="53" height="43" rx="4"/><rect x="237" y="40" width="53" height="43" rx="4"/><rect x="300" y="40" width="53" height="43" rx="4"/></g><path d="M359 31h34q15 0 15 17v42h-49z" fill="#253136" stroke="#171c1e" stroke-width="5"/><rect x="364" y="38" width="36" height="40" rx="4" fill="#9eacaa" stroke="#20282b" stroke-width="4"/><rect x="25" y="93" width="380" height="8" fill="#963e36"/><rect x="25" y="104" width="380" height="6" fill="#d2c2a1"/><rect x="29" y="20" width="75" height="17" rx="2" fill="#171c1d"/><text x="66" y="32" text-anchor="middle" fill="#f1d9a7" font-size="10" font-family="Arial" letter-spacing="2">LINIE 4</text><rect x="300" y="112" width="82" height="17" fill="#171b1c"/><text x="341" y="124" text-anchor="middle" fill="#ead8b5" font-size="8" font-family="Arial" letter-spacing="1">EISENBRÜCK</text><circle cx="90" cy="133" r="17" fill="#111416" stroke="#66645d" stroke-width="6"/><circle cx="325" cy="133" r="17" fill="#111416" stroke="#66645d" stroke-width="6"/><path d="M16 89h-10v-17h10m400 17h8v-17h-8" fill="#d9c89f"/><path d="M387 80l16 7-16 7" fill="#d5b77d"/></svg></div>
    <div class="cyclist" aria-hidden="true"><svg viewBox="0 0 110 64"><circle cx="23" cy="48" r="13" fill="none" stroke="#17191b" stroke-width="4"/><circle cx="84" cy="48" r="13" fill="none" stroke="#17191b" stroke-width="4"/><path d="M23 48L43 24L58 48H23L38 30H66L84 48L70 20" fill="none" stroke="#b7a58b" stroke-width="3"/><circle cx="69" cy="10" r="6" fill="#b99c7d"/><path d="M67 17L55 29L68 34L78 23M55 29L43 24" fill="none" stroke="#353a3c" stroke-width="6" stroke-linecap="round"/></svg></div>
    <div class="loose-paper" aria-hidden="true"></div>
-   <div class="street-npc npc-a" data-person="a" data-state="walking" data-renderer="rig" data-art-key="passerby-a" aria-hidden="true"><span class="art-layer"></span><i></i><b></b></div><div class="street-npc npc-b" data-person="b" data-state="idle" data-renderer="rig" data-art-key="passerby-b" aria-hidden="true"><span class="art-layer"></span><i></i><b></b></div><div class="street-npc npc-c" data-person="c" data-state="walking" data-renderer="rig" data-art-key="passerby-c" aria-hidden="true"><span class="art-layer"></span><i></i><b></b></div><div class="hero" id="hero" data-state="idle" data-renderer="illustrated" data-art-key="protagonist" role="img" aria-label="Главный герой — следователь"><span class="shadow"></span><span class="art-layer" aria-hidden="true"><svg class="hero-illustration" viewBox="0 0 120 180" role="presentation" xmlns="http://www.w3.org/2000/svg">
+   <div class="street-npc npc-a" data-person="a" data-state="walking" data-renderer="rig" data-art-key="passerby-a" aria-hidden="true"><span class="art-layer"></span><i></i><b></b></div><div class="street-npc npc-b" data-person="b" data-state="idle" data-renderer="rig" data-art-key="passerby-b" aria-hidden="true"><span class="art-layer"></span><i></i><b></b></div><div class="street-npc npc-c" data-person="c" data-state="walking" data-renderer="rig" data-art-key="passerby-c" aria-hidden="true"><span class="art-layer"></span><i></i><b></b></div><div class="hero" id="hero" data-state="idle" data-renderer="illustrated" data-art-key="protagonist" role="img" aria-label="Главный герой — следователь"><span class="shadow"></span><span class="art-layer" aria-hidden="true"><svg class="hero-illustration" viewBox="0 0 88 132" role="presentation" xmlns="http://www.w3.org/2000/svg">
 <defs>
- <linearGradient id="hero-coat" x1="0" y1="0" x2="1" y2=".2"><stop stop-color="#11171d"/><stop offset=".28" stop-color="#303940"/><stop offset=".56" stop-color="#222a31"/><stop offset=".82" stop-color="#171e24"/><stop offset="1" stop-color="#0c1116"/></linearGradient>
- <linearGradient id="hero-coat-light" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#687078"/><stop offset=".42" stop-color="#3b444b"/><stop offset="1" stop-color="#182027"/></linearGradient>
- <linearGradient id="hero-skin" x1=".15" y1="0" x2=".85" y2="1"><stop stop-color="#dfc1a6"/><stop offset=".48" stop-color="#b58d76"/><stop offset="1" stop-color="#795d51"/></linearGradient>
- <linearGradient id="hero-scarf" x1="0" y1="0" x2="1" y2=".2"><stop stop-color="#515b65"/><stop offset=".48" stop-color="#aeb0aa"/><stop offset=".78" stop-color="#7c8589"/><stop offset="1" stop-color="#454f59"/></linearGradient>
- <linearGradient id="hero-trousers" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#11171d"/><stop offset=".5" stop-color="#30373c"/><stop offset="1" stop-color="#10161b"/></linearGradient>
- <linearGradient id="hero-hair" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#4b4949"/><stop offset=".38" stop-color="#202226"/><stop offset="1" stop-color="#090d11"/></linearGradient>
- <filter id="hero-soft-shadow" x="-30%" y="-20%" width="160%" height="150%"><feGaussianBlur stdDeviation="2.2"/></filter>
- <filter id="hero-grain"><feTurbulence type="fractalNoise" baseFrequency=".8" numOctaves="2" seed="8"/><feColorMatrix values="0 0 0 0 .45 0 0 0 0 .45 0 0 0 0 .45 0 0 0 .12 0"/></filter>
+ <linearGradient id="coatMain" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#11171c"/><stop offset=".34" stop-color="#30383e"/><stop offset=".62" stop-color="#20272d"/><stop offset="1" stop-color="#0d1217"/></linearGradient>
+ <linearGradient id="coatLight" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#596168"/><stop offset=".45" stop-color="#30383e"/><stop offset="1" stop-color="#171d22"/></linearGradient>
+ <linearGradient id="skin" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#d2b49b"/><stop offset=".55" stop-color="#a9826c"/><stop offset="1" stop-color="#75594e"/></linearGradient>
+ <linearGradient id="scarf" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#697078"/><stop offset=".5" stop-color="#a0a3a0"/><stop offset="1" stop-color="#555d65"/></linearGradient>
+ <linearGradient id="trousers" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#101419"/><stop offset=".5" stop-color="#30363a"/><stop offset="1" stop-color="#11161a"/></linearGradient>
 </defs>
-<ellipse cx="60" cy="171" rx="28" ry="4" fill="#05080b" opacity=".48" filter="url(#hero-soft-shadow)"/>
-<!-- Legs and worn leather shoes -->
-<g class="hero-art-legs" stroke-linejoin="round">
- <path d="M39 130 Q49 133 58 130 L56 158 Q54 164 49 165 L39 163 L37 157Z" fill="url(#hero-trousers)" stroke="#0a1015" stroke-width="1.4"/>
- <path d="M59 130 Q70 132 79 128 L82 157 Q81 163 75 165 L63 164 L59 157Z" fill="#1b2228" stroke="#0a1015" stroke-width="1.4"/>
- <path d="M39 150 Q47 154 55 150 M61 151 Q69 154 80 150" fill="none" stroke="#778087" stroke-width="1" opacity=".36"/>
- <path d="M38 158 Q45 162 55 159 L57 165 Q53 170 35 171 L28 169 Q29 163 38 158Z" fill="#171b1e" stroke="#080c10" stroke-width="1.2"/>
- <path d="M64 158 Q73 161 82 157 L91 164 Q92 169 84 171 L62 170 Q59 165 64 158Z" fill="#25292c" stroke="#080c10" stroke-width="1.2"/>
- <path d="M31 168 Q43 171 55 167 M64 168 Q78 171 89 167" fill="none" stroke="#8b8c87" stroke-width=".8" opacity=".5"/>
- <path d="M44 138 L41 145 M71 138 L75 145 M44 154l5 3m19-3-4 4" fill="none" stroke="#92999b" stroke-width=".8" opacity=".42"/>
+<ellipse cx="44" cy="127" rx="23" ry="3.2" fill="#080c10" opacity=".48"/>
+<g class="hero-art-legs">
+ <path d="M28 91 L43 92 L40 119 L34 124 L27 121 L29 105Z" fill="url(#trousers)" stroke="#090e12" stroke-width="1"/>
+ <path d="M44 91 L59 91 L61 119 L55 124 L48 121 L46 105Z" fill="#171d22" stroke="#090e12" stroke-width="1"/>
+ <path d="M28 118 Q33 120 41 119 L41 124 Q37 127 24 127 L20 125 Q22 120 28 118Z" fill="#171a1d" stroke="#080b0e" stroke-width="1"/>
+ <path d="M49 118 Q55 120 61 118 L67 123 Q67 126 61 127 L46 126 Q45 122 49 118Z" fill="#24282b" stroke="#080b0e" stroke-width="1"/>
+ <path d="M25 124 Q32 126 40 123 M49 124 Q57 126 65 123" fill="none" stroke="#687078" stroke-width=".8" opacity=".45"/>
 </g>
-<!-- Trench coat body: one continuous silhouette with tailored panels -->
-<g class="hero-art-coat" stroke-linejoin="round">
- <path d="M42 48 Q31 49 24 59 Q18 68 17 89 L13 128 Q20 139 35 140 L43 132 Q59 139 79 138 Q94 137 103 128 L98 91 Q98 68 88 57 Q80 49 70 48Z" fill="url(#hero-coat)" stroke="#080e13" stroke-width="1.8"/>
- <path d="M41 51 Q29 55 27 69 Q25 90 29 130 Q34 135 45 135 L51 76 L58 58Z" fill="url(#hero-coat-light)" opacity=".72"/>
- <path d="M70 51 Q84 54 89 69 Q93 91 88 131 Q81 137 72 135 L66 77 L57 58Z" fill="#111920" opacity=".8"/>
- <path d="M42 51 L58 68 L49 91 L35 63Z" fill="#46515a" stroke="#11181e" stroke-width="1.1"/>
- <path d="M70 51 L58 68 L68 91 L82 63Z" fill="#242d34" stroke="#0c1319" stroke-width="1.1"/>
- <path d="M58 68 Q55 94 56 132 M61 69 Q66 94 68 132" fill="none" stroke="#92999b" stroke-width=".9" opacity=".28"/>
- <path d="M31 83 Q39 88 46 86 M72 86 Q81 88 89 82 M28 111 Q36 115 45 112 M74 113 Q83 116 91 110" fill="none" stroke="#090f14" stroke-width="1.4" opacity=".75"/>
- <path d="M34 129 Q43 134 52 131 M67 132 Q78 135 88 129" fill="none" stroke="#727b82" stroke-width="1" opacity=".36"/>
- <path d="M18 119 Q25 124 31 121 M91 121 Q98 125 101 118" fill="none" stroke="#8a9296" stroke-width=".9" opacity=".34"/>
- <path d="M47 98l-3 9m29-8 4 9M43 119l-4 7m37-7 5 7" fill="none" stroke="#a1a6a5" stroke-width=".8" opacity=".26"/>
- <path d="M53 92h4m5 13h4m-12 14h4" stroke="#b2aaa0" stroke-width="1.5" opacity=".68"/>
+<g class="hero-art-coat">
+ <path d="M34 39 Q25 41 20 51 L14 87 Q17 96 23 99 L28 78 L27 111 Q43 116 62 111 L60 77 L66 98 Q73 95 75 87 L67 52 Q63 42 53 39Z" fill="url(#coatMain)" stroke="#0b1116" stroke-width="1.2"/>
+ <path d="M33 43 Q27 51 27 66 L29 107 L38 111 L42 65 L45 48Z" fill="url(#coatLight)" opacity=".85"/>
+ <path d="M53 42 Q61 49 62 67 L60 109 L51 112 L47 65 L46 48Z" fill="#171e24" stroke="#697078" stroke-width=".6" opacity=".9"/>
+ <path d="M34 42 L44 55 L39 68 L30 49Z" fill="#465057" stroke="#11171c" stroke-width=".8"/>
+ <path d="M53 42 L45 55 L50 68 L59 49Z" fill="#252d33" stroke="#10161b" stroke-width=".8"/>
+ <path d="M44 55 L43 108 M47 58 L52 106" stroke="#899096" stroke-width=".7" opacity=".32"/>
+ <path d="M30 81 Q35 84 39 83 M51 83 Q56 85 60 82" stroke="#080d11" stroke-width="1" opacity=".65"/>
+ <path d="M30 94 Q34 96 38 95 M51 96 Q56 97 60 95" stroke="#7d8589" stroke-width=".55" opacity=".35"/>
+ <path d="M22 58 L17 86 Q18 91 22 93 M66 58 L72 86 Q71 91 67 93" fill="none" stroke="#778087" stroke-width=".7" opacity=".35"/>
+ <path d="M38 74 L40 75 M52 74 L54 75" stroke="#a2a6a5" stroke-width="1.1" opacity=".6"/>
 </g>
-<!-- Arms hang naturally, with sleeves integrated into coat silhouette -->
-<g class="hero-art-arms" stroke-linejoin="round">
- <path d="M26 59 Q20 65 19 79 L13 111 Q12 119 18 122 Q24 123 27 116 L35 87 L39 67Z" fill="#283139" stroke="#0d141a" stroke-width="1.5"/>
- <path d="M89 59 Q97 66 98 80 L105 109 Q107 117 101 122 Q95 124 92 116 L82 87 L78 67Z" fill="#1a232b" stroke="#0b1218" stroke-width="1.5"/>
- <path d="M16 109 Q12 117 16 124 Q19 129 24 125 L28 117 L25 109Z" fill="url(#hero-skin)" stroke="#59463d" stroke-width=".9"/>
- <path d="M96 110 Q93 118 98 126 Q102 130 107 124 L107 116 L101 109Z" fill="url(#hero-skin)" stroke="#59463d" stroke-width=".9"/>
- <path d="M17 119q3 3 6 2m76-1q4 3 7 1" fill="none" stroke="#e0c1a5" stroke-width=".8" opacity=".7"/>
- <path d="M19 126l2 3m3-5 1 4m77-5-1 4m-4-3-1 4" stroke="#76594c" stroke-width=".7"/>
- <path d="M20 91q4 4 9 3m63-1q5 2 9-2" fill="none" stroke="#8b949a" stroke-width="1" opacity=".35"/>
+<g class="hero-art-arms">
+ <path d="M22 52 Q17 57 17 72 L15 88 Q17 93 22 92 L27 73 L30 57Z" fill="#293138" stroke="#11171c" stroke-width="1"/>
+ <path d="M66 52 Q71 58 71 72 L74 87 Q72 93 67 92 L62 73 L59 57Z" fill="#1d252b" stroke="#0c1217" stroke-width="1"/>
+ <path d="M16 86 Q14 92 18 96 Q22 98 25 93 L25 88Z" fill="url(#skin)" stroke="#59483f" stroke-width=".7"/>
+ <path d="M66 87 Q64 93 68 97 Q72 98 75 93 L73 87Z" fill="url(#skin)" stroke="#59483f" stroke-width=".7"/>
+ <path d="M18 91 L22 94 M69 92 L73 94" stroke="#d2b39a" stroke-width=".6" opacity=".6"/>
 </g>
-<!-- Neck and collar -->
-<g class="hero-art-neck">
- <path d="M47 38 L46 54 Q58 63 72 53 L69 37Z" fill="url(#hero-skin)" stroke="#654e43" stroke-width="1"/>
- <path d="M44 47 Q51 57 59 58 Q69 57 75 47 L80 55 Q68 68 57 66 Q44 64 38 55Z" fill="#171e24" stroke="#0a1015" stroke-width="1.2"/>
+<g class="hero-art-scarf">
+ <path d="M34 39 Q43 44 54 39 L57 50 Q48 56 37 51Z" fill="url(#scarf)" stroke="#353d44" stroke-width=".9"/>
+ <path d="M39 49 Q36 61 40 79 L47 82 Q49 62 47 51Z" fill="#858b8d" stroke="#4d565e" stroke-width=".8"/>
+ <path d="M48 49 Q53 60 53 76 L59 79 Q59 59 54 48Z" fill="#59616a" stroke="#353e46" stroke-width=".8"/>
+ <path d="M39 57 L45 58 M40 63 L46 64 M41 70 L47 71 M50 56 L55 58 M51 64 L56 66" stroke="#c0c0b8" stroke-width=".55" opacity=".45"/>
+ <path d="M40 78 L39 84 L42 81 L44 85 L46 81 L48 83 L48 78" fill="#7b8284" stroke="#454e55" stroke-width=".6"/>
 </g>
-<!-- Grey wool scarf -->
-<g class="hero-art-scarf" stroke-linejoin="round">
- <path d="M43 47 Q57 55 73 46 L80 59 Q68 69 48 62Z" fill="url(#hero-scarf)" stroke="#414a53" stroke-width="1.2"/>
- <path d="M48 59 Q42 77 49 107 L61 111 Q65 85 61 61Z" fill="#8d9494" stroke="#4b555e" stroke-width="1"/>
- <path d="M64 59 Q70 78 68 99 L78 105 Q82 77 74 56Z" fill="#59636d" stroke="#313b44" stroke-width="1"/>
- <path d="M48 69 Q54 72 61 70 M48 78 Q54 81 62 79 M49 88 Q55 91 62 89 M50 97 Q56 100 62 98 M68 67l7 3m-7 7 8 3m-8 7 8 3" fill="none" stroke="#d0d0c7" stroke-width=".75" opacity=".54"/>
- <path d="M50 105l-1 8 4-4 3 5 4-5 3 4 1-8" fill="#747d82" stroke="#414b54" stroke-width=".8"/>
- <path d="M47 60 Q44 77 47 93 M74 61 Q79 79 75 94" fill="none" stroke="#d8d7cf" stroke-width=".8" opacity=".32"/>
-</g>
-<!-- Head: restrained realistic proportions, tousled dark hair and light stubble -->
+<g class="hero-art-neck"><path d="M38 31 L37 42 Q44 47 52 41 L49 31Z" fill="url(#skin)"/></g>
 <g class="hero-art-head">
- <path d="M42 17 Q44 7 58 7 Q74 7 78 20 L77 39 Q73 51 61 53 Q48 51 43 40Z" fill="url(#hero-skin)" stroke="#604a40" stroke-width="1.2"/>
- <path d="M41 25 Q36 16 43 8 Q47 1 59 2 Q74 1 81 12 Q84 19 79 29 L76 22 Q68 16 58 17 Q49 20 44 28Z" fill="url(#hero-hair)" stroke="#090d11" stroke-width="1.2"/>
- <path d="M42 15 Q49 5 59 7 Q52 10 50 18 M58 6 Q70 4 76 13 Q68 10 65 17 M73 10 Q82 15 78 25 M43 20l-3 7" fill="none" stroke="#77716c" stroke-width="1.1" stroke-linecap="round" opacity=".62"/>
- <path d="M43 29 Q47 25 54 28 M65 28 Q72 24 77 29" fill="none" stroke="#3a302c" stroke-width="1.3"/>
- <path d="M46 31 Q50 29 54 31 M66 31 Q71 29 75 31" fill="none" stroke="#e2c8b0" stroke-width=".9" opacity=".8"/>
- <ellipse cx="51" cy="32" rx="1.7" ry="1.4" fill="#30383a"/><ellipse cx="71" cy="32" rx="1.7" ry="1.4" fill="#30383a"/>
- <path d="M60 31 L57 39 L61 41" fill="none" stroke="#805f50" stroke-width="1" stroke-linecap="round"/>
- <path d="M53 46 Q61 49 69 45" fill="none" stroke="#684b42" stroke-width="1.1" stroke-linecap="round"/>
- <path d="M45 39 Q48 48 59 50 Q72 49 76 38 Q75 50 64 53 Q49 53 45 39Z" fill="#493b35" opacity=".58"/>
- <path d="M47 42 Q51 47 57 47 M64 47 Q70 46 73 42" fill="none" stroke="#c09a80" stroke-width=".7" opacity=".7"/>
- <path d="M41 25 Q38 31 43 35 M79 25 Q83 31 78 36" fill="none" stroke="#806456" stroke-width="1.1"/>
+ <path d="M31 18 Q31 7 43 6 Q56 6 58 19 L56 32 Q53 41 44 42 Q34 40 31 30Z" fill="url(#skin)" stroke="#59463d" stroke-width=".8"/>
+ <path d="M31 21 Q28 13 33 7 Q36 1 45 2 Q56 2 60 10 L59 22 L55 17 Q50 14 45 14 Q39 17 34 15Z" fill="#171a1d" stroke="#080b0e" stroke-width="1"/>
+ <path d="M33 9 Q39 3 45 5 Q39 7 37 13 M44 5 Q52 3 57 11 Q51 8 48 12 M55 10 Q61 14 57 21" fill="none" stroke="#424548" stroke-width="1.5" stroke-linecap="round"/>
+ <path d="M34 22 Q38 19 42 22 M47 22 Q51 19 55 22" fill="none" stroke="#46362f" stroke-width="1.1"/>
+ <path d="M35 24 Q38 23 41 24 M48 24 Q51 23 54 24" stroke="#e0c6ae" stroke-width=".75" opacity=".85"/>
+ <ellipse cx="39" cy="24" rx="1.25" ry="1.05" fill="#30383a"/><ellipse cx="51" cy="24" rx="1.25" ry="1.05" fill="#30383a"/>
+ <path d="M45 24 L43 30 L46 31" fill="none" stroke="#805f50" stroke-width=".8" stroke-linecap="round"/>
+ <path d="M40 35 Q45 37 50 34" fill="none" stroke="#684b42" stroke-width=".8" stroke-linecap="round"/>
+ <path d="M35 32 Q39 39 46 39 Q53 38 55 31 Q54 40 47 42 Q38 42 35 32Z" fill="#493b35" opacity=".62"/>
+ <path d="M36 34 Q40 37 44 37 M47 37 Q51 36 53 33" fill="none" stroke="#b18b75" stroke-width=".6" opacity=".7"/>
+ <path d="M30 19 Q28 24 31 27 M58 19 Q61 23 58 28" fill="none" stroke="#806456" stroke-width="1"/>
 </g>
-<!-- Ink and watercolor texture: selective, not decorative line clutter -->
+<path d="M20 53 Q24 48 27 48 M61 48 Q65 49 68 55 M29 107 Q43 112 59 107" fill="none" stroke="#92999b" stroke-width=".55" opacity=".35"/>
+
 <g class="hero-art-ink" fill="none" stroke-linecap="round" stroke-linejoin="round">
- <path d="M28 64 Q24 78 22 99 M93 64 Q98 80 100 99" stroke="#9aa0a1" stroke-width="1.2" opacity=".35"/>
- <path d="M34 59 Q39 67 37 82 M82 59 Q77 68 80 82" stroke="#aeb3b2" stroke-width=".9" opacity=".34"/>
- <path d="M31 90 Q36 94 42 92 M78 93 Q84 96 89 91 M34 121 Q42 125 49 122 M70 123 Q79 126 87 121" stroke="#a4aaab" stroke-width=".8" opacity=".35"/>
- <path d="M45 13 Q50 7 57 8 M61 7 Q71 7 76 14 M43 20l-2 7m37-8 2 7" stroke="#a29a91" stroke-width=".8" opacity=".48"/>
- <path d="M46 28 Q50 26 54 28 M66 28 Q71 26 76 28" stroke="#2f2926" stroke-width=".7"/>
- <path d="M56 41 Q60 43 64 41" stroke="#704f43" stroke-width=".65" opacity=".7"/>
- <path d="M47 55 Q58 63 76 55 M50 72l11 3m-10 7 12 3m-11 7 11 3" stroke="#e0ded5" stroke-width=".7" opacity=".35"/>
- <path d="M21 112q4 4 8 3m67-1q5 3 9-1M43 143l7 3m18-2 8-3" stroke="#c0b6a8" stroke-width=".7" opacity=".32"/>
- <path d="M40 159l8 2m17-2 9 2" stroke="#9ba1a2" stroke-width=".8" opacity=".4"/>
+ <!-- Face: restrained ink contours, eyelids and natural expression -->
+ <path d="M32.5 18.5 Q34 15.8 39 16.8 M48 16.8 Q53 15.8 56.5 19" stroke="#302b29" stroke-width=".7" opacity=".8"/>
+ <path d="M35 23.2 Q38.5 21.5 42 23.1 M47.5 23.1 Q51 21.5 54.5 23.2" stroke="#342c29" stroke-width=".65"/>
+ <path d="M37.4 24.1 Q39 23.5 40.6 24.1 M49.4 24.1 Q51 23.5 52.6 24.1" stroke="#e3cdb9" stroke-width=".45" opacity=".8"/>
+ <path d="M44.2 27.8 Q43.6 30 44.4 30.5 M46.4 31.5 Q47.2 32 48 31.5" stroke="#76584b" stroke-width=".55"/>
+ <path d="M40.5 35.2 Q44.8 36.4 49.5 34.5" stroke="#302a28" stroke-width=".45" opacity=".8"/>
+ <path d="M34 29 Q35 34 39 36 M53 35 Q56 31 56 27" stroke="#6c5145" stroke-width=".45" opacity=".6"/>
+ <!-- Hair strands and temple texture -->
+ <path d="M31.5 13 Q35 5 42 5 M38 7 Q44 2.5 50 6 M48 7 Q55 7 58 14 M33 11 Q36 8 39 8 M54 12 Q57 15 56 18" stroke="#626164" stroke-width=".65" opacity=".75"/>
+ <path d="M32 18 Q30 15 32 12 M57 17 Q59 19 57.5 22" stroke="#0b1014" stroke-width=".8"/>
+ <!-- Coat tailoring: lapel edges, stitching, folds and buttons -->
+ <path d="M33 43 L39.5 55 L35.5 66 M54 43 L48.5 55 L53 67" stroke="#899196" stroke-width=".7" opacity=".65"/>
+ <path d="M29 58 Q32 64 31 72 M58 59 Q56 67 58 74 M35 82 Q37 91 35 102 M53 82 Q51 92 54 103" stroke="#080e13" stroke-width=".8" opacity=".75"/>
+ <path d="M27 88 Q30 91 32 90 M57 91 Q60 93 63 89 M31 105 Q35 108 39 107 M50 108 Q55 109 59 106" stroke="#7b858b" stroke-width=".55" opacity=".55"/>
+ <path d="M40.5 68 L39.5 104 M48 68 L49 103" stroke="#9ba1a2" stroke-width=".45" opacity=".28"/>
+ <path d="M34 79 L37 81 M52 80 L55 78 M33 96 L36 97 M53 97 L56 96" stroke="#a1a5a3" stroke-width=".45" opacity=".35"/>
+ <circle cx="44.5" cy="88" r=".85" fill="#a0a19b" stroke="none" opacity=".65"/>
+ <circle cx="45" cy="97" r=".85" fill="#a0a19b" stroke="none" opacity=".65"/>
+ <!-- Scarf weave and folded edge -->
+ <path d="M37.5 45 Q44 49 54 45 M39 52 Q44 55 49 53 M40 60 L46 62 M40.5 67 L47 69 M41 74 L47 76" stroke="#d0d0c7" stroke-width=".45" opacity=".55"/>
+ <path d="M51 53 Q55 62 55 72 M38 54 Q36 65 39 76" stroke="#343d44" stroke-width=".6" opacity=".8"/>
+ <!-- Hands, cuffs, trouser creases and worn shoe edges -->
+ <path d="M15.5 88 L20.5 89 L23 87 M67 88 L71 89 L74 87" stroke="#8e9698" stroke-width=".55" opacity=".65"/>
+ <path d="M18 94 Q20 96 22 94 M68 95 Q70 97 72 95" stroke="#604b40" stroke-width=".45"/>
+ <path d="M30 103 L34 107 M54 103 L58 107 M31 114 L37 116 M51 115 L58 113" stroke="#697178" stroke-width=".55" opacity=".55"/>
+ <path d="M23 126 Q31 129 40 126 M47 126 Q57 129 66 126" stroke="#899096" stroke-width=".65" opacity=".65"/>
+
+<g class="hero-art-form" stroke-linecap="round" stroke-linejoin="round">
+ <!-- Soft painted planes give the coat a more believable shoulder-to-waist volume -->
+ <path d="M21 54 Q25 45 33 43 Q29 52 30 65 Q26 75 23 91 Q19 91 18 86Z" fill="#899198" opacity=".09"/>
+ <path d="M66 54 Q62 45 54 43 Q59 53 58 66 Q63 77 66 91 Q70 90 71 85Z" fill="#05090d" opacity=".28"/>
+ <path d="M29 68 Q35 73 42 70 L40 108 Q34 110 29 106Z" fill="#10171d" opacity=".24"/>
+ <path d="M50 70 Q56 72 60 68 L59 106 Q55 110 50 108Z" fill="#080e13" opacity=".28"/>
+ <!-- Shoulder seam, elbow folds and natural fabric tension -->
+ <path d="M24 52 Q29 46 35 45 M53 45 Q60 47 64 53" fill="none" stroke="#9ba2a5" stroke-width=".7" opacity=".52"/>
+ <path d="M19 72 Q22 75 26 74 M62 74 Q67 75 71 72 M17 84 Q21 87 24 85 M65 85 Q69 87 73 84" fill="none" stroke="#8c969b" stroke-width=".65" opacity=".42"/>
+ <path d="M30 75 Q34 78 38 77 M51 77 Q56 78 60 75 M32 101 Q36 104 39 103 M51 103 Q55 104 58 101" fill="none" stroke="#a1a7a8" stroke-width=".55" opacity=".36"/>
+ <!-- Collar sits around the neck; subtle shadow beneath scarf -->
+ <path d="M34 40 Q39 45 44 45 Q50 45 55 40" fill="none" stroke="#090f14" stroke-width="1.2" opacity=".8"/>
+ <path d="M36 42 Q43 48 53 42" fill="none" stroke="#c0c2bc" stroke-width=".55" opacity=".55"/>
+ <!-- Natural knuckles and relaxed fingers -->
+ <path d="M16.5 91 Q18 92 19 91 M19 94 Q21 95 22 93 M67 92 Q69 93 70 92 M69 95 Q71 96 72 94" fill="none" stroke="#e0c1a5" stroke-width=".55" opacity=".7"/>
+ <!-- Trousers: knees, creases and separation of the two legs -->
+ <path d="M29 106 Q33 109 39 108 M49 108 Q55 109 59 106" fill="none" stroke="#69737a" stroke-width=".7" opacity=".52"/>
+ <path d="M31 112 L35 115 M57 111 L53 115 M28 119 Q33 121 38 119 M51 119 Q57 121 62 119" fill="none" stroke="#8b9295" stroke-width=".55" opacity=".4"/>
+ <!-- Inked hem and worn leather shoe highlights -->
+ <path d="M22 125 Q29 128 39 125 M48 125 Q57 128 66 125" fill="none" stroke="#b0aaa0" stroke-width=".5" opacity=".5"/>
+ <path d="M25 127 Q32 129 39 127 M48 127 Q57 129 64 127" fill="none" stroke="#05080b" stroke-width=".6" opacity=".8"/>
 </g>
-<path d="M25 62 Q33 52 43 51 M76 51 Q88 53 95 64" fill="none" stroke="#b6a58e" stroke-width="1.2" opacity=".18"/>
-<rect x="0" y="0" width="120" height="180" filter="url(#hero-grain)" opacity=".12" pointer-events="none"/>
+</g>
 </svg></span><span class="head"><i class="brow"></i><i class="stubble"></i></span><span class="hair"></span><span class="neck"></span><span class="collar"></span><span class="coat"></span><span class="lapel"></span><span class="coat-seam"></span><span class="coat-buttons"></span><span class="scarf"></span><span class="scarf-fringe"></span><span class="arm left"></span><span class="arm right"></span><span class="hand"></span><span class="leg left"></span><span class="leg right"></span><span class="shoe left"></span><span class="shoe right"></span></div>
    <button class="hotspot" data-target="bookshop" style="left:380px">Книжный магазин<small>ВИТРИНА</small></button>
    <button class="hotspot" data-target="kiosk" style="left:648px">Газетный киоск<small>ПОГОВОРИТЬ</small></button>
